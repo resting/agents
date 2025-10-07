@@ -1,6 +1,6 @@
 # Claude Code Subagents Collection
 
-A comprehensive collection of 78 specialized AI subagents for [Claude Code](https://docs.anthropic.com/en/docs/claude-code), providing domain-specific expertise across software development, infrastructure, and business operations.
+A comprehensive collection of 83 specialized AI subagents for [Claude Code](https://docs.anthropic.com/en/docs/claude-code), providing domain-specific expertise across software development, infrastructure, and business operations.
 
 ## Overview
 
@@ -109,6 +109,9 @@ This repository provides production-ready subagents that extend Claude Code's ca
 |-------|-------|-------------|
 | [code-reviewer](code-reviewer.md) | opus | Code review with security focus and production reliability |
 | [security-auditor](security-auditor.md) | opus | Vulnerability assessment and OWASP compliance |
+| [backend-security-coder](backend-security-coder.md) | opus | Secure backend coding practices, API security implementation |
+| [frontend-security-coder](frontend-security-coder.md) | opus | XSS prevention, CSP implementation, client-side security |
+| [mobile-security-coder](mobile-security-coder.md) | opus | Mobile security patterns, WebView security, biometric auth |
 | [architect-reviewer](architect-review.md) | opus | Architectural consistency and pattern validation |
 
 #### Testing & Debugging
@@ -120,11 +123,12 @@ This repository provides production-ready subagents that extend Claude Code's ca
 | [debugger](debugger.md) | sonnet | Error resolution and test failure analysis |
 | [error-detective](error-detective.md) | sonnet | Log analysis and error pattern recognition |
 
-#### Performance & Research
+#### Performance & Observability
 
 | Agent | Model | Description |
 |-------|-------|-------------|
 | [performance-engineer](performance-engineer.md) | opus | Application profiling and optimization |
+| [observability-engineer](observability-engineer.md) | opus | Production monitoring, distributed tracing, SLI/SLO management |
 | [search-specialist](search-specialist.md) | haiku | Advanced web research and information synthesis |
 
 ### Data & AI
@@ -184,6 +188,7 @@ This repository provides production-ready subagents that extend Claude Code's ca
 
 | Agent | Model | Description |
 |-------|-------|-------------|
+| [blockchain-developer](blockchain-developer.md) | sonnet | Web3 apps, smart contracts, DeFi protocols |
 | [payment-integration](payment-integration.md) | sonnet | Payment processor integration (Stripe, PayPal) |
 | [legacy-modernizer](legacy-modernizer.md) | sonnet | Legacy code refactoring and modernization |
 | [context-manager](context-manager.md) | haiku | Multi-agent context management |
@@ -213,7 +218,7 @@ Agents are assigned to specific Claude models based on task complexity and compu
 |-------|-------------|----------|
 | Haiku | 11 | Quick, focused tasks with minimal computational overhead |
 | Sonnet | 46 | Standard development and specialized engineering tasks |
-| Opus | 21 | Complex reasoning, architecture, and critical analysis |
+| Opus | 22 | Complex reasoning, architecture, and critical analysis |
 
 ### Haiku Model Agents
 
@@ -238,7 +243,7 @@ Agents are assigned to specific Claude models based on task complexity and compu
 | Category | Count | Agents |
 |----------|-------|--------|
 | Architecture & Design | 7 | `architect-reviewer`, `backend-architect`, `cloud-architect`, `hybrid-cloud-architect`, `kubernetes-architect`, `graphql-architect`, `terraform-specialist` |
-| Critical Analysis | 5 | `code-reviewer`, `security-auditor`, `performance-engineer`, `incident-responder`, `database-optimizer` |
+| Critical Analysis | 6 | `code-reviewer`, `security-auditor`, `performance-engineer`, `observability-engineer`, `incident-responder`, `database-optimizer` |
 | AI/ML Complex | 5 | `ai-engineer`, `ml-engineer`, `mlops-engineer`, `data-scientist`, `prompt-engineer` |
 | Business Critical | 4 | `docs-architect`, `hr-pro`, `legal-advisor`, `quant-analyst` |
 
