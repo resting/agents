@@ -11,6 +11,32 @@
   },
   "plugins": [
     {
+      "name": "roy-agents",
+      "source": "./plugins/roy-agents",
+      "description": "Custom agents for Roy",
+      "version": "1.0.0",
+      "author": {
+        "name": "Roy",
+        "url": "https://github.com/resting"
+      },
+      "homepage": "https://github.com/resting/agents",
+      "repository": "https://github.com/resting/agents",
+      "license": "MIT",
+      "keywords": [
+      ],
+      "category": "development",
+      "strict": false,
+      "commands": [
+      ],
+      "agents": [
+        "./agents/mvp-analyzer.md",
+        "./agents/prd-writer.md",
+        "./agents/proguard-optimizer.md",
+        "./agents/research-documenter.md",
+        "./agents/task-orchestrator.md"
+      ]
+    },
+    {
       "name": "code-documentation",
       "source": "./plugins/code-documentation",
       "description": "Documentation generation, code explanation, and technical writing with automated doc generation and tutorial creation",
