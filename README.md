@@ -3,15 +3,29 @@
 
 Make all changes in `roy-agents`.
 
+##### Install:
+
+```bash
+# Step 1 — Add the marketplace (one-time)
+/plugin marketplace add resting/agents
+
+# Step 2 — Install roy-agents
+/plugin install roy-agents@resting
+```
+
+##### Get updates (after changes are pushed to this repo):
+
+```bash
+/plugin marketplace update resting
+```
+
+
+
 ##### To update upstream:
 
 ```bash
 git fetch upstream && git merge upstream/main
 ```
-
-##### Update marketplace:
-
-
 
 ---
 
