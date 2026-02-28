@@ -10,7 +10,7 @@ Make all changes in `roy-agents`.
 /plugin marketplace add resting/agents
 
 # Step 2 — Install roy-agents
-/plugin install roy-agents@resting
+/plugin install roy-agents@claude-code-workflows
 ```
 
 ##### Get updates (after changes are pushed to this repo):
