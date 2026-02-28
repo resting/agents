@@ -16,25 +16,10 @@
       "description": "Custom agents for Roy",
       "version": "1.0.0",
       "author": {
-        "name": "Roy",
-        "url": "https://github.com/resting"
+        "name": "Roy"
       },
-      "homepage": "https://github.com/resting/agents",
-      "repository": "https://github.com/resting/agents",
       "license": "MIT",
-      "keywords": [
-      ],
-      "category": "development",
-      "strict": false,
-      "commands": [
-      ],
-      "agents": [
-        "./agents/mvp-analyzer.md",
-        "./agents/prd-writer.md",
-        "./agents/proguard-optimizer.md",
-        "./agents/research-documenter.md",
-        "./agents/task-orchestrator.md"
-      ]
+      "category": "development"
     },
     {
       "name": "code-documentation",

@@ -1,0 +1,9 @@
+{
+  "name": "roy-agents",
+  "version": "1.0.0",
+  "description": "Custom agents for Roy",
+  "author": {
+    "name": "Roy"
+  },
+  "license": "MIT"
+}
