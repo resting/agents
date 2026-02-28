@@ -1,3 +1,16 @@
+# Roy Plugin 
+> This document presents specific instructions for Roy agents.
+
+Make all changes in `roy-agents`.
+
+##### To update upstream:
+
+```bash
+git fetch upstream && git merge upstream/main
+```
+
+---
+
 # Claude Code Plugins: Orchestration and Automation
 
 > **⚡ Updated for Opus 4.6, Sonnet 4.6 & Haiku 4.5** — Three-tier model strategy for optimal performance
