@@ -562,9 +562,3 @@ class HybridRAGPipeline:
 - **Don't skip keyword search** - Handles exact matches better
 - **Don't over-fetch** - Balance recall vs latency
 - **Don't ignore edge cases** - Empty results, single word queries
-
-## Resources
-
-- [RRF Paper](https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf)
-- [Vespa Hybrid Search](https://blog.vespa.ai/improving-text-ranking-with-few-shot-prompting/)
-- [Cohere Rerank](https://docs.cohere.com/docs/reranking)

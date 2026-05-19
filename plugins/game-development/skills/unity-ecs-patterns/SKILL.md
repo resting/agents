@@ -620,9 +620,3 @@ public struct Disabled : IComponentData, IEnableableComponent { }
 - **Don't over-architect** - Start simple
 - **Don't ignore chunk utilization** - Group similar entities
 - **Don't forget disposal** - Native collections leak
-
-## Resources
-
-- [Unity DOTS Documentation](https://docs.unity3d.com/Packages/com.unity.entities@latest)
-- [Unity DOTS Samples](https://github.com/Unity-Technologies/EntityComponentSystemSamples)
-- [Burst User Guide](https://docs.unity3d.com/Packages/com.unity.burst@latest)

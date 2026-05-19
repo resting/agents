@@ -1,6 +1,6 @@
 ---
 name: startup-financial-modeling
-description: This skill should be used when the user asks to "create financial projections", "build a financial model", "forecast revenue", "calculate burn rate", "estimate runway", "model cash flow", or requests 3-5 year financial planning for a startup.
+description: Build comprehensive 3-5 year financial models with revenue projections, cost structures, cash flow analysis, and scenario planning for early-stage startups. Use this skill when creating financial projections, calculating burn rate or runway, modeling fundraising scenarios, or preparing investor-ready financials for a seed or Series A raise.
 version: 1.0.0
 ---
 
@@ -459,23 +459,6 @@ Compare key metrics to similar companies at similar stage.
 **Investor Feedback:**
 Share model with advisors or investors for feedback on assumptions.
 
-## Additional Resources
-
-### Reference Files
-
-For detailed model structures and advanced techniques:
-
-- **`references/model-templates.md`** - Complete financial model templates by business model
-- **`references/unit-economics.md`** - Deep dive on CAC, LTV, payback, and efficiency metrics
-- **`references/fundraising-scenarios.md`** - Modeling funding rounds and dilution
-
-### Example Files
-
-Working financial models with formulas:
-
-- **`examples/saas-financial-model.md`** - Complete 3-year SaaS model with cohort analysis
-- **`examples/marketplace-model.md`** - Marketplace GMV and take rate projections
-- **`examples/scenario-analysis.md`** - Three-scenario framework with sensitivities
 
 ## Quick Start
 
@@ -490,5 +473,3 @@ To create a startup financial model:
 7. **Create scenarios** - Conservative, base, optimistic
 8. **Validate assumptions** - Sanity check and benchmark
 9. **Integrate fundraising** - Model funding rounds and milestones
-
-For complete templates and formulas, reference the `references/` and `examples/` files.

@@ -31,32 +31,35 @@ git fetch upstream && git merge upstream/main
 
 # Claude Code Plugins: Orchestration and Automation
 
-> **⚡ Updated for Opus 4.6, Sonnet 4.6 & Haiku 4.5** — Three-tier model strategy for optimal performance
+> **⚡ Updated for Opus 4.7, Sonnet 4.6 & Haiku 4.5** — Three-tier model strategy for optimal performance
 
-[![Run in Smithery](https://smithery.ai/badge/skills/wshobson)](https://smithery.ai/skills?ns=wshobson&utm_source=github&utm_medium=badge)
+[![Run in Smithery](https://smithery.ai/badge/skills/wshobson)](https://smithery.ai/skills?ns=wshobson&utm_source=github&utm_medium=badge) [![Gemini CLI](https://img.shields.io/badge/Gemini%20CLI-supported-blue)](GEMINI.md)
 
-> **🎯 Agent Skills Enabled** — 146 specialized skills extend Claude's capabilities across plugins with progressive disclosure
+> **🎯 Agent Skills Enabled** — 153 specialized skills extend Claude's capabilities across plugins with progressive disclosure
 
-A comprehensive production-ready system combining **112 specialized AI agents**, **16 multi-agent workflow orchestrators**, **146 agent skills**, and **79 development tools** organized into **72 focused, single-purpose plugins** for [Claude Code](https://docs.claude.com/en/docs/claude-code/overview).
+A comprehensive production-ready system combining **185 specialized AI agents**, **16 multi-agent workflow orchestrators**, **153 agent skills**, and **100 commands** organized into **80 focused, single-purpose plugins** for [Claude Code](https://docs.claude.com/en/docs/claude-code/overview).
+
+> [!NOTE]
+> **Gemini CLI users:** This ecosystem is also available as a native Gemini CLI extension — 153 skills discoverable on-demand, no plugin installation required. See [GEMINI.md](GEMINI.md) for setup.
 
 ## Overview
 
 This unified repository provides everything needed for intelligent automation and multi-agent orchestration across modern software development:
 
-- **72 Focused Plugins** - Granular, single-purpose plugins optimized for minimal token usage and composability
-- **112 Specialized Agents** - Domain experts with deep knowledge across architecture, languages, infrastructure, quality, data/AI, documentation, business operations, and SEO
-- **146 Agent Skills** - Modular knowledge packages with progressive disclosure for specialized expertise
+- **80 Focused Plugins** - Granular, single-purpose plugins optimized for minimal token usage and composability
+- **185 Specialized Agents** - Domain experts with deep knowledge across architecture, languages, infrastructure, quality, data/AI, documentation, business operations, and SEO
+- **153 Agent Skills** - Modular knowledge packages with progressive disclosure for specialized expertise
 - **16 Workflow Orchestrators** - Multi-agent coordination systems for complex operations like full-stack development, security hardening, ML pipelines, and incident response
-- **79 Development Tools** - Optimized utilities including project scaffolding, security scanning, test automation, and infrastructure setup
+- **100 Commands** - Optimized utilities including project scaffolding, security scanning, test automation, and infrastructure setup
 
 ### Key Features
 
-- **Granular Plugin Architecture**: 72 focused plugins optimized for minimal token usage
-- **Comprehensive Tooling**: 79 development tools including test generation, scaffolding, and security scanning
+- **Granular Plugin Architecture**: 80 focused plugins optimized for minimal token usage
+- **Comprehensive Tooling**: 100 commands including test generation, scaffolding, and security scanning
 - **100% Agent Coverage**: All plugins include specialized agents
-- **Agent Skills**: 146 specialized skills following for progressive disclosure and token efficiency
-- **Clear Organization**: 23 categories with 1-6 plugins each for easy discovery
-- **Efficient Design**: Average 3.4 components per plugin (follows Anthropic's 2-8 pattern)
+- **Agent Skills**: 153 specialized skills following for progressive disclosure and token efficiency
+- **Clear Organization**: 25 categories with 1-10 plugins each for easy discovery
+- **Efficient Design**: Average 3.6 components per plugin (follows Anthropic's 2-8 pattern)
 
 ### How It Works
 
@@ -80,7 +83,7 @@ Add this marketplace to Claude Code:
 /plugin marketplace add wshobson/agents
 ```
 
-This makes all 72 plugins available for installation, but **does not load any agents or tools** into your context.
+This makes all 80 plugins available for installation, but **does not load any agents or tools** into your context.
 
 ### Step 2: Install Plugins
 
@@ -145,11 +148,12 @@ rm -rf ~/.claude/plugins/cache/claude-code-workflows && rm ~/.claude/plugins/ins
 
 ### Core Guides
 
-- **[Plugin Reference](docs/plugins.md)** - Complete catalog of all 72 plugins
-- **[Agent Reference](docs/agents.md)** - All 112 agents organized by category
-- **[Agent Skills](docs/agent-skills.md)** - 146 specialized skills with progressive disclosure
+- **[Plugin Reference](docs/plugins.md)** - Complete catalog of all 80 plugins
+- **[Agent Reference](docs/agents.md)** - All 185 agents organized by category
+- **[Agent Skills](docs/agent-skills.md)** - 153 specialized skills with progressive disclosure
 - **[Usage Guide](docs/usage.md)** - Commands, workflows, and best practices
 - **[Architecture](docs/architecture.md)** - Design principles and patterns
+- **[PluginEval](docs/plugin-eval.md)** - Quality evaluation framework (layers, dimensions, scoring)
 
 ### Quick Links
 
@@ -161,7 +165,51 @@ rm -rf ~/.claude/plugins/cache/claude-code-workflows && rm ~/.claude/plugins/ins
 
 ## What's New
 
-### Agent Teams Plugin (NEW)
+### Gemini CLI Extension Support (NEW)
+
+The full skills ecosystem is now available as a native Gemini CLI extension:
+
+```bash
+gemini extensions install https://github.com/wshobson/agents
+```
+
+- **153 skills** discoverable on-demand — describe your task and Gemini CLI identifies the matching skill
+- **Opt-in slash commands** — generate locally per plugin via `make generate-plugin PLUGIN=<name>`, never committed to the repo
+- **Zero changes** to existing agents, skills, or commands — all markdown files are platform-agnostic
+- **Protocol Orchestrator** — slash commands pause at checkpoints for user approval, same disciplined flow as Claude Code
+
+[→ View Gemini CLI setup and usage](GEMINI.md)
+
+### PluginEval — Quality Evaluation Framework (NEW)
+
+A three-layer evaluation framework for measuring and certifying plugin/skill quality:
+
+```bash
+/plugin install plugin-eval@claude-code-workflows
+```
+
+- **Three Evaluation Layers** — Static analysis (instant), LLM judge (semantic), Monte Carlo simulation (statistical)
+- **10 Quality Dimensions** — Triggering accuracy, orchestration fitness, output quality, scope calibration, progressive disclosure, token efficiency, robustness, structural completeness, code template quality, ecosystem coherence
+- **Quality Badges** — Platinum (★★★★★), Gold (★★★★), Silver (★★★), Bronze (★★)
+- **Anti-Pattern Detection** — OVER_CONSTRAINED, EMPTY_DESCRIPTION, MISSING_TRIGGER, BLOATED_SKILL, ORPHAN_REFERENCE, DEAD_CROSS_REF
+- **Statistical Rigor** — Wilson score CI, bootstrap CI, Clopper-Pearson exact CI, Elo ranking
+- **CLI + Claude Code** — `uv run plugin-eval score/certify/compare` or `/eval`, `/certify`, `/compare` commands
+- **CI Gate** — `--threshold` flag exits non-zero below a minimum score
+
+```bash
+# Quick evaluation (static only, instant)
+uv run plugin-eval score path/to/skill --depth quick
+
+# Standard evaluation (static + LLM judge)
+uv run plugin-eval score path/to/skill --depth standard
+
+# Full certification (all layers + Elo)
+uv run plugin-eval certify path/to/skill
+```
+
+[→ View PluginEval documentation](docs/plugin-eval.md)
+
+### Agent Teams Plugin
 
 Orchestrate multi-agent teams for parallel workflows using Claude Code's experimental Agent Teams feature:
 
@@ -198,7 +246,7 @@ Transforms Claude Code into a project management tool with a structured **Contex
 
 [→ View Conductor documentation](plugins/conductor/README.md)
 
-### Agent Skills (146 skills across 21 plugins)
+### Agent Skills (153 skills across 40 plugins)
 
 Specialized knowledge packages following Anthropic's progressive disclosure architecture:
 
@@ -234,12 +282,12 @@ Strategic model assignment for optimal performance and cost:
 
 | Tier       | Model    | Agents | Use Case                                                                                        |
 | ---------- | -------- | ------ | ----------------------------------------------------------------------------------------------- |
-| **Tier 1** | Opus 4.6 | 42     | Critical architecture, security, ALL code review, production coding (language pros, frameworks) |
+| **Tier 1** | Opus 4.7 | 42     | Critical architecture, security, ALL code review, production coding (language pros, frameworks) |
 | **Tier 2** | Inherit  | 42     | Complex tasks - user chooses model (AI/ML, backend, frontend/mobile, specialized)               |
 | **Tier 3** | Sonnet   | 51     | Support with intelligence (docs, testing, debugging, network, API docs, DX, legacy, payments)   |
 | **Tier 4** | Haiku    | 18     | Fast operational tasks (SEO, deployment, simple docs, sales, content, search)                   |
 
-**Why Opus 4.6 for Critical Agents?**
+**Why Opus 4.7 for Critical Agents?**
 
 - 80.8% on SWE-bench (industry-leading)
 - 65% fewer tokens for complex tasks
@@ -255,7 +303,7 @@ Agents marked `inherit` use your session's default model, letting you balance co
 
 **Cost Considerations:**
 
-- **Opus 4.6**: $5/$25 per million input/output tokens - Premium for critical work
+- **Opus 4.7**: $5/$25 per million input/output tokens - Premium for critical work
 - **Sonnet 4.6**: $3/$15 per million tokens - Balanced performance/cost
 - **Haiku 4.5**: $1/$5 per million tokens - Fast, cost-effective operations
 - Opus's 65% token reduction on complex tasks often offsets higher rate
@@ -314,39 +362,55 @@ Uses kubernetes-architect agent with 4 specialized skills for production-grade c
 
 ## Plugin Categories
 
-**24 categories, 72 plugins:**
+**25 categories, 80 plugins:**
 
-- 🎨 **Development** (4) - debugging, backend, frontend, multi-platform
-- 📚 **Documentation** (3) - code docs, API specs, diagrams, C4 architecture
+- 🎨 **Development** (6) - debugging, backend, frontend, multi-platform
+- 📚 **Documentation** (4) - code docs, API specs, diagrams, C4 architecture, **HADS** (Human-AI Document Standard)
 - 🔄 **Workflows** (5) - git, full-stack, TDD, **Conductor** (context-driven development), **Agent Teams** (multi-agent orchestration)
-- ✅ **Testing** (2) - unit testing, TDD workflows
-- 🔍 **Quality** (2) - comprehensive review, performance
+- ✅ **Testing** (2) - unit testing, **qa-orchestra** (multi-agent QA toolkit with Chrome MCP validation)
+- 🔍 **Quality** (3) - comprehensive review, performance
 - 🤖 **AI & ML** (4) - LLM apps, agent orchestration, context, MLOps
 - 📊 **Data** (2) - data engineering, data validation
 - 🗄️ **Database** (2) - database design, migrations
 - 🚨 **Operations** (4) - incident response, diagnostics, distributed debugging, observability
 - ⚡ **Performance** (2) - application performance, database/cloud optimization
 - ☁️ **Infrastructure** (5) - deployment, validation, Kubernetes, cloud, CI/CD
-- 🔒 **Security** (4) - scanning, compliance, backend/API, frontend/mobile
-- 💻 **Languages** (7) - Python, JS/TS, systems, JVM, scripting, functional, embedded
+- 🔒 **Security** (6) - scanning, compliance, backend/API, frontend/mobile, **block-no-verify** (git hook bypass guard)
+- 🛡️ **Governance** (1) - **protect-mcp** (Cedar policy enforcement + Ed25519 signed receipts)
+- 💻 **Languages** (10) - Python, JS/TS, systems, JVM, scripting, functional, embedded
 - 🔗 **Blockchain** (1) - smart contracts, DeFi, Web3
 - 💰 **Finance** (1) - quantitative trading, risk management
 - 💳 **Payments** (1) - Stripe, PayPal, billing
 - 🎮 **Gaming** (1) - Unity, Minecraft plugins
+- 🎨 **Creative** (1) - creative tooling
+- ♿ **Accessibility** (1) - WCAG and a11y
 - 📢 **Marketing** (4) - SEO content, technical SEO, SEO analysis, content marketing
-- 💼 **Business** (3) - analytics, HR/legal, customer/sales
-- And more...
+- 💼 **Business** (4) - analytics, HR/legal, customer/sales
+- 🔌 **API** (2) - API tooling
+- 🛠️ **Utilities** (4) - general-purpose helpers
+- 🔧 **Modernization** (2) - legacy migration and refactoring
 
 [→ View complete plugin catalog](docs/plugins.md)
+
+### Related Plugins
+
+Plugins hosted in their own marketplaces — install from the source for the latest releases:
+
+- **[Pensyve](https://github.com/major7apps/pensyve)** — Universal memory runtime with cross-session cognitive memory for Claude Code. Intelligent capture, entity-aware recall, 6 commands, 4 skills, 2 agents, and 6 lifecycle hooks.
+
+  ```bash
+  /plugin marketplace add major7apps/pensyve
+  /plugin install pensyve@major7apps-pensyve
+  ```
 
 ## Architecture Highlights
 
 ### Granular Design
 
 - **Single responsibility** - Each plugin does one thing well
-- **Minimal token usage** - Average 3.4 components per plugin
+- **Minimal token usage** - Average 3.6 components per plugin
 - **Composable** - Mix and match for complex workflows
-- **100% coverage** - All 112 agents accessible across plugins
+- **100% coverage** - All 185 agents accessible across plugins
 
 ### Progressive Disclosure (Skills)
 
@@ -361,7 +425,7 @@ Three-tier architecture for token efficiency:
 ```
 claude-agents/
 ├── .claude-plugin/
-│   └── marketplace.json          # 72 plugins
+│   └── marketplace.json          # 81 plugins (80 local + 1 external)
 ├── plugins/
 │   ├── python-development/
 │   │   ├── agents/               # 3 Python experts
@@ -371,7 +435,7 @@ claude-agents/
 │   │   ├── agents/               # K8s architect
 │   │   ├── commands/             # Deployment tools
 │   │   └── skills/               # 4 K8s skills
-│   └── ... (65 more plugins)
+│   └── ... (67 more plugins)
 ├── docs/                          # Comprehensive documentation
 └── README.md                      # This file
 ```

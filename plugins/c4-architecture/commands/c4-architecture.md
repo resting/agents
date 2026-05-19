@@ -1,3 +1,7 @@
+---
+description: Generate comprehensive C4 architecture documentation (Context, Container, Component, Code) for a codebase using bottom-up analysis and four coordinated C4 agents.
+---
+
 # C4 Architecture Documentation Workflow
 
 Generate comprehensive C4 architecture documentation for an existing repository/codebase using a bottom-up analysis approach.
@@ -159,7 +163,7 @@ For each identified component:
   - Kubernetes manifests (deployments, services, etc.)
   - Docker Compose files
   - Terraform/CloudFormation configs
-  - Cloud service definitions (AWS Lambda, Azure Functions, etc.)
+  - Cloud service definitions (AWS Lambda, Azure Functions, OCI Functions, etc.)
   - CI/CD pipeline definitions
 
 ### 3.2 Map Components to Containers

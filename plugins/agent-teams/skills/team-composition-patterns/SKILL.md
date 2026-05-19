@@ -1,6 +1,6 @@
 ---
 name: team-composition-patterns
-description: Design optimal agent team compositions with sizing heuristics, preset configurations, and agent type selection. Use this skill when deciding team size, selecting agent types, or configuring team presets for multi-agent workflows.
+description: Design optimal agent team compositions with sizing heuristics, preset configurations, and agent type selection. Use this skill when deciding how many agents to spawn for a task, when choosing between a review team versus a feature team versus a debug team, when selecting the correct subagent_type for each role to ensure agents have the tools they need, when configuring display modes (tmux, iTerm2, in-process) for a CI or local environment, or when building a custom team composition for a non-standard workflow such as a migration or security audit.
 version: 1.0.2
 ---
 
@@ -78,17 +78,17 @@ Best practices for composing multi-agent teams, selecting team sizes, choosing a
 
 ## Agent Type Selection
 
-When spawning teammates with the Task tool, choose `subagent_type` based on what tools the teammate needs:
+When spawning teammates with the `Agent` tool, choose `subagent_type` based on what tools the teammate needs:
 
-| Agent Type                     | Tools Available                           | Use For                                                    |
-| ------------------------------ | ----------------------------------------- | ---------------------------------------------------------- |
-| `general-purpose`              | All tools (Read, Write, Edit, Bash, etc.) | Implementation, debugging, any task requiring file changes |
-| `Explore`                      | Read-only tools (Read, Grep, Glob)        | Research, code exploration, analysis                       |
-| `Plan`                         | Read-only tools                           | Architecture planning, task decomposition                  |
-| `agent-teams:team-reviewer`    | All tools                                 | Code review with structured findings                       |
-| `agent-teams:team-debugger`    | All tools                                 | Hypothesis-driven investigation                            |
-| `agent-teams:team-implementer` | All tools                                 | Building features within file ownership boundaries         |
-| `agent-teams:team-lead`        | All tools                                 | Team orchestration and coordination                        |
+| Agent Type                     | Tools Available                                      | Use For                                                    |
+| ------------------------------ | ---------------------------------------------------- | ---------------------------------------------------------- |
+| `general-purpose`              | All tools (Read, Write, Edit, Bash, etc.)            | Implementation, debugging, any task requiring file changes |
+| `Explore`                      | Read-only tools (Read, Grep, Glob)                   | Research, code exploration, analysis                       |
+| `Plan`                         | Read-only tools                                      | Architecture planning, task decomposition                  |
+| `agent-teams:team-reviewer`    | Read/search/Bash plus TaskList/TaskGet/TaskUpdate/SendMessage | Code review with structured findings               |
+| `agent-teams:team-debugger`    | Read/search/Bash plus TaskList/TaskGet/TaskUpdate/SendMessage | Hypothesis-driven investigation                    |
+| `agent-teams:team-implementer` | Read/Write/Edit/search/Bash plus TaskList/TaskGet/TaskUpdate/SendMessage | Building features within file ownership boundaries |
+| `agent-teams:team-lead`        | Read/search/Bash plus Agent Teams coordination tools | Team orchestration and coordination                        |
 
 **Key distinction**: Read-only agents (Explore, Plan) cannot modify files. Never assign implementation tasks to read-only agents.
 
@@ -117,3 +117,25 @@ When building custom teams:
 3. **Avoid duplicate roles** — Two agents doing the same thing wastes resources
 4. **Define boundaries upfront** — Each teammate needs clear ownership of files or responsibilities
 5. **Keep it small** — 2-4 teammates is the sweet spot; 5+ requires significant coordination overhead
+
+## Troubleshooting
+
+**A teammate was spawned as `Explore` but needs to write files.**
+`Explore` and `Plan` are read-only agents. Change the `subagent_type` to `general-purpose` or an appropriate specialized agent type. Never assign implementation tasks to read-only agents.
+
+**The team is growing too large and coordination is slowing everything down.**
+Each additional teammate adds communication overhead. Consolidate roles: can one agent cover two dimensions? A 4-person team doing 6 independent tasks is usually better served by 3 agents covering 2 tasks each.
+
+**tmux mode is not showing panes.**
+Ensure tmux is installed and a session is already running before spawning teammates. The `in-process` mode works without tmux and is suitable for CI or scripted environments.
+
+**Two reviewers are flagging the same issues.**
+The review dimensions overlap. Redefine each reviewer's focus area: one on correctness/logic, one on security, one on performance/scalability. Overlapping coverage wastes tokens and produces duplicate findings.
+
+**A `team-lead` is spawning teammates but they are not receiving tasks.**
+Verify that the lead is using the `Agent` tool to spawn teammates and passing complete context in the prompt. Teammates start fresh with no prior conversation history — they need all relevant information in their initial prompt.
+
+## Related Skills
+
+- [parallel-feature-development](../parallel-feature-development/SKILL.md) — Decompose work streams and assign file ownership once the team is composed
+- [team-communication-protocols](../team-communication-protocols/SKILL.md) — Establish messaging norms and shutdown procedures for the assembled team

@@ -1,6 +1,6 @@
 ---
 name: startup-metrics-framework
-description: This skill should be used when the user asks about "key startup metrics", "SaaS metrics", "CAC and LTV", "unit economics", "burn multiple", "rule of 40", "marketplace metrics", or requests guidance on tracking and optimizing business performance metrics.
+description: Track, calculate, and optimize key performance metrics for SaaS, marketplace, consumer, and B2B startups from seed through Series A, including unit economics, growth efficiency, and cash management. Use this skill when defining a metrics framework, calculating CAC/LTV/burn multiple, benchmarking business health, or preparing metrics dashboards for investors or board reporting.
 version: 1.0.0
 ---
 
@@ -534,19 +534,6 @@ Burn: $180K/mo | Runway: 18 months
 - Growth rate or trend
 - Context (target, benchmark)
 
-## Additional Resources
-
-### Reference Files
-
-- **`references/metric-definitions.md`** - Complete definitions and formulas for 50+ metrics
-- **`references/benchmarks-by-stage.md`** - Target ranges for each metric by company stage
-- **`references/calculation-examples.md`** - Step-by-step calculation examples
-
-### Example Files
-
-- **`examples/saas-metrics-dashboard.md`** - Complete metrics suite for B2B SaaS company
-- **`examples/marketplace-metrics.md`** - Marketplace-specific metrics with examples
-- **`examples/investor-metrics-deck.md`** - How to present metrics for fundraising
 
 ## Quick Start
 
@@ -560,5 +547,3 @@ To implement startup metrics framework:
 6. **Review regularly** - Weekly for core metrics
 7. **Share with team** - Align on goals and progress
 8. **Update investors** - Monthly/quarterly reporting
-
-For detailed definitions, benchmarks, and examples, see `references/` and `examples/`.

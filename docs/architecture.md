@@ -8,7 +8,7 @@ This marketplace follows industry best practices with a focus on granularity, co
 
 - Each plugin does **one thing well** (Unix philosophy)
 - Clear, focused purposes (describable in 5-10 words)
-- Average plugin size: **3.4 components** (follows Anthropic's 2-8 pattern)
+- Average plugin size: **5.5 components** (follows Anthropic's 2-8 pattern)
 - **Zero bloated plugins** - all plugins focused and purposeful
 
 ### Composability Over Bundling
@@ -36,8 +36,8 @@ This marketplace follows industry best practices with a focus on granularity, co
 
 ### Plugin Distribution
 
-- **67 focused plugins** optimized for specific use cases
-- **23 clear categories** with 1-6 plugins each for easy discovery
+- **81 focused plugins** (80 local + 1 external via git-subdir) optimized for specific use cases
+- **25 clear categories** with 1-10 plugins each for easy discovery
 - Organized by domain:
   - **Development**: 4 plugins (debugging, backend, frontend, multi-platform)
   - **Security**: 4 plugins (scanning, compliance, backend-api, frontend-mobile)
@@ -48,7 +48,7 @@ This marketplace follows industry best practices with a focus on granularity, co
 
 ### Component Breakdown
 
-**99 Specialized Agents**
+**185 Specialized Agents**
 
 - Domain experts with deep knowledge
 - Organized across architecture, languages, infrastructure, quality, data/AI, documentation, business, and SEO
@@ -81,7 +81,7 @@ This marketplace follows industry best practices with a focus on granularity, co
 ```
 claude-agents/
 ├── .claude-plugin/
-│   └── marketplace.json          # Marketplace catalog (67 plugins)
+│   └── marketplace.json          # Marketplace catalog (77 plugins)
 ├── plugins/                       # Isolated plugin directories
 │   ├── python-development/
 │   │   ├── agents/               # Python language agents
@@ -194,19 +194,20 @@ description: What the skill does. Use when [trigger]. # Required: < 1024 chars
 - **Composability**: Mix and match skills across workflows
 - **Maintainability**: Isolated updates don't affect other skills
 
-See [Agent Skills](./agent-skills.md) for complete details on the 107 skills.
+See [Agent Skills](./agent-skills.md) for complete details on the 153 skills.
 
 ## Model Configuration Strategy
 
-### Two-Tier Architecture
+### Four-Tier Architecture
 
-The system uses Claude Opus and Sonnet models strategically:
+The system uses Claude Opus, Sonnet, Haiku, and Inherit assignments strategically:
 
-| Model  | Count     | Use Case                                     |
-| ------ | --------- | -------------------------------------------- |
-| Opus   | 42 agents | Critical architecture, security, code review |
-| Sonnet | 39 agents | Complex tasks, support with intelligence     |
-| Haiku  | 18 agents | Fast operational tasks                       |
+| Model   | Count     | Use Case                                     |
+| ------- | --------- | -------------------------------------------- |
+| Opus    | 54 agents | Critical architecture, security, code review |
+| Sonnet  | 62 agents | Complex tasks, support with intelligence     |
+| Haiku   | 20 agents | Fast operational tasks                       |
+| Inherit | 49 agents | Defers model choice to the user at runtime   |
 
 ### Selection Criteria
 
@@ -261,8 +262,8 @@ code-reviewer (Sonnet) validates architecture
 ### Component Coverage
 
 - **100% agent coverage** - all plugins include at least one agent
-- **100% component availability** - all 99 agents accessible across plugins
-- **Efficient distribution** - 3.4 components per plugin average
+- **100% component availability** - all 185 agents accessible across plugins
+- **Efficient distribution** - 5.5 components per plugin average
 
 ### Discoverability
 
@@ -391,5 +392,5 @@ Feature Development Workflow:
 
 - [Agent Skills](./agent-skills.md) - Modular knowledge packages
 - [Agent Reference](./agents.md) - Complete agent catalog
-- [Plugin Reference](./plugins.md) - All 67 plugins
+- [Plugin Reference](./plugins.md) - All 77 plugins
 - [Usage Guide](./usage.md) - Commands and workflows

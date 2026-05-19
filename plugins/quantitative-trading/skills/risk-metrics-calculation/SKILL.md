@@ -549,9 +549,3 @@ for metric, value in summary.items():
 - **Don't ignore correlation** - Increases in stress
 - **Don't use short lookbacks** - Miss regime changes
 - **Don't forget transaction costs** - Affects realized risk
-
-## Resources
-
-- [Risk Management and Financial Institutions (John Hull)](https://www.amazon.com/Risk-Management-Financial-Institutions-5th/dp/1119448115)
-- [Quantitative Risk Management (McNeil, Frey, Embrechts)](https://www.amazon.com/Quantitative-Risk-Management-Techniques-Princeton/dp/0691166277)
-- [pyfolio Documentation](https://quantopian.github.io/pyfolio/)

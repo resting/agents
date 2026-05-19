@@ -319,9 +319,3 @@ istioctl proxy-config endpoints deploy/my-app
 # Debug traffic
 istioctl proxy-config log deploy/my-app --level debug
 ```
-
-## Resources
-
-- [Istio Traffic Management](https://istio.io/latest/docs/concepts/traffic-management/)
-- [Virtual Service Reference](https://istio.io/latest/docs/reference/config/networking/virtual-service/)
-- [Destination Rule Reference](https://istio.io/latest/docs/reference/config/networking/destination-rule/)
