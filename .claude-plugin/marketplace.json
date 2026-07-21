@@ -6,15 +6,15 @@
     "url": "https://github.com/wshobson"
   },
   "metadata": {
-    "description": "Production-ready workflow orchestration with 80 focused plugins, 185 specialized agents, and 153 skills - optimized for granular installation and minimal token usage",
-    "version": "1.6.0"
+    "description": "Production-ready workflow orchestration with 94 marketplace plugins, 203 local specialized agents, and 175 local skills - optimized for granular installation and minimal token usage",
+    "version": "1.7.1"
   },
   "plugins": [
     {
       "name": "documentation-standards",
       "source": "./plugins/documentation-standards",
-      "description": "HADS (Human-AI Document Standard) — semantic tagging convention for writing docs that work efficiently for both humans and AI models. Reduces token consumption by separating machine-critical facts from human context.",
-      "version": "1.0.0",
+      "description": "HADS (Human-AI Document Standard) \u2014 semantic tagging convention for writing docs that work efficiently for both humans and AI models. Reduces token consumption by separating machine-critical facts from human context.",
+      "version": "1.0.1",
       "author": {
         "name": "Niksa Barlovic",
         "url": "https://github.com/catcam"
@@ -48,7 +48,7 @@
       "name": "code-documentation",
       "source": "./plugins/code-documentation",
       "description": "Documentation generation, code explanation, and technical writing with automated doc generation and tutorial creation",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -61,7 +61,7 @@
       "name": "debugging-toolkit",
       "source": "./plugins/debugging-toolkit",
       "description": "Interactive debugging, developer experience optimization, and smart debugging workflows",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -74,7 +74,7 @@
       "name": "git-pr-workflows",
       "source": "./plugins/git-pr-workflows",
       "description": "Git workflow automation, pull request enhancement, and team onboarding processes",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -84,10 +84,23 @@
       "category": "workflows"
     },
     {
+      "name": "operating-kit",
+      "source": "./plugins/operating-kit",
+      "description": "Portable operating method: session lifecycle agents, pre-ship code review, deploy with live verification and state doc update, and production log health check",
+      "version": "1.0.0",
+      "author": {
+        "name": "Sharrmavishal",
+        "url": "https://github.com/Sharrmavishal"
+      },
+      "homepage": "https://github.com/Sharrmavishal/operating-kit",
+      "license": "MIT",
+      "category": "workflows"
+    },
+    {
       "name": "backend-development",
       "source": "./plugins/backend-development",
       "description": "Backend API design, GraphQL architecture, workflow orchestration with Temporal, and test-driven backend development",
-      "version": "1.3.1",
+      "version": "1.3.2",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -100,7 +113,7 @@
       "name": "frontend-mobile-development",
       "source": "./plugins/frontend-mobile-development",
       "description": "Frontend UI development and mobile application implementation across platforms",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -113,7 +126,7 @@
       "name": "full-stack-orchestration",
       "source": "./plugins/full-stack-orchestration",
       "description": "End-to-end feature orchestration with testing, security, performance, and deployment",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -126,7 +139,7 @@
       "name": "unit-testing",
       "source": "./plugins/unit-testing",
       "description": "Unit and integration test automation for Python and JavaScript with debugging support",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -139,7 +152,7 @@
       "name": "tdd-workflows",
       "source": "./plugins/tdd-workflows",
       "description": "Test-driven development methodology with red-green-refactor cycles and code review",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -152,7 +165,7 @@
       "name": "code-refactoring",
       "source": "./plugins/code-refactoring",
       "description": "Code cleanup, refactoring automation, and technical debt management with context restoration",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -165,7 +178,7 @@
       "name": "dependency-management",
       "source": "./plugins/dependency-management",
       "description": "Dependency auditing, version management, and security vulnerability scanning",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -178,7 +191,7 @@
       "name": "error-debugging",
       "source": "./plugins/error-debugging",
       "description": "Error analysis, trace debugging, and multi-agent problem diagnosis",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -191,7 +204,7 @@
       "name": "team-collaboration",
       "source": "./plugins/team-collaboration",
       "description": "Team workflows, issue management, standup automation, and developer experience optimization",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -203,7 +216,7 @@
     {
       "name": "llm-application-dev",
       "description": "LLM application development with LangGraph, RAG systems, vector search, and AI agent architectures for Claude 4.6 and GPT-5.4",
-      "version": "2.0.5",
+      "version": "2.0.6",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -214,10 +227,20 @@
       "license": "MIT"
     },
     {
+      "name": "llm-finetuning",
+      "description": "Eval-gated LLM fine-tuning lifecycle (LoRA/QLoRA, DPO, GRPO/RLVR, vision SFT, quantized export). Use when fine-tuning an open-weights model end-to-end: building the eval harness first, selecting method and model, preparing data, training with Unsloth or TRL, gating checkpoints, and exporting GGUF/FP8.",
+      "version": "1.0.0",
+      "author": { "name": "Seth Hobson", "email": "seth@major7apps.com" },
+      "source": "./plugins/llm-finetuning",
+      "category": "ai-ml",
+      "homepage": "https://github.com/wshobson/agents",
+      "license": "MIT"
+    },
+    {
       "name": "agent-orchestration",
       "source": "./plugins/agent-orchestration",
       "description": "Multi-agent system optimization, agent improvement workflows, and context management",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -230,7 +253,7 @@
       "name": "context-management",
       "source": "./plugins/context-management",
       "description": "Context persistence, restoration, and long-running conversation management",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -242,7 +265,7 @@
     {
       "name": "machine-learning-ops",
       "description": "ML model training pipelines, hyperparameter tuning, model deployment automation, experiment tracking, and MLOps workflows",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -255,7 +278,7 @@
     {
       "name": "data-engineering",
       "description": "ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development",
-      "version": "1.3.1",
+      "version": "1.3.2",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -268,7 +291,7 @@
     {
       "name": "incident-response",
       "description": "Production incident management, triage workflows, and automated incident resolution",
-      "version": "1.3.1",
+      "version": "1.3.2",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -281,7 +304,7 @@
     {
       "name": "error-diagnostics",
       "description": "Error tracing, root cause analysis, and smart debugging for production systems",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -294,7 +317,7 @@
     {
       "name": "distributed-debugging",
       "description": "Distributed system tracing and debugging across microservices",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -307,7 +330,7 @@
     {
       "name": "observability-monitoring",
       "description": "Metrics collection, logging infrastructure, distributed tracing, SLO implementation, and monitoring dashboards",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -320,7 +343,7 @@
     {
       "name": "deployment-strategies",
       "description": "Deployment patterns, rollback automation, and infrastructure templates",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -333,7 +356,7 @@
     {
       "name": "deployment-validation",
       "description": "Pre-deployment checks, configuration validation, and deployment readiness assessment",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -346,7 +369,7 @@
     {
       "name": "kubernetes-operations",
       "description": "Kubernetes manifest generation, networking configuration, security policies, observability setup, GitOps workflows, and auto-scaling",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -359,7 +382,7 @@
     {
       "name": "cloud-infrastructure",
       "description": "Cloud architecture design for AWS/Azure/GCP/OCI, Kubernetes cluster configuration, Terraform infrastructure-as-code, hybrid cloud networking, and multi-cloud cost optimization",
-      "version": "1.3.1",
+      "version": "1.3.2",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -372,7 +395,7 @@
     {
       "name": "cicd-automation",
       "description": "CI/CD pipeline configuration, GitHub Actions/GitLab CI workflow setup, and automated deployment pipeline orchestration",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -386,7 +409,7 @@
       "name": "application-performance",
       "source": "./plugins/application-performance",
       "description": "Application profiling, performance optimization, and observability for frontend and backend systems",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -399,7 +422,7 @@
       "name": "database-cloud-optimization",
       "source": "./plugins/database-cloud-optimization",
       "description": "Database query optimization, cloud cost optimization, and scalability improvements",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -412,7 +435,7 @@
       "name": "comprehensive-review",
       "source": "./plugins/comprehensive-review",
       "description": "Multi-perspective code analysis covering architecture, security, and best practices",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -425,7 +448,7 @@
       "name": "performance-testing-review",
       "source": "./plugins/performance-testing-review",
       "description": "Performance analysis, test coverage review, and AI-powered code quality assessment",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -438,7 +461,7 @@
       "name": "framework-migration",
       "source": "./plugins/framework-migration",
       "description": "Framework updates, migration planning, and architectural transformation workflows",
-      "version": "1.3.1",
+      "version": "1.3.2",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -451,7 +474,7 @@
       "name": "codebase-cleanup",
       "source": "./plugins/codebase-cleanup",
       "description": "Technical debt reduction, dependency updates, and code refactoring automation",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -464,7 +487,7 @@
       "name": "database-design",
       "source": "./plugins/database-design",
       "description": "Database architecture, schema design, and SQL optimization for production systems",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -477,7 +500,7 @@
       "name": "database-migrations",
       "source": "./plugins/database-migrations",
       "description": "Database migration automation, observability, and cross-database migration strategies",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -489,7 +512,7 @@
     {
       "name": "security-scanning",
       "description": "SAST analysis, dependency vulnerability scanning, OWASP Top 10 compliance, container security scanning, and automated security hardening",
-      "version": "1.3.1",
+      "version": "1.3.2",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -502,7 +525,7 @@
     {
       "name": "security-compliance",
       "description": "SOC2, HIPAA, and GDPR compliance validation, secrets scanning, compliance checklists, and regulatory documentation",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -515,7 +538,7 @@
     {
       "name": "backend-api-security",
       "description": "API security hardening, authentication implementation, authorization patterns, rate limiting, and input validation",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -528,7 +551,7 @@
     {
       "name": "frontend-mobile-security",
       "description": "XSS prevention, CSRF protection, content security policies, mobile app security, and secure storage patterns",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -541,7 +564,7 @@
     {
       "name": "data-validation-suite",
       "description": "Schema validation, data quality monitoring, streaming validation pipelines, and input validation for backend APIs",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -555,7 +578,7 @@
       "name": "api-scaffolding",
       "source": "./plugins/api-scaffolding",
       "description": "REST and GraphQL API scaffolding, framework selection, backend architecture, and API generation",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -568,7 +591,7 @@
       "name": "api-testing-observability",
       "source": "./plugins/api-testing-observability",
       "description": "API testing automation, request mocking, OpenAPI documentation generation, observability setup, and monitoring",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -581,7 +604,7 @@
       "name": "seo-content-creation",
       "source": "./plugins/seo-content-creation",
       "description": "SEO content writing, planning, and quality auditing with E-E-A-T optimization",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -594,7 +617,7 @@
       "name": "seo-technical-optimization",
       "source": "./plugins/seo-technical-optimization",
       "description": "Technical SEO optimization including meta tags, keywords, structure, and featured snippets",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -607,7 +630,7 @@
       "name": "seo-analysis-monitoring",
       "source": "./plugins/seo-analysis-monitoring",
       "description": "Content freshness analysis, cannibalization detection, and authority building for SEO",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -620,7 +643,7 @@
       "name": "documentation-generation",
       "source": "./plugins/documentation-generation",
       "description": "OpenAPI specification generation, Mermaid diagram creation, tutorial writing, API reference documentation",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -633,7 +656,7 @@
       "name": "c4-architecture",
       "source": "./plugins/c4-architecture",
       "description": "Comprehensive C4 architecture documentation workflow with bottom-up code analysis, component synthesis, container mapping, and context diagram generation",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -646,7 +669,7 @@
       "name": "multi-platform-apps",
       "source": "./plugins/multi-platform-apps",
       "description": "Cross-platform application development coordinating web, iOS, Android, and desktop implementations",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -659,7 +682,7 @@
       "name": "business-analytics",
       "source": "./plugins/business-analytics",
       "description": "Business metrics analysis, KPI tracking, financial reporting, and data-driven decision making",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -671,7 +694,7 @@
     {
       "name": "startup-business-analyst",
       "description": "Comprehensive startup business analysis with market sizing (TAM/SAM/SOM), financial modeling, team planning, and strategic research for early-stage companies",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -682,10 +705,23 @@
       "license": "MIT"
     },
     {
+      "name": "before-you-build",
+      "source": "./plugins/before-you-build",
+      "description": "Pre-build product risk review for founders, product teams, and AI-assisted builders before implementation starts",
+      "version": "0.1.1",
+      "author": {
+        "name": "bin1874",
+        "url": "https://github.com/bin1874/before-you-build-skill"
+      },
+      "homepage": "https://github.com/bin1874/before-you-build-skill",
+      "license": "MIT",
+      "category": "business"
+    },
+    {
       "name": "hr-legal-compliance",
       "source": "./plugins/hr-legal-compliance",
       "description": "HR policy documentation, legal compliance templates (GDPR/SOC2/HIPAA), employment contracts, and regulatory documentation",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -698,7 +734,7 @@
       "name": "customer-sales-automation",
       "source": "./plugins/customer-sales-automation",
       "description": "Customer support workflow automation, sales pipeline management, email campaigns, and CRM integration",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -711,7 +747,7 @@
       "name": "content-marketing",
       "source": "./plugins/content-marketing",
       "description": "Content marketing strategy, web research, and information synthesis for marketing operations",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -721,10 +757,36 @@
       "category": "marketing"
     },
     {
+      "name": "social-publishing",
+      "source": "./plugins/social-publishing",
+      "description": "Schedule and publish social media posts across 13 platforms (X, LinkedIn Profile + Page, Instagram Business + Standalone, Facebook Pages, TikTok, Discord, Telegram, YouTube, Reddit, WordPress, Pinterest) via SocialClaw — one workspace API key covers everything",
+      "version": "1.0.0",
+      "author": {
+        "name": "ndesv21",
+        "url": "https://github.com/ndesv21"
+      },
+      "homepage": "https://getsocialclaw.com",
+      "license": "MIT",
+      "category": "marketing"
+    },
+    {
+      "name": "hermes-tweet",
+      "source": "./plugins/hermes-tweet",
+      "version": "0.1.6",
+      "description": "Hermes Agent plugin for X/Twitter research, timeline reading, tweet analysis, and approval-gated tweet actions through Hermes Tweet",
+      "author": {
+        "name": "Xquik",
+        "email": ""
+      },
+      "homepage": "https://github.com/Xquik-dev/hermes-tweet#readme",
+      "license": "MIT",
+      "category": "marketing"
+    },
+    {
       "name": "blockchain-web3",
       "source": "./plugins/blockchain-web3",
       "description": "Smart contract development with Solidity, DeFi protocol implementation, NFT platforms, and Web3 application architecture",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -737,7 +799,7 @@
       "name": "quantitative-trading",
       "source": "./plugins/quantitative-trading",
       "description": "Quantitative analysis, algorithmic trading strategies, financial modeling, portfolio risk management, and backtesting",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -750,7 +812,7 @@
       "name": "payment-processing",
       "source": "./plugins/payment-processing",
       "description": "Payment gateway integration with Stripe, PayPal, checkout flow implementation, subscription billing, and PCI compliance",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -763,7 +825,7 @@
       "name": "game-development",
       "source": "./plugins/game-development",
       "description": "Unity game development with C# scripting, Minecraft server plugin development with Bukkit/Spigot APIs",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -776,7 +838,7 @@
       "name": "accessibility-compliance",
       "source": "./plugins/accessibility-compliance",
       "description": "WCAG accessibility auditing, compliance validation, UI testing for screen readers, keyboard navigation, and inclusive design",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -789,7 +851,7 @@
       "name": "python-development",
       "source": "./plugins/python-development",
       "description": "Modern Python development with Python 3.12+, Django, FastAPI, async patterns, and production best practices",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -802,7 +864,7 @@
       "name": "javascript-typescript",
       "source": "./plugins/javascript-typescript",
       "description": "JavaScript and TypeScript development with ES6+, Node.js, React, and modern web frameworks",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -815,7 +877,7 @@
       "name": "systems-programming",
       "source": "./plugins/systems-programming",
       "description": "Systems programming with Rust, Go, C, and C++ for performance-critical and low-level development",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -828,7 +890,7 @@
       "name": "jvm-languages",
       "source": "./plugins/jvm-languages",
       "description": "JVM language development including Java, Scala, and C# with enterprise patterns and frameworks",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -841,7 +903,7 @@
       "name": "web-scripting",
       "source": "./plugins/web-scripting",
       "description": "Web scripting with PHP and Ruby for web applications, CMS development, and backend services",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -854,7 +916,7 @@
       "name": "functional-programming",
       "source": "./plugins/functional-programming",
       "description": "Functional programming with Elixir, OTP patterns, Phoenix framework, and distributed systems",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -867,7 +929,7 @@
       "name": "julia-development",
       "source": "./plugins/julia-development",
       "description": "Modern Julia development with Julia 1.10+, package management, scientific computing, high-performance numerical code, and production best practices",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Community Contribution",
         "url": "https://github.com/exAClior"
@@ -880,7 +942,7 @@
       "name": "arm-cortex-microcontrollers",
       "source": "./plugins/arm-cortex-microcontrollers",
       "description": "ARM Cortex-M firmware development for Teensy, STM32, nRF52, and SAMD with peripheral drivers and memory safety patterns",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "author": {
         "name": "Ryan Snodgrass",
         "url": "https://github.com/rsnodgrass"
@@ -893,7 +955,7 @@
       "name": "shell-scripting",
       "source": "./plugins/shell-scripting",
       "description": "Production-grade Bash scripting with defensive programming, POSIX compliance, and comprehensive testing",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "author": {
         "name": "Ryan Snodgrass",
         "url": "https://github.com/rsnodgrass"
@@ -906,7 +968,7 @@
       "name": "developer-essentials",
       "source": "./plugins/developer-essentials",
       "description": "Essential developer skills including Git workflows, SQL optimization, error handling, code review, E2E testing, authentication, debugging, and monorepo management",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -916,12 +978,22 @@
       "category": "development"
     },
     {
+      "name": "dgx-spark-ops",
+      "description": "NVIDIA DGX Spark (GB10) environment operations. Use when setting up, preflighting, or debugging ML workloads on DGX Spark or aarch64 Blackwell hardware — CUDA-13 wheel/ABI checks, unified-memory OOM ladders, thermal monitoring.",
+      "version": "1.0.0",
+      "author": { "name": "Seth Hobson", "email": "seth@major7apps.com" },
+      "source": "./plugins/dgx-spark-ops",
+      "category": "ai-ml",
+      "homepage": "https://github.com/wshobson/agents",
+      "license": "MIT"
+    },
+    {
       "name": "reverse-engineering",
       "source": "./plugins/reverse-engineering",
       "description": "Binary reverse engineering, malware analysis, firmware security, and software protection research for authorized security research, CTF competitions, and defensive security",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
-        "name": "Dávid Balatoni",
+        "name": "D\u00e1vid Balatoni",
         "url": "https://github.com/balcsida"
       },
       "homepage": "https://github.com/wshobson/agents",
@@ -930,8 +1002,8 @@
     },
     {
       "name": "conductor",
-      "description": "Context-Driven Development plugin that transforms Claude Code into a project management tool with structured workflow: Context → Spec & Plan → Implement",
-      "version": "1.2.1",
+      "description": "Context-Driven Development plugin that transforms Claude Code into a project management tool with structured workflow: Context \u2192 Spec & Plan \u2192 Implement",
+      "version": "1.2.2",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -944,7 +1016,7 @@
     {
       "name": "ui-design",
       "description": "Comprehensive UI/UX design plugin for mobile (iOS, Android, React Native) and web applications with design systems, accessibility, and modern patterns",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -957,7 +1029,7 @@
     {
       "name": "agent-teams",
       "description": "Orchestrate multi-agent teams for parallel code review, hypothesis-driven debugging, and coordinated feature development using Claude Code's Agent Teams",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -971,7 +1043,7 @@
       "name": "dotnet-contribution",
       "source": "./plugins/dotnet-contribution",
       "description": "Comprehensive .NET backend development with C#, ASP.NET Core, Entity Framework Core, and Dapper for production-grade applications",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": {
         "name": "Seth Hobson",
         "email": "seth@major7apps.com"
@@ -984,7 +1056,7 @@
       "name": "meigen-ai-design",
       "source": "./plugins/meigen-ai-design",
       "description": "AI image generation with creative workflow orchestration, prompt engineering, and curated inspiration library via MCP server",
-      "version": "1.0.7",
+      "version": "1.0.9",
       "author": {
         "name": "MeiGen",
         "url": "https://github.com/jau123"
@@ -997,7 +1069,7 @@
       "name": "brand-landingpage",
       "source": "./plugins/brand-landingpage",
       "description": "Guides developers from brand discovery through iterative design to deployment-ready HTML via Stitch.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Travis D. Elliott",
         "url": "https://github.com/travis-d-elliott"
@@ -1009,7 +1081,7 @@
       "name": "plugin-eval",
       "source": "./plugins/plugin-eval",
       "description": "Three-layer quality evaluation framework for Claude Code plugins with Elo ranking",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Seth Hobson"
       },
@@ -1020,7 +1092,7 @@
       "name": "block-no-verify",
       "source": "./plugins/block-no-verify",
       "description": "PreToolUse hook that prevents AI agents from using --no-verify, --no-gpg-sign, and other bypass flags that skip git hooks",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "cskwork"
       },
@@ -1029,13 +1101,31 @@
       "category": "security"
     },
     {
+      "name": "pensyve",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/major7apps/pensyve.git",
+        "path": "integrations/claude-code"
+      },
+      "description": "Universal memory runtime for Claude Code with cross-session memory, entity-aware recall, lifecycle hooks, skills, commands, and memory-curator agents",
+      "version": "1.3.0",
+      "author": {
+        "name": "Major7 Apps",
+        "email": "seth@major7apps.com",
+        "url": "https://github.com/major7apps/pensyve"
+      },
+      "homepage": "https://github.com/major7apps/pensyve",
+      "license": "Apache-2.0",
+      "category": "memory"
+    },
+    {
       "name": "qa-orchestra",
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/Anasss/qa-orchestra.git",
         "path": "."
       },
-      "description": "Multi-agent QA toolkit with 10 specialized agents covering the full QA lifecycle — orchestrator, environment-manager, functional-reviewer, test-scenario-designer, browser-validator, automation-writer, manual-validator, bug-reporter, release-analyzer, and smart-test-selector. Stack-agnostic, output-chained, designed around live validation via Chrome MCP.",
+      "description": "Multi-agent QA toolkit with 10 specialized agents covering the full QA lifecycle \u2014 orchestrator, environment-manager, functional-reviewer, test-scenario-designer, browser-validator, automation-writer, manual-validator, bug-reporter, release-analyzer, and smart-test-selector. Stack-agnostic, output-chained, designed around live validation via Chrome MCP.",
       "version": "1.0.0",
       "author": {
         "name": "Anass Rach",
@@ -1046,10 +1136,27 @@
       "category": "testing"
     },
     {
+      "name": "ciagent",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/suniel12/ciagent.git",
+        "path": "plugins/ciagent"
+      },
+      "description": "Pytest-native regression testing for the AI agent being built — the onboard skill records golden baselines and generates a test spec; the check skill runs trace-diff regression, multi-run stability with verdict-flip attribution, and LLM-judge audits after every agent change.",
+      "version": "0.10.0",
+      "author": {
+        "name": "Sunil Pandey",
+        "url": "https://github.com/suniel12"
+      },
+      "homepage": "https://github.com/suniel12/ciagent",
+      "license": "Apache-2.0",
+      "category": "testing"
+    },
+    {
       "name": "protect-mcp",
       "source": "./plugins/protect-mcp",
-      "description": "Cedar policy enforcement + Ed25519 signed receipts for every Claude Code tool call. First cryptographic governance plugin — decisions are policy-gated before they run and every decision produces a tamper-evident receipt verifiable offline.",
-      "version": "0.1.0",
+      "description": "Cedar policy enforcement + Ed25519 signed receipts for every Claude Code tool call. First cryptographic governance plugin \u2014 decisions are policy-gated before they run and every decision produces a tamper-evident receipt verifiable offline.",
+      "version": "0.1.1",
       "author": {
         "name": "Tom Farley",
         "email": "tommy@scopeblind.com",
@@ -1058,13 +1165,21 @@
       "homepage": "https://veritasacta.com",
       "license": "MIT",
       "category": "governance",
-      "keywords": ["cedar", "receipts", "ed25519", "policy", "governance", "audit", "compliance"]
+      "keywords": [
+        "cedar",
+        "receipts",
+        "ed25519",
+        "policy",
+        "governance",
+        "audit",
+        "compliance"
+      ]
     },
     {
       "name": "signed-audit-trails",
       "source": "./plugins/signed-audit-trails",
       "description": "Teaching skill: cookbook-style walkthrough for signed audit trails on every Claude Code tool call. Cedar policy, Ed25519 receipts, offline verification, CI/CD integration, SLSA composition. Pairs with the protect-mcp runtime plugin.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Tom Farley",
         "email": "tommy@scopeblind.com",
@@ -1073,13 +1188,22 @@
       "homepage": "https://veritasacta.com",
       "license": "MIT",
       "category": "governance",
-      "keywords": ["tutorial", "skill", "recipe", "audit", "governance", "cedar", "receipts", "ed25519"]
+      "keywords": [
+        "tutorial",
+        "skill",
+        "recipe",
+        "audit",
+        "governance",
+        "cedar",
+        "receipts",
+        "ed25519"
+      ]
     },
     {
       "name": "review-agent-governance",
       "source": "./plugins/review-agent-governance",
       "description": "Require a human approval signal before an AI agent can post PR reviews, comments, merges, or writes to CI configuration. Joins protect-mcp and signed-audit-trails in the governance category; composes with protect-mcp for runtime enforcement.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Tom Farley",
         "email": "tommy@scopeblind.com",
@@ -1088,13 +1212,21 @@
       "homepage": "https://veritasacta.com",
       "license": "MIT",
       "category": "governance",
-      "keywords": ["review", "governance", "cedar", "receipts", "human-approval", "pr-review", "ci-guard"]
+      "keywords": [
+        "review",
+        "governance",
+        "cedar",
+        "receipts",
+        "human-approval",
+        "pr-review",
+        "ci-guard"
+      ]
     },
     {
       "name": "ship-mate",
       "source": "./plugins/ship-mate",
-      "description": "Your AI development teammate. Turns a story file into a shipped, reviewed, and tested feature via orchestrator → architect → developer → PR reviewer → QA → Playwright.",
-      "version": "1.0.0",
+      "description": "Your AI development teammate. Turns a story file into a shipped, reviewed, and tested feature via orchestrator \u2192 architect \u2192 developer \u2192 PR reviewer \u2192 QA \u2192 Playwright.",
+      "version": "1.0.1",
       "author": {
         "name": "Pranay Yadav",
         "email": "pranayyadav08@gmail.com",
@@ -1102,7 +1234,106 @@
       },
       "license": "MIT",
       "category": "workflows",
-      "keywords": ["pipeline", "automation", "orchestration", "code-review", "qa", "playwright", "multi-agent", "dev-workflow"]
+      "keywords": [
+        "pipeline",
+        "automation",
+        "orchestration",
+        "code-review",
+        "qa",
+        "playwright",
+        "multi-agent",
+        "dev-workflow"
+      ]
+    },
+    {
+      "name": "storymap-skill",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/MartinForReal/storymap-skill.git",
+        "path": "."
+      },
+      "description": "User story mapping (Jeff Patton style). Turns a goal, brief, or messy backlog into a sliced, prioritized delivery plan with per-persona stories. Four invocation modes (from scratch / brief / backlog / refinement), three prioritization methods (WSJF, RICE, MoSCoW), three slicing strategies (Patton classic, SAFe PI, Now/Next/Later). OKR coverage, dependency cycle detection, persona conflict resolution, slice-1 acceptance criteria, E2E test contract. Auto-activates in the Plan stage of Superpowers / gstack / GSD.",
+      "version": "0.0.3",
+      "author": {
+        "name": "MartinForReal",
+        "url": "https://github.com/MartinForReal"
+      },
+      "homepage": "https://github.com/MartinForReal/storymap-skill",
+      "license": "MIT",
+      "category": "workflows",
+      "keywords": [
+        "user-story-mapping",
+        "story-mapping",
+        "agile",
+        "safe",
+        "wsjf",
+        "rice",
+        "moscow",
+        "mvp",
+        "pi-planning",
+        "product-discovery",
+        "jeff-patton",
+        "backlog-management",
+        "personas"
+      ]
+    },
+    {
+      "name": "runapi-mcp",
+      "source": "./plugins/runapi-mcp",
+      "description": "RunAPI MCP server for browsing models, checking pricing, and creating image, video, music, audio, and LLM tasks.",
+      "version": "0.1.3",
+      "author": {
+        "name": "RunAPI",
+        "url": "https://runapi.ai"
+      },
+      "homepage": "https://github.com/runapi-ai/mcp",
+      "license": "Apache-2.0",
+      "category": "ai-ml"
+    },
+    {
+      "name": "file-conversion",
+      "source": "./plugins/file-conversion",
+      "description": "Convert files between 999 routes \u2014 PDF to Word, HEIC to JPG, MP4 to MP3, CSV to JSON, EPUB to MOBI \u2014 via the free ChangeThisFile API. MCP-aware with a zero-dependency script fallback; no API key required.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Aadil Razvi",
+        "url": "https://changethisfile.com"
+      },
+      "homepage": "https://github.com/aadilr/changethisfile-mcp",
+      "license": "MIT",
+      "category": "utilities"
+    },
+    {
+      "name": "skill-forge-essentials",
+      "source": "./plugins/skill-forge-essentials",
+      "description": "Behavioral skills for AI-specific failure patterns: hidden code debt from agent generation and context compaction amnesia via behavioral self-enforcement",
+      "version": "1.0.0",
+      "author": {
+        "name": "Adit Jain",
+        "url": "https://github.com/Adit-Jain-srm"
+      },
+      "license": "MIT",
+      "category": "quality"
+    },
+    {
+      "name": "pptx-deck-creation",
+      "source": "./plugins/pptx-deck-creation",
+      "description": "Create production-ready, editable PowerPoint decks through a spec-first, coordinate-explicit workflow with read-only reference analysis and quality gates.",
+      "version": "1.0.0",
+      "author": {
+        "name": "kimtth"
+      },
+      "homepage": "https://github.com/kimtth/agent-pptify-kit",
+      "license": "MIT",
+      "category": "creative",
+      "keywords": [
+        "powerpoint",
+        "pptx",
+        "presentations",
+        "slide-decks",
+        "deck-generation",
+        "slide-design"
+      ]
     }
   ]
 }
