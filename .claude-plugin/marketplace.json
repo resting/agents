@@ -22,6 +22,8 @@
       "homepage": "https://github.com/catcam/hads",
       "license": "MIT",
       "category": "documentation"
+    },
+    {
       "name": "roy-pushbacks",
       "source": "./plugins/roy-pushbacks",
       "description": "10 skills that break Claude out of yes-man mode — steelman, holefind, 8020, skeptic, disagree, unasked, twolevels, contrarian, compress, memorize",
