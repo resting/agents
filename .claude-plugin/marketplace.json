@@ -39,7 +39,7 @@
       "name": "roy-agents",
       "source": "./plugins/roy-agents",
       "description": "Custom agents for Roy",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Roy"
       },
