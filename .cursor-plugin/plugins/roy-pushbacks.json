@@ -1,0 +1,11 @@
+{
+  "name": "roy-pushbacks",
+  "displayName": "Roy Pushbacks",
+  "version": "1.0.0",
+  "description": "10 pushback skills that break Claude out of yes-man mode \u2014 steelman, holefind, 8020, skeptic, disagree, unasked, twolevels, contrarian, compress, memorize",
+  "author": {
+    "name": "Roy",
+    "email": ""
+  },
+  "license": "MIT"
+}

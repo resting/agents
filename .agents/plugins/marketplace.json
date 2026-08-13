@@ -951,6 +951,32 @@
       "category": "Coding"
     },
     {
+      "name": "roy-agents",
+      "description": "Custom agents for Roy",
+      "source": {
+        "source": "local",
+        "path": "./plugins/roy-agents"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Coding"
+    },
+    {
+      "name": "roy-pushbacks",
+      "description": "10 pushback skills that break Claude out of yes-man mode \u2014 steelman, holefind, 8020, skeptic, disagree, unasked, twolevels, contrarian, compress, memorize",
+      "source": {
+        "source": "local",
+        "path": "./plugins/roy-pushbacks"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Coding"
+    },
+    {
       "name": "runapi-mcp",
       "description": "RunAPI MCP server for browsing models, checking pricing, and creating image, video, music, audio, and LLM tasks.",
       "source": {

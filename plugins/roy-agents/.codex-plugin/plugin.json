@@ -1,0 +1,15 @@
+{
+  "name": "roy-agents",
+  "version": "1.0.4",
+  "description": "Custom agents for Roy",
+  "skills": "./skills/",
+  "author": {
+    "name": "Roy"
+  },
+  "license": "MIT",
+  "interface": {
+    "displayName": "Roy Agents",
+    "shortDescription": "Custom agents for Roy",
+    "category": "Coding"
+  }
+}

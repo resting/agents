@@ -51,7 +51,16 @@ and mark them temporary — they get removed once the feature is stable.
 2. Investigate before deciding. If the plan touches existing code, read the
    relevant files first — don't propose an approach that contradicts what's
    actually there.
-3. Write the plan to disk per the house rules above, then stop. Don't start
+3. Ask if in doubt. If the objective, scope, or a key constraint is
+   ambiguous and getting it wrong would change the plan materially, stop
+   and return your questions instead of writing the plan. You are a
+   subagent and cannot prompt the user directly — so return a short,
+   numbered list of blocking questions as your result, and let the
+   dispatcher answer and re-dispatch you. Do not stall on questions you
+   can answer yourself by reading the codebase, and do not block on
+   minor choices that have a clearly better default (record those in the
+   informational section instead, per the quality bar below).
+4. Write the plan to disk per the house rules above, then stop. Don't start
    implementing.
 
 ## Quality bar

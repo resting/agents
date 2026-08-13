@@ -1,9 +1,11 @@
 {
   "name": "roy-agents",
-  "version": "1.0.5",
+  "displayName": "Roy Agents",
+  "version": "1.0.4",
   "description": "Custom agents for Roy",
   "author": {
-    "name": "Roy"
+    "name": "Roy",
+    "email": ""
   },
   "license": "MIT"
 }
