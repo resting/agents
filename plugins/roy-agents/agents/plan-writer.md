@@ -29,7 +29,80 @@ The doc is an **implementation plan**. Its job is to get the feature working.
   implementation sections. An implementor must be able to stop reading at the
   end of the implementation and still be able to build the thing.
 - Keep the split between implementation and informational content obvious —
-  use a clear heading break, not a mixed narrative.
+  use the markers in the template below, not a mixed narrative.
+
+**Template**
+
+Use this skeleton. The two marker lines are required — they tell an
+implementor where to start and where to stop reading.
+
+````markdown
+# <Feature name>
+
+## Summary
+
+One paragraph: what this builds, and why.
+
+## Scope
+
+- In scope: <what gets built>
+- Out of scope: <what explicitly does not>
+
+## Implementation
+
+<!-- IMPLEMENT FROM HERE -->
+
+### Step 1 — <short name>
+
+- Files: `path/to/file.ext`
+- What changes: <the change, with code where it helps>
+
+### Step 2 — <short name>
+
+...
+
+### Logging
+
+Temporary tracing logs to add, and where.
+
+<!-- END OF IMPLEMENTATION -->
+
+## Notes (context only — not work items)
+
+### Rationale
+
+Why this approach over the alternatives.
+
+### Trade-offs
+
+What this costs, and what was accepted.
+
+### Open questions
+
+Anything unresolved, with the default assumed for now.
+
+### Later considerations
+
+Deferred work. Not part of this plan.
+````
+
+Drop any heading that has nothing to say. Don't add headings the plan
+doesn't need.
+
+**Handoff**
+
+End the doc with this block, filled in with the doc's own path:
+
+```markdown
+---
+
+## To implement
+
+Read `## Summary` through `<!-- END OF IMPLEMENTATION -->`. Everything under
+`## Notes` is context — read it only if you hit a blocker.
+
+Dispatch to the `roy-agents:plan-implementer` agent with this file's path.
+```
 
 **Tone**
 
