@@ -1,0 +1,9 @@
+{
+  "name": "roy-pstack",
+  "version": "1.0.0",
+  "description": "Skills from cursor/plugins' pstack: agent workflow, planning, review, and engineering-principle skills",
+  "author": {
+    "name": "Roy"
+  },
+  "license": "MIT"
+}

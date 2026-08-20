@@ -817,8 +817,19 @@
     {
       "name": "roy-agents",
       "source": "./plugins/roy-agents",
-      "version": "1.0.4",
+      "version": "1.0.6",
       "description": "Custom agents for Roy",
+      "author": {
+        "name": "Roy",
+        "email": ""
+      },
+      "license": "MIT"
+    },
+    {
+      "name": "roy-pstack",
+      "source": "./plugins/roy-pstack",
+      "version": "1.0.0",
+      "description": "Skills from cursor/plugins' pstack: agent workflow, planning, review, and engineering-principle skills",
       "author": {
         "name": "Roy",
         "email": ""
