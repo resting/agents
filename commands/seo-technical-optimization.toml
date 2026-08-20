@@ -1,0 +1,10 @@
+description = "Technical SEO optimization including meta tags, keywords, structure, and featured snippets"
+prompt = """
+Technical SEO optimization including meta tags, keywords, structure, and featured snippets.
+
+This is the entry point for the `seo-technical-optimization` plugin.
+
+Subagents: `seo-technical-optimization__seo-keyword-strategist`, `seo-technical-optimization__seo-meta-optimizer`, `seo-technical-optimization__seo-snippet-hunter`, `seo-technical-optimization__seo-structure-architect`. Invoke with `@<agent>` syntax.
+
+{{args}}
+"""

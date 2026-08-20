@@ -1,0 +1,10 @@
+description = "Content marketing strategy, web research, and information synthesis for marketing operations"
+prompt = """
+Content marketing strategy, web research, and information synthesis for marketing operations.
+
+This is the entry point for the `content-marketing` plugin.
+
+Subagents: `content-marketing__content-marketer`, `content-marketing__search-specialist`. Invoke with `@<agent>` syntax.
+
+{{args}}
+"""

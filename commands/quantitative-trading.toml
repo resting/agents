@@ -1,0 +1,12 @@
+description = "Quantitative analysis, algorithmic trading strategies, financial modeling, portfolio risk management, and backtesting"
+prompt = """
+Quantitative analysis, algorithmic trading strategies, financial modeling, portfolio risk management, and backtesting.
+
+This is the entry point for the `quantitative-trading` plugin.
+
+Subagents: `quantitative-trading__quant-analyst`, `quantitative-trading__risk-manager`. Invoke with `@<agent>` syntax.
+
+Skills: `quantitative-trading__backtesting-frameworks`, `quantitative-trading__risk-metrics-calculation`. Describe a matching task to activate.
+
+{{args}}
+"""

@@ -1,0 +1,20 @@
+description = "Intelligent issue resolution with multi-agent debugging, root cause analysis, and verified fix implementation"
+prompt = """
+You are running the `smart-fix` command from the `incident-response` plugin.
+
+## Protocol
+
+The full protocol definition is injected below. Read it in full before executing.
+
+@{plugins/incident-response/commands/smart-fix.md}
+
+## Execution
+
+1. Initialize the session according to the 'Pre-flight Checks' section in the protocol.
+2. Execute the steps sequentially. Pause at every `PHASE CHECKPOINT` / `GATE`.
+3. Use available subagents and skills as the protocol directs.
+
+Arguments: <issue description> [--verification minimal|standard|comprehensive] [--prevention none|immediate|comprehensive]
+
+{{args}}
+"""

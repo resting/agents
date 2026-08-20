@@ -1,0 +1,14 @@
+description = "Systems programming with Rust, Go, C, and C++ for performance-critical and low-level development"
+prompt = """
+Systems programming with Rust, Go, C, and C++ for performance-critical and low-level development.
+
+This is the entry point for the `systems-programming` plugin.
+
+Subagents: `systems-programming__c-pro`, `systems-programming__cpp-pro`, `systems-programming__golang-pro`, `systems-programming__rust-pro`. Invoke with `@<agent>` syntax.
+
+Skills: `systems-programming__go-concurrency-patterns`, `systems-programming__memory-safety-patterns`, `systems-programming__rust-async-patterns`. Describe a matching task to activate.
+
+Commands: `/systems-programming:rust-project`.
+
+{{args}}
+"""

@@ -1,0 +1,20 @@
+description = "Orchestrate end-to-end application performance optimization from profiling to monitoring"
+prompt = """
+You are running the `performance-optimization` command from the `application-performance` plugin.
+
+## Protocol
+
+The full protocol definition is injected below. Read it in full before executing.
+
+@{plugins/application-performance/commands/performance-optimization.md}
+
+## Execution
+
+1. Initialize the session according to the 'Pre-flight Checks' section in the protocol.
+2. Execute the steps sequentially. Pause at every `PHASE CHECKPOINT` / `GATE`.
+3. Use available subagents and skills as the protocol directs.
+
+Arguments: <application or service> [--focus latency|throughput|cost|balanced] [--depth quick-wins|comprehensive|enterprise]
+
+{{args}}
+"""

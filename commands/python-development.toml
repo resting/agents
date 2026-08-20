@@ -1,0 +1,14 @@
+description = "Modern Python development with Python 3.12+, Django, FastAPI, async patterns, and production best practices"
+prompt = """
+Modern Python development with Python 3.12+, Django, FastAPI, async patterns, and production best practices.
+
+This is the entry point for the `python-development` plugin.
+
+Subagents: `python-development__django-pro`, `python-development__fastapi-pro`, `python-development__python-pro`. Invoke with `@<agent>` syntax.
+
+Skills: `python-development__async-python-patterns`, `python-development__python-anti-patterns`, `python-development__python-background-jobs`, `python-development__python-code-style`, `python-development__python-configuration`, `python-development__python-design-patterns`, `python-development__python-error-handling`, `python-development__python-observability`, `python-development__python-packaging`, `python-development__python-performance-optimization`, `python-development__python-project-structure`, `python-development__python-resilience`, `python-development__python-resource-management`, `python-development__python-testing-patterns`, `python-development__python-type-safety`, `python-development__uv-package-manager`. Describe a matching task to activate.
+
+Commands: `/python-development:python-scaffold`.
+
+{{args}}
+"""

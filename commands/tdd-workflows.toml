@@ -1,0 +1,12 @@
+description = "Test-driven development methodology with red-green-refactor cycles and code review"
+prompt = """
+Test-driven development methodology with red-green-refactor cycles and code review.
+
+This is the entry point for the `tdd-workflows` plugin.
+
+Subagents: `tdd-workflows__code-reviewer`, `tdd-workflows__tdd-orchestrator`. Invoke with `@<agent>` syntax.
+
+Commands: `/tdd-workflows:tdd-cycle`, `/tdd-workflows:tdd-green`, `/tdd-workflows:tdd-red`, `/tdd-workflows:tdd-refactor`.
+
+{{args}}
+"""

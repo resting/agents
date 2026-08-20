@@ -1,0 +1,10 @@
+description = "API security hardening, authentication implementation, authorization patterns, rate limiting, and input validation"
+prompt = """
+API security hardening, authentication implementation, authorization patterns, rate limiting, and input validation.
+
+This is the entry point for the `backend-api-security` plugin.
+
+Subagents: `backend-api-security__backend-architect`, `backend-api-security__backend-security-coder`. Invoke with `@<agent>` syntax.
+
+{{args}}
+"""

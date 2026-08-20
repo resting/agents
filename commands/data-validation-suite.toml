@@ -1,0 +1,10 @@
+description = "Schema validation, data quality monitoring, streaming validation pipelines, and input validation for backend APIs"
+prompt = """
+Schema validation, data quality monitoring, streaming validation pipelines, and input validation for backend APIs.
+
+This is the entry point for the `data-validation-suite` plugin.
+
+Subagents: `data-validation-suite__backend-security-coder`. Invoke with `@<agent>` syntax.
+
+{{args}}
+"""

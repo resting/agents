@@ -1,0 +1,12 @@
+description = "Business metrics analysis, KPI tracking, financial reporting, and data-driven decision making"
+prompt = """
+Business metrics analysis, KPI tracking, financial reporting, and data-driven decision making.
+
+This is the entry point for the `business-analytics` plugin.
+
+Subagents: `business-analytics__business-analyst`. Invoke with `@<agent>` syntax.
+
+Skills: `business-analytics__data-storytelling`, `business-analytics__kpi-dashboard-design`. Describe a matching task to activate.
+
+{{args}}
+"""

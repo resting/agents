@@ -1,0 +1,20 @@
+description = "Orchestrate comprehensive security hardening with defense-in-depth strategy across all application layers"
+prompt = """
+You are running the `security-hardening` command from the `security-scanning` plugin.
+
+## Protocol
+
+The full protocol definition is injected below. Read it in full before executing.
+
+@{plugins/security-scanning/commands/security-hardening.md}
+
+## Execution
+
+1. Initialize the session according to the 'Pre-flight Checks' section in the protocol.
+2. Execute the steps sequentially. Pause at every `PHASE CHECKPOINT` / `GATE`.
+3. Use available subagents and skills as the protocol directs.
+
+Arguments: <target description> [--depth quick|standard|comprehensive] [--compliance owasp,soc2,gdpr,hipaa,pci-dss]
+
+{{args}}
+"""

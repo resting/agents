@@ -1,0 +1,12 @@
+description = "AI image generation with creative workflow orchestration, parallel multi-direction output, prompt engineering, and a 1,300+ curated inspiration library. Requires MeiGen MCP server (supports MeiGen Cloud, local ComfyUI, and OpenAI-compatible APIs)."
+prompt = """
+AI image generation with creative workflow orchestration, parallel multi-direction output, prompt engineering, and a 1,300+ curated inspiration library. Requires MeiGen MCP server (supports MeiGen Cloud, local ComfyUI, and OpenAI-compatible APIs).
+
+This is the entry point for the `meigen-ai-design` plugin.
+
+Subagents: `meigen-ai-design__gallery-researcher`, `meigen-ai-design__image-generator`, `meigen-ai-design__prompt-crafter`. Invoke with `@<agent>` syntax.
+
+Commands: `/meigen-ai-design:find`, `/meigen-ai-design:gen`.
+
+{{args}}
+"""

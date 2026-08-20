@@ -1,0 +1,14 @@
+description = "ML model training pipelines, hyperparameter tuning, model deployment automation, experiment tracking, and MLOps workflows"
+prompt = """
+ML model training pipelines, hyperparameter tuning, model deployment automation, experiment tracking, and MLOps workflows.
+
+This is the entry point for the `machine-learning-ops` plugin.
+
+Subagents: `machine-learning-ops__data-scientist`, `machine-learning-ops__ml-engineer`, `machine-learning-ops__mlops-engineer`. Invoke with `@<agent>` syntax.
+
+Skills: `machine-learning-ops__ml-pipeline-workflow`, `machine-learning-ops__recsys-pipeline-architect`. Describe a matching task to activate.
+
+Commands: `/machine-learning-ops:ml-pipeline`.
+
+{{args}}
+"""

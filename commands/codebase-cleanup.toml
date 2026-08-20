@@ -1,0 +1,12 @@
+description = "Technical debt reduction, dependency updates, and code refactoring automation"
+prompt = """
+Technical debt reduction, dependency updates, and code refactoring automation.
+
+This is the entry point for the `codebase-cleanup` plugin.
+
+Subagents: `codebase-cleanup__code-reviewer`, `codebase-cleanup__test-automator`. Invoke with `@<agent>` syntax.
+
+Commands: `/codebase-cleanup:deps-audit`, `/codebase-cleanup:refactor-clean`, `/codebase-cleanup:tech-debt`.
+
+{{args}}
+"""

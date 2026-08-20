@@ -1,0 +1,14 @@
+description = "Orchestrate multi-agent teams for parallel code review, hypothesis-driven debugging, and coordinated feature development using Claude Code's Agent Teams"
+prompt = """
+Orchestrate multi-agent teams for parallel code review, hypothesis-driven debugging, and coordinated feature development using Claude Code's Agent Teams.
+
+This is the entry point for the `agent-teams` plugin.
+
+Subagents: `agent-teams__team-debugger`, `agent-teams__team-implementer`, `agent-teams__team-lead`, `agent-teams__team-reviewer`. Invoke with `@<agent>` syntax.
+
+Skills: `agent-teams__multi-reviewer-patterns`, `agent-teams__parallel-debugging`, `agent-teams__parallel-feature-development`, `agent-teams__task-coordination-strategies`, `agent-teams__team-communication-protocols`, `agent-teams__team-composition-patterns`. Describe a matching task to activate.
+
+Commands: `/agent-teams:team-debug`, `/agent-teams:team-delegate`, `/agent-teams:team-feature`, `/agent-teams:team-review`, `/agent-teams:team-shutdown`, `/agent-teams:team-spawn`, `/agent-teams:team-status`.
+
+{{args}}
+"""

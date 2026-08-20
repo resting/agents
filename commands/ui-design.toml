@@ -1,0 +1,14 @@
+description = "Comprehensive UI/UX design plugin for mobile (iOS, Android, React Native) and web applications with design systems, accessibility, and modern patterns"
+prompt = """
+Comprehensive UI/UX design plugin for mobile (iOS, Android, React Native) and web applications with design systems, accessibility, and modern patterns.
+
+This is the entry point for the `ui-design` plugin.
+
+Subagents: `ui-design__accessibility-expert`, `ui-design__design-system-architect`, `ui-design__ui-designer`. Invoke with `@<agent>` syntax.
+
+Skills: `ui-design__accessibility-compliance`, `ui-design__design-system-patterns`, `ui-design__interaction-design`, `ui-design__mobile-android-design`, `ui-design__mobile-ios-design`, `ui-design__react-native-design`, `ui-design__responsive-design`, `ui-design__visual-design-foundations`, `ui-design__web-component-design`. Describe a matching task to activate.
+
+Commands: `/ui-design:accessibility-audit`, `/ui-design:create-component`, `/ui-design:design-review`, `/ui-design:design-system-setup`.
+
+{{args}}
+"""

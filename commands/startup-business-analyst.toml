@@ -1,0 +1,14 @@
+description = "Comprehensive startup business analysis with market sizing (TAM/SAM/SOM), financial modeling, team planning, and strategic research"
+prompt = """
+Comprehensive startup business analysis with market sizing (TAM/SAM/SOM), financial modeling, team planning, and strategic research.
+
+This is the entry point for the `startup-business-analyst` plugin.
+
+Subagents: `startup-business-analyst__startup-analyst`. Invoke with `@<agent>` syntax.
+
+Skills: `startup-business-analyst__competitive-landscape`, `startup-business-analyst__market-sizing-analysis`, `startup-business-analyst__startup-financial-modeling`, `startup-business-analyst__startup-metrics-framework`, `startup-business-analyst__team-composition-analysis`. Describe a matching task to activate.
+
+Commands: `/startup-business-analyst:business-case`, `/startup-business-analyst:financial-projections`, `/startup-business-analyst:market-opportunity`.
+
+{{args}}
+"""

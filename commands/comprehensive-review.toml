@@ -1,0 +1,12 @@
+description = "Multi-perspective code analysis covering architecture, security, and best practices"
+prompt = """
+Multi-perspective code analysis covering architecture, security, and best practices.
+
+This is the entry point for the `comprehensive-review` plugin.
+
+Subagents: `comprehensive-review__architect-review`, `comprehensive-review__code-reviewer`, `comprehensive-review__security-auditor`. Invoke with `@<agent>` syntax.
+
+Commands: `/comprehensive-review:full-review`, `/comprehensive-review:pr-enhance`.
+
+{{args}}
+"""

@@ -1,0 +1,12 @@
+description = "Code cleanup, refactoring automation, and technical debt management with context restoration"
+prompt = """
+Code cleanup, refactoring automation, and technical debt management with context restoration.
+
+This is the entry point for the `code-refactoring` plugin.
+
+Subagents: `code-refactoring__code-reviewer`, `code-refactoring__legacy-modernizer`. Invoke with `@<agent>` syntax.
+
+Commands: `/code-refactoring:context-restore`, `/code-refactoring:refactor-clean`, `/code-refactoring:tech-debt`.
+
+{{args}}
+"""

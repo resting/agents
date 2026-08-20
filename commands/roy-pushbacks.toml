@@ -1,0 +1,10 @@
+description = "10 pushback skills that break Claude out of yes-man mode — steelman, holefind, 8020, skeptic, disagree, unasked, twolevels, contrarian, compress, memorize"
+prompt = """
+10 pushback skills that break Claude out of yes-man mode — steelman, holefind, 8020, skeptic, disagree, unasked, twolevels, contrarian, compress, memorize.
+
+This is the entry point for the `roy-pushbacks` plugin.
+
+Skills: `roy-pushbacks__8020`, `roy-pushbacks__compress`, `roy-pushbacks__contrarian`, `roy-pushbacks__disagree`, `roy-pushbacks__holefind`, `roy-pushbacks__memorize`, `roy-pushbacks__skeptic`, `roy-pushbacks__steelman`, `roy-pushbacks__twolevels`, `roy-pushbacks__unasked`. Describe a matching task to activate.
+
+{{args}}
+"""

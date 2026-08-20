@@ -1,0 +1,14 @@
+description = "JavaScript and TypeScript development with ES6+, Node.js, React, and modern web frameworks"
+prompt = """
+JavaScript and TypeScript development with ES6+, Node.js, React, and modern web frameworks.
+
+This is the entry point for the `javascript-typescript` plugin.
+
+Subagents: `javascript-typescript__javascript-pro`, `javascript-typescript__typescript-pro`. Invoke with `@<agent>` syntax.
+
+Skills: `javascript-typescript__javascript-testing-patterns`, `javascript-typescript__modern-javascript-patterns`, `javascript-typescript__nodejs-backend-patterns`, `javascript-typescript__typescript-advanced-types`. Describe a matching task to activate.
+
+Commands: `/javascript-typescript:typescript-scaffold`.
+
+{{args}}
+"""

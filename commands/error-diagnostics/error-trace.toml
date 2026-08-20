@@ -1,0 +1,18 @@
+description = "Set up error tracking and monitoring — implement structured logging, configure alerts, and integrate with error tracking services for real-time error detection."
+prompt = """
+You are running the `error-trace` command from the `error-diagnostics` plugin.
+
+## Protocol
+
+The full protocol definition is injected below. Read it in full before executing.
+
+@{plugins/error-diagnostics/commands/error-trace.md}
+
+## Execution
+
+1. Initialize the session according to the 'Pre-flight Checks' section in the protocol.
+2. Execute the steps sequentially. Pause at every `PHASE CHECKPOINT` / `GATE`.
+3. Use available subagents and skills as the protocol directs.
+
+{{args}}
+"""

@@ -1,0 +1,10 @@
+description = "Modern Julia development with Julia 1.10+, package management, scientific computing, high-performance numerical code, and production best practices"
+prompt = """
+Modern Julia development with Julia 1.10+, package management, scientific computing, high-performance numerical code, and production best practices.
+
+This is the entry point for the `julia-development` plugin.
+
+Subagents: `julia-development__julia-pro`. Invoke with `@<agent>` syntax.
+
+{{args}}
+"""

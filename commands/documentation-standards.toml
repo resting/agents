@@ -1,0 +1,10 @@
+description = "HADS (Human-AI Document Standard) — semantic tagging convention for writing documentation that works efficiently for both human readers and AI models. Reduces token consumption and hallucination risk by separating machine-critical facts from human context."
+prompt = """
+HADS (Human-AI Document Standard) — semantic tagging convention for writing documentation that works efficiently for both human readers and AI models. Reduces token consumption and hallucination risk by separating machine-critical facts from human context.
+
+This is the entry point for the `documentation-standards` plugin.
+
+Skills: `documentation-standards__hads`. Describe a matching task to activate.
+
+{{args}}
+"""

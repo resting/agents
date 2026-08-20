@@ -1,0 +1,14 @@
+description = "Frontend UI development and mobile application implementation across platforms"
+prompt = """
+Frontend UI development and mobile application implementation across platforms.
+
+This is the entry point for the `frontend-mobile-development` plugin.
+
+Subagents: `frontend-mobile-development__frontend-developer`, `frontend-mobile-development__mobile-developer`. Invoke with `@<agent>` syntax.
+
+Skills: `frontend-mobile-development__nextjs-app-router-patterns`, `frontend-mobile-development__react-native-architecture`, `frontend-mobile-development__react-state-management`, `frontend-mobile-development__tailwind-design-system`. Describe a matching task to activate.
+
+Commands: `/frontend-mobile-development:component-scaffold`.
+
+{{args}}
+"""

@@ -1,0 +1,12 @@
+description = "Unity game development with C# scripting, Minecraft server plugin development with Bukkit/Spigot APIs"
+prompt = """
+Unity game development with C# scripting, Minecraft server plugin development with Bukkit/Spigot APIs.
+
+This is the entry point for the `game-development` plugin.
+
+Subagents: `game-development__minecraft-bukkit-pro`, `game-development__unity-developer`. Invoke with `@<agent>` syntax.
+
+Skills: `game-development__godot-gdscript-patterns`, `game-development__unity-ecs-patterns`. Describe a matching task to activate.
+
+{{args}}
+"""

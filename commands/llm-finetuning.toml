@@ -1,0 +1,14 @@
+description = "Eval-gated LLM fine-tuning lifecycle: LoRA/QLoRA SFT, preference optimization (DPO/ORPO/KTO), GRPO/RLVR, vision SFT, and quantized export — Unsloth-first with TRL fallback, no eval harness means no fine-tune"
+prompt = """
+Eval-gated LLM fine-tuning lifecycle: LoRA/QLoRA SFT, preference optimization (DPO/ORPO/KTO), GRPO/RLVR, vision SFT, and quantized export — Unsloth-first with TRL fallback, no eval harness means no fine-tune.
+
+This is the entry point for the `llm-finetuning` plugin.
+
+Subagents: `llm-finetuning__llm-finetuning-architect`, `llm-finetuning__llm-finetuning-eval-engineer`, `llm-finetuning__llm-finetuning-training-engineer`. Invoke with `@<agent>` syntax.
+
+Skills: `llm-finetuning__checkpoint-promotion`, `llm-finetuning__dataset-curation`, `llm-finetuning__eval-harness-first`, `llm-finetuning__finetuning-method-selection`, `llm-finetuning__grpo-rlvr-training`, `llm-finetuning__lora-qlora-recipes`, `llm-finetuning__preference-optimization`, `llm-finetuning__quantized-export`, `llm-finetuning__trace-to-training-data`, `llm-finetuning__vision-sft`. Describe a matching task to activate.
+
+Commands: `/llm-finetuning:finetune`, `/llm-finetuning:promote-checkpoint`.
+
+{{args}}
+"""

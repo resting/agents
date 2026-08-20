@@ -1,0 +1,10 @@
+description = "Deployment patterns, rollback automation, and infrastructure templates"
+prompt = """
+Deployment patterns, rollback automation, and infrastructure templates.
+
+This is the entry point for the `deployment-strategies` plugin.
+
+Subagents: `deployment-strategies__deployment-engineer`, `deployment-strategies__terraform-specialist`. Invoke with `@<agent>` syntax.
+
+{{args}}
+"""

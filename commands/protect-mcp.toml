@@ -1,0 +1,14 @@
+description = "Cedar policy enforcement + Ed25519 signed receipts for every Claude Code tool call. First cryptographic governance plugin — receipts independently verifiable offline."
+prompt = """
+Cedar policy enforcement + Ed25519 signed receipts for every Claude Code tool call. First cryptographic governance plugin — receipts independently verifiable offline.
+
+This is the entry point for the `protect-mcp` plugin.
+
+Subagents: `protect-mcp__policy-enforcer`, `protect-mcp__receipt-verifier`. Invoke with `@<agent>` syntax.
+
+Skills: `protect-mcp__protect-mcp-setup`. Describe a matching task to activate.
+
+Commands: `/protect-mcp:audit-chain`, `/protect-mcp:verify-receipt`.
+
+{{args}}
+"""

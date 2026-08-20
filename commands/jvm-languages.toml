@@ -1,0 +1,10 @@
+description = "JVM language development including Java, Scala, and C# with enterprise patterns and frameworks"
+prompt = """
+JVM language development including Java, Scala, and C# with enterprise patterns and frameworks.
+
+This is the entry point for the `jvm-languages` plugin.
+
+Subagents: `jvm-languages__csharp-pro`, `jvm-languages__java-pro`, `jvm-languages__scala-pro`. Invoke with `@<agent>` syntax.
+
+{{args}}
+"""

@@ -1,0 +1,20 @@
+description = "Re-gate an existing fine-tuned checkpoint against the current eval harness and export it on PROMOTE"
+prompt = """
+You are running the `promote-checkpoint` command from the `llm-finetuning` plugin.
+
+## Protocol
+
+The full protocol definition is injected below. Read it in full before executing.
+
+@{plugins/llm-finetuning/commands/promote-checkpoint.md}
+
+## Execution
+
+1. Initialize the session according to the 'Pre-flight Checks' section in the protocol.
+2. Execute the steps sequentially. Pause at every `PHASE CHECKPOINT` / `GATE`.
+3. Use available subagents and skills as the protocol directs.
+
+Arguments: [run directory, e.g. runs/2026-07-13-support-bot]
+
+{{args}}
+"""

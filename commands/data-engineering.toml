@@ -1,0 +1,14 @@
+description = "ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development"
+prompt = """
+ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development.
+
+This is the entry point for the `data-engineering` plugin.
+
+Subagents: `data-engineering__backend-architect`, `data-engineering__data-engineer`. Invoke with `@<agent>` syntax.
+
+Skills: `data-engineering__airflow-dag-patterns`, `data-engineering__data-quality-frameworks`, `data-engineering__dbt-transformation-patterns`, `data-engineering__spark-optimization`. Describe a matching task to activate.
+
+Commands: `/data-engineering:data-driven-feature`, `/data-engineering:data-pipeline`.
+
+{{args}}
+"""

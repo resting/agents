@@ -1,0 +1,14 @@
+description = "NVIDIA DGX Spark (GB10 Grace Blackwell) environment operations: aarch64/CUDA-13 stack setup, training gotcha preflights, and unified-memory/thermal management for local ML workloads"
+prompt = """
+NVIDIA DGX Spark (GB10 Grace Blackwell) environment operations: aarch64/CUDA-13 stack setup, training gotcha preflights, and unified-memory/thermal management for local ML workloads.
+
+This is the entry point for the `dgx-spark-ops` plugin.
+
+Subagents: `dgx-spark-ops__dgx-spark-ops-engineer`. Invoke with `@<agent>` syntax.
+
+Skills: `dgx-spark-ops__spark-environment-setup`, `dgx-spark-ops__spark-memory-thermal-ops`, `dgx-spark-ops__spark-training-gotchas`. Describe a matching task to activate.
+
+Commands: `/dgx-spark-ops:spark-preflight`.
+
+{{args}}
+"""

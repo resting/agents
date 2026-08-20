@@ -1,0 +1,12 @@
+description = "Schedule and publish social media posts across 13 platforms (X, LinkedIn Profile + Page, Instagram Business + Standalone, Facebook Pages, TikTok, Discord, Telegram, YouTube, Reddit, WordPress, Pinterest) via SocialClaw — one workspace API key covers everything"
+prompt = """
+Schedule and publish social media posts across 13 platforms (X, LinkedIn Profile + Page, Instagram Business + Standalone, Facebook Pages, TikTok, Discord, Telegram, YouTube, Reddit, WordPress, Pinterest) via SocialClaw — one workspace API key covers everything.
+
+This is the entry point for the `social-publishing` plugin.
+
+Subagents: `social-publishing__social-publishing-publisher`. Invoke with `@<agent>` syntax.
+
+Skills: `social-publishing__social-publishing`. Describe a matching task to activate.
+
+{{args}}
+"""

@@ -1,0 +1,10 @@
+description = "Three behavioral skills addressing AI-specific failure patterns: hidden code debt from agent generation, context compaction amnesia, and imprecise Design Mode edits"
+prompt = """
+Three behavioral skills addressing AI-specific failure patterns: hidden code debt from agent generation, context compaction amnesia, and imprecise Design Mode edits.
+
+This is the entry point for the `skill-forge-essentials` plugin.
+
+Skills: `skill-forge-essentials__ai-debt-detector`, `skill-forge-essentials__session-guard`, `skill-forge-essentials__visual-edit-precision`. Describe a matching task to activate.
+
+{{args}}
+"""

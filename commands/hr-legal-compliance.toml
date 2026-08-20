@@ -1,0 +1,12 @@
+description = "HR policy documentation, legal compliance templates (GDPR/SOC2/HIPAA), employment contracts, and regulatory documentation"
+prompt = """
+HR policy documentation, legal compliance templates (GDPR/SOC2/HIPAA), employment contracts, and regulatory documentation.
+
+This is the entry point for the `hr-legal-compliance` plugin.
+
+Subagents: `hr-legal-compliance__hr-pro`, `hr-legal-compliance__legal-advisor`. Invoke with `@<agent>` syntax.
+
+Skills: `hr-legal-compliance__employment-contract-templates`, `hr-legal-compliance__gdpr-data-handling`. Describe a matching task to activate.
+
+{{args}}
+"""

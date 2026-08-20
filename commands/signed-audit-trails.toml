@@ -1,0 +1,10 @@
+description = "Teaching skill: signed audit trails for Claude Code tool calls. Cookbook-style walkthrough of Cedar-gated tool calls with Ed25519 receipts, offline verification, and CI/CD integration. Pairs with the protect-mcp plugin."
+prompt = """
+Teaching skill: signed audit trails for Claude Code tool calls. Cookbook-style walkthrough of Cedar-gated tool calls with Ed25519 receipts, offline verification, and CI/CD integration. Pairs with the protect-mcp plugin.
+
+This is the entry point for the `signed-audit-trails` plugin.
+
+Skills: `signed-audit-trails__signed-audit-trails-recipe`. Describe a matching task to activate.
+
+{{args}}
+"""
