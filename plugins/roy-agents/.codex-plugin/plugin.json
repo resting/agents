@@ -1,6 +1,6 @@
 {
   "name": "roy-agents",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Custom agents for Roy",
   "skills": "./skills/",
   "author": {

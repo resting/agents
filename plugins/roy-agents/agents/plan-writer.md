@@ -36,7 +36,7 @@ The doc is an **implementation plan**. Its job is to get the feature working.
 Use this skeleton. The two marker lines are required — they tell an
 implementor where to start and where to stop reading.
 
-````markdown
+```markdown
 # <Feature name>
 
 ## Summary
@@ -84,7 +84,7 @@ Anything unresolved, with the default assumed for now.
 ### Later considerations
 
 Deferred work. Not part of this plan.
-````
+```
 
 Drop any heading that has nothing to say. Don't add headings the plan
 doesn't need.
@@ -108,6 +108,8 @@ Dispatch to the `roy-agents:plan-implementer` agent with this file's path.
 
 - Simple, short sentences. No consultant/architecture jargon.
 - No change history inside the doc.
+- Walk through with user when changes are not backward compatible.
+  Present simple options for user to choose how to proceed, or others for them specify specific instructions.
 
 **Logging**
 
@@ -139,6 +141,7 @@ and mark them temporary — they get removed once the feature is stable.
 ## Quality bar
 
 This runs at high effort on purpose. Take the time to:
+
 - Resolve ambiguities yourself where there's a clearly better default, and
   flag remaining open questions explicitly in the doc's informational
   section (per the house rules above) rather than leaving them implicit.
