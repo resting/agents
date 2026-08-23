@@ -23,8 +23,12 @@ Six steps. Each has one thing that decides and one thing that writes.
 | 6 Build | - | `roy-agents:plan-implementer` | code |
 
 Steps 1 to 4 run once per release. Steps 5 and 6 run once per phase. The design
-covers the whole release, so it is made before any plan is written and every
-plan refers back to it.
+covers the whole release, so it comes before any plan and every plan refers
+back to it.
+
+**Step 4 is optional.** Ask, never assume. Designing first holds the screens
+together across phases. Skipping is faster, and the plan writer designs the
+front end as it goes with whatever design skills the project has.
 
 Step 1 is a skill, not an agent, because interviewing needs to talk to the user
 directly. Invoke it rather than dispatching it.
@@ -98,7 +102,8 @@ First row that matches wins.
 | Index exists, no releases | `release-scoper` |
 | A proposal, no `scope.md` | `release-writer` |
 | `scope.md`, no phase index | `phase-planner` |
-| Phase index, no design doc | `design-writer` |
+| Phase index, nothing decided about designing | Ask, see below |
+| Design wanted, no design doc | `design-writer` |
 | Phase index names plans that do not exist | `roy-agents:implementation-plan-writer`, one phase |
 | A plan exists, phase not built | `roy-agents:plan-implementer` |
 | Every phase built | `release-scoper` for the next release |
@@ -106,6 +111,22 @@ First row that matches wins.
 If two rows fit, take the earlier one. Skipping a step is how half-built
 features ship. If the user wants to skip, say what it costs once, then do what
 they decide.
+
+## Asking about the design
+
+Ask once per release, through AskUserQuestion, before the first plan is
+written.
+
+> v0.1 has 4 phases and no design yet. Design the release first?
+
+Options:
+
+- design it first, in Claude Design (the screens hold together across phases)
+- go straight to the plan (the plan writer designs the front end as it goes)
+
+On the first, invoke `design-writer`. On the second, tell `phase-writer` to
+record `Design: skipped` in the phase index, then never ask again for this
+release. The user can still change their mind. Do not prompt them to.
 
 ## Report
 
@@ -194,10 +215,8 @@ Context only. Skip unless you are stuck.
 Steps 5 and 6 come from the `roy-agents` plugin. If those agents are missing,
 say so rather than writing or building the plan yourself.
 
-Step 4 is the `design` skill, which is Claude Design running inside Claude
-Code. `design-writer` records where the canvas lives and the decisions no
-artboard can show. A release with no interface skips step 4. Say the skip out
-loud rather than leaving it implied.
+Step 4 is the `design` skill, Claude Design running inside Claude Code.
+`design-writer` records where the canvas lives and what no artboard can show.
 
 Answer from what you already read where you can: where a feature stands, what
 is in a release, which phase covers a feature. For anything about the code,

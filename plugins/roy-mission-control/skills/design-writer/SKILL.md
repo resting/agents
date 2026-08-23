@@ -1,6 +1,6 @@
 ---
 name: design-writer
-description: Record the design for a release, pairing the Claude Design canvas with the decisions a canvas cannot show. Use once a release scope exists and before any implementation plan is written, when the user asks to design a release, or when a design has been made and needs writing down. Writes one design doc per release.
+description: Record the design for a release, pairing the Claude Design canvas with the decisions a canvas cannot show. Use when the user has chosen to design a release before planning it, or when a design has been made and needs writing down. The step is optional, so never start it unasked. Writes one design doc per release.
 ---
 
 # Design writer
@@ -51,7 +51,7 @@ markdown as a substitute.
 Wait for the user to refine and save it, then take the published artifact URL.
 
 If the release has no interface worth designing, say so, write nothing, and
-send the user to step 5.
+send the user to step 5. Tell `phase-writer` to record `Design: skipped`.
 
 ### 3. Ask for what the canvas cannot show
 
@@ -114,7 +114,7 @@ landed on no screen. That last one is the finding. Say it plainly.
 
 Close by naming what comes next: the implementation plan for the first
 unplanned phase, with `roy-agents:implementation-plan-writer`. Do not run it
-yourself.
+yourself. Tell `phase-writer` the path, so it can fill in the Design line.
 
 <!-- END OF INSTRUCTIONS -->
 

@@ -32,6 +32,7 @@ what steps 5 and 6 run from.
 # v0.1 phases
 
 Updated 2026-08-22.
+Design: designs/v0.1/design.md
 
 | # | Phase | Covers | Needs | Status | Plan |
 | --- | --- | --- | --- | --- | --- |
@@ -48,6 +49,10 @@ Updated 2026-08-22.
 - 04 - you can see where a month went
 ```
 
+The Design line records what the user decided in step 4. It holds the path to
+the design doc, or the word `skipped`. Never leave it blank. A blank line makes
+`captain` ask the design question again.
+
 Rows in build order. The Plan column holds the filename only. It lives in
 `docs/mission-control/plans/<version>/`. Filenames are `NN-slug.md` with no
 date prefix, so the folder sorts by build order.
@@ -57,8 +62,8 @@ does not, stop and say which.
 
 ### 2. Hand a phase to implementation-plan-writer
 
-Only after the release has a design, or after the user has said the release
-needs none. A plan written before the design gets rewritten.
+Only after the Design line is filled in, either with a path or with `skipped`.
+A plan written while the design question is open gets rewritten.
 
 Dispatch `roy-agents:implementation-plan-writer` with a prompt it can act on
 cold. It has none of this conversation.
@@ -81,6 +86,15 @@ Depends on phase 01, already built. Its plan is 01-accounts.md.
 
 This phase ends when a person can record money against an account and see a
 balance. Do not plan beyond that.
+```
+
+If the Design line says `skipped`, drop the design doc path and the paragraph
+about the canvas, and put this in their place.
+
+```
+This release has no design. Design the front end for this phase as part of the
+plan, using whatever design skills the project has. Say which one you used. Keep
+it consistent with what earlier phases already built.
 ```
 
 Set the row to `planned` once the file exists.
@@ -120,8 +134,8 @@ Steps 5 and 6 come from the `roy-agents` plugin. If those agents are missing,
 say so rather than writing or building the plan yourself.
 
 `implementation-plan-writer` normally names files with a datetime prefix and
-drops them at the top of `docs/`. The explicit output path in the dispatch overrides that, which
-is why the path has to be in every dispatch and not left implied.
+drops them at the top of `docs/`. The explicit output path in the dispatch
+overrides that, so the path has to be in every dispatch and never left implied.
 
 Dispatching two phases at once looks faster and is not. The second plan gets
 written against a codebase that the first one is still changing.

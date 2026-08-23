@@ -16,7 +16,7 @@ into its own proposal.
 | 1 Features | `feature-interviewer` (skill) | `feature-writer` | the feature list |
 | 2 Release | `release-scoper` (agent) | `release-writer` | what ships in v0.1 |
 | 3 Phases | `phase-planner` (agent) | `phase-writer` | how v0.1 is broken up |
-| 4 Design | `design` (skill, Claude Design) | `design-writer` | a canvas of v0.1, and what it cannot show |
+| 4 Design (optional) | `design` (skill, Claude Design) | `design-writer` | a canvas of v0.1, and what it cannot show |
 | 5 Implementation plan | - | `roy-agents:implementation-plan-writer` | one plan per phase |
 | 6 Build | - | `roy-agents:plan-implementer` | code |
 
@@ -37,9 +37,14 @@ Steps 5 and 6 come from the `roy-agents` plugin. Install it too.
 
 ## The design step
 
-Step 4 is Claude Design, running inside Claude Code through the `design` skill.
-It publishes a canvas with one artboard per screen. You move things around by
-hand until the screens are right, then save.
+Step 4 is optional and `captain` asks before running it. Design the release
+first and you spend a sitting on it, and the screens hold together. Skip it and
+the plan writer designs the front end phase by phase with whatever design
+skills the project has, which is faster and drifts.
+
+Say yes and you are in Claude Design, running inside Claude Code through the
+`design` skill. It publishes a canvas with one artboard per screen. You move
+things around by hand until the screens are right, then save.
 
 The design covers the whole release, not one phase. Phases are the order you
 build in, and designing one at a time gives you a release that looks like four
@@ -57,8 +62,8 @@ Two things come out of it.
 the screens the phase builds, and the doc for everything the canvas is silent
 about. So a plan never invents a screen.
 
-A release with no interface skips step 4, and `captain` says it skipped rather
-than leaving you to guess.
+`captain` asks once per release and the phase index remembers the answer, so
+nobody asks twice.
 
 ## The chain
 
@@ -67,8 +72,9 @@ treats as settled.
 
 ```
 idea -> feature list -> release scope -> phases -> design -> plan -> code
-        (everything)     (this version)   (one      (whole    (throw
-                                           sitting)  release)   away)
+        (everything)     (this version)   (one      (whole     (throw
+                                           sitting)  release,    away)
+                                                     optional)
            ^                                                       |
            |______________ after every phase ______________________|
 ```
@@ -136,7 +142,7 @@ docs/mission-control/
     v0.2/scope.md
   phases/                    step 3, how a release is broken up
     v0.1/_index.md           the phases in build order, with status
-  designs/                   step 4, one design per release
+  designs/                   step 4, one design per release, optional
     v0.1/design.md           the canvas URL, the screens, what it cannot show
   plans/                     step 5, one plan per phase, gitignored
     v0.1/01-accounts.md
