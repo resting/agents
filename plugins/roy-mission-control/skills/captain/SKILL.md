@@ -196,8 +196,8 @@ say so rather than writing or building the plan yourself.
 
 Step 4 is the `design` skill, which is Claude Design running inside Claude
 Code. `design-writer` records where the canvas lives and the decisions no
-artboard can show. A release with no interface skips step 4, and the skip gets
-said out loud rather than left implied.
+artboard can show. A release with no interface skips step 4. Say the skip out
+loud rather than leaving it implied.
 
 Answer from what you already read where you can: where a feature stands, what
 is in a release, which phase covers a feature. For anything about the code,

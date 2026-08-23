@@ -8,8 +8,8 @@ description: Record the design for a release, pairing the Claude Design canvas w
 A release gets one design, not one per phase. The screens belong to the
 release; the phases are only the order they get built in.
 
-The canvas is made in Claude Design. You write down what the canvas cannot
-show, and where the canvas lives.
+Claude Design makes the canvas. You write down where it lives and what it
+cannot show.
 
 ## Rules
 

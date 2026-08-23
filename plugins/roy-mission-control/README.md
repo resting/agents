@@ -38,8 +38,8 @@ Steps 5 and 6 come from the `roy-agents` plugin. Install it too.
 ## The design step
 
 Step 4 is Claude Design, running inside Claude Code through the `design` skill.
-It publishes a canvas: one artboard per screen, which you refine by hand and
-save.
+It publishes a canvas with one artboard per screen. You move things around by
+hand until the screens are right, then save.
 
 The design covers the whole release, not one phase. Phases are the order you
 build in, and designing one at a time gives you a release that looks like four
@@ -53,10 +53,9 @@ Two things come out of it.
   features, and the decisions no artboard can show: empty states, what a failed
   save does, what a person sees on first run.
 
-`implementation-plan-writer` gets both in its dispatch. It reads the canvas
-for the screens the phase builds and the doc for everything the canvas is
-silent about, so every implementation plan is written against a design that
-already exists.
+`implementation-plan-writer` gets both in its dispatch. It reads the canvas for
+the screens the phase builds, and the doc for everything the canvas is silent
+about. So a plan never invents a screen.
 
 A release with no interface skips step 4, and `captain` says it skipped rather
 than leaving you to guess.
