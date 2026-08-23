@@ -1,7 +1,7 @@
 {
   "name": "roy-mission-control",
   "displayName": "Roy Mission Control",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Five-step feature-to-code workflow run by a captain: interview a feature list into existence, cut it into releases, break a release into phases, then hand each phase to plan-writer and plan-implementer",
   "author": {
     "name": "Roy",
