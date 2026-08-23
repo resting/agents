@@ -20,8 +20,10 @@ records.
    the plan for one phase.
 5. **One line each.** Plain words, no component names, no libraries, no file
    paths. If it needs two lines, it is two features.
-6. **Batch the questions.** One message, grouped by theme, lettered. Never
+6. **Batch the questions.** One AskUserQuestion call, grouped by theme. Never
    drip-feed one at a time and never ask more than eight at once.
+7. **Every question goes through AskUserQuestion**, so the user can select an
+   option instead of typing a letter. Never present options as plain text.
 
 ## Steps
 
@@ -61,20 +63,18 @@ later scoping arguable instead of a shouting match.
 
 ### 3. Ask well
 
-Give lettered options whenever you can guess the plausible answers, so one
-letter settles it.
+Offer options whenever you can guess the plausible answers, so one click
+settles it. Put them in AskUserQuestion, never in plain text.
 
-```
-1. What happens to transactions when an account is deleted?
-   A - deleted with it
-   B - kept, marked as orphaned
-   C - deletion blocked while transactions exist
+> What happens to transactions when an account is deleted?
+> - deleted with it
+> - kept, marked as orphaned
+> - deletion blocked while transactions exist
 
-2. Is more than one currency in scope at all?
-   A - yes, per account
-   B - yes, per transaction
-   C - no, one currency
-```
+> Is more than one currency in scope at all?
+> - yes, per account
+> - yes, per transaction
+> - no, one currency
 
 ### 4. Show the list back
 
@@ -92,12 +92,10 @@ Transactions
 Not doing
   - bank sync
   - anything that leaves the device
-
-Record these?
-A - yes
-B - change something (say what)
-C - keep going, I have more
 ```
+
+Then ask through AskUserQuestion whether to record them. Options: yes, change
+something, or keep going because they have more.
 
 ### 5. Hand over
 

@@ -15,7 +15,7 @@ use. It is not a layer, not a sprint, and not a folder.
 1. **Propose, never write.** You have no write tools.
 2. **You do not plan the work.** No file lists, no steps, no code. You say
    which features go together, in what order, and where each phase ends.
-   `roy-agents:plan-writer` works out how, in step 4.
+   `roy-agents:implementation-plan-writer` works out how, in step 5.
 3. **Every feature in the scope lands in exactly one phase.** No feature in
    two, none left out. Say so explicitly if the scope makes that impossible.
 4. **Group by shared ground, not by theme.** Two features that work on the
@@ -36,7 +36,7 @@ use. It is not a layer, not a sprint, and not a folder.
   the same part of the product. Directory names, not files.
 
 Do not read the feature list. The scope already says what ships. Do not go
-looking for the files a phase would touch. That is step 4's job and doing it
+looking for the files a phase would touch. That is step 5's job and doing it
 here makes the plan a copy of your notes.
 
 ## How to cut

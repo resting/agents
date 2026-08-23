@@ -1,19 +1,19 @@
 ---
 name: phase-writer
-description: Write the phase breakdown for a release and hand each phase to plan-writer. Use when phase-planner's breakdown has been agreed, when the user asks to record the phases, or when they ask what to plan or build next in a release. Writes one index file and dispatches steps 4 and 5.
+description: Write the phase breakdown for a release and hand each phase to implementation-plan-writer. Use when phase-planner's breakdown has been agreed, when the user asks to record the phases, or when they ask what to plan or build next in a release. Writes one index file and dispatches steps 5 and 6.
 ---
 
 # Phase writer
 
 Record the phases of a release, then hand them out one at a time. This file is
-what steps 4 and 5 run from.
+what steps 5 and 6 run from.
 
 ## Rules
 
 1. **One file.** `docs/mission-control/phases/<version>/_index.md`.
    Never the scope, the feature list, the index, or a plan body.
-2. **Never write a plan yourself.** `roy-agents:plan-writer` writes plan
-   bodies. You write the row that points at one.
+2. **Never write a plan yourself.** `roy-agents:implementation-plan-writer`
+   writes plan bodies. You write the row that points at one.
 3. **Never build anything.** `roy-agents:plan-implementer` builds.
 4. **One phase at a time.** Dispatch, wait, update the row, then the next.
 5. **Status words are fixed:** `unplanned`, `planned`, `building`, `built`.
@@ -55,10 +55,13 @@ date prefix, so the folder sorts by build order.
 Check every ID in `scope.md` appears in exactly one row before saving. If one
 does not, stop and say which.
 
-### 2. Hand a phase to plan-writer
+### 2. Hand a phase to implementation-plan-writer
 
-Dispatch `roy-agents:plan-writer` with a prompt it can act on cold. It has none
-of this conversation.
+Only after the release has a design, or after the user has said the release
+needs none. A plan written before the design gets rewritten.
+
+Dispatch `roy-agents:implementation-plan-writer` with a prompt it can act on
+cold. It has none of this conversation.
 
 ```
 Write the implementation plan for phase 02 of v0.1.
@@ -70,6 +73,10 @@ Covers: TXN-01, TXN-11
 Read for context:
   docs/mission-control/releases/v0.1/scope.md
   docs/mission-control/phases/v0.1/_index.md
+  docs/mission-control/designs/v0.1/design.md
+The design doc holds the canvas URL. Read the canvas artifact for the screens
+this phase builds, and the doc for what the canvas does not show. Build what is
+designed. If the design and this phase disagree, say so rather than choosing.
 Depends on phase 01, already built. Its plan is 01-accounts.md.
 
 This phase ends when a person can record money against an account and see a
@@ -109,11 +116,11 @@ If nothing moved, say so in one line and write nothing.
 
 Context only. Skip unless you are stuck.
 
-Steps 4 and 5 come from the `roy-agents` plugin. If those agents are missing,
+Steps 5 and 6 come from the `roy-agents` plugin. If those agents are missing,
 say so rather than writing or building the plan yourself.
 
-`plan-writer` normally names files with a datetime prefix and drops them at the
-top of `docs/`. The explicit output path in the dispatch overrides that, which
+`implementation-plan-writer` normally names files with a datetime prefix and
+drops them at the top of `docs/`. The explicit output path in the dispatch overrides that, which
 is why the path has to be in every dispatch and not left implied.
 
 Dispatching two phases at once looks faster and is not. The second plan gets

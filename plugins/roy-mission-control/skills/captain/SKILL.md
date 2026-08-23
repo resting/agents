@@ -11,15 +11,20 @@ agent or skill that does it.
 
 ## The roster
 
-Five steps. Each has one thing that decides and one thing that writes.
+Six steps. Each has one thing that decides and one thing that writes.
 
 | Step | Decides | Writes | Output |
 | --- | --- | --- | --- |
 | 1 Features | `feature-interviewer` (skill) | `feature-writer` | `source/features.md`, `source/feature-index.md` |
 | 2 Release | `release-scoper` (agent) | `release-writer` | `releases/<v>/scope.md` |
 | 3 Phases | `phase-planner` (agent) | `phase-writer` | `phases/<v>/_index.md` |
-| 4 Plan | - | `roy-agents:plan-writer` | `plans/<v>/NN-slug.md` |
-| 5 Build | - | `roy-agents:plan-implementer` | code |
+| 4 Design | `design` (skill, Claude Design) | `design-writer` | a canvas, `designs/<v>/design.md` |
+| 5 Implementation plan | - | `roy-agents:implementation-plan-writer` | `plans/<v>/NN-slug.md` |
+| 6 Build | - | `roy-agents:plan-implementer` | code |
+
+Steps 1 to 4 run once per release. Steps 5 and 6 run once per phase. The design
+covers the whole release, so it is made before any plan is written and every
+plan refers back to it.
 
 Step 1 is a skill, not an agent, because interviewing needs to talk to the user
 directly. Invoke it rather than dispatching it.
@@ -42,11 +47,13 @@ docs/mission-control/
     v0.1/scope.md            what ships in v0.1
   phases/                    step 3, how a release is broken up
     v0.1/_index.md           the phases in build order, with status
-  plans/                     step 4, one plan per phase
+  designs/                   step 4, one design per release
+    v0.1/design.md           the canvas URL, the screens, what it cannot show
+  plans/                     step 5, one plan per phase
     v0.1/01-accounts.md
 ```
 
-Step 5 writes code, not docs.
+Step 6 writes code, not docs.
 
 `plans/` is scratch. Details in a plan are meant to change many times while
 building and nobody keeps a record of that. When you scaffold, add
@@ -73,6 +80,7 @@ Read, in this order, and nothing else:
 - list `releases/`
 - `releases/<current>/scope.md`
 - `phases/<current>/_index.md`
+- `designs/<current>/design.md`
 - list `plans/<current>/`
 - `git log --oneline -10`
 
@@ -90,7 +98,8 @@ First row that matches wins.
 | Index exists, no releases | `release-scoper` |
 | A proposal, no `scope.md` | `release-writer` |
 | `scope.md`, no phase index | `phase-planner` |
-| Phase index names plans that do not exist | `roy-agents:plan-writer`, one phase |
+| Phase index, no design doc | `design-writer` |
+| Phase index names plans that do not exist | `roy-agents:implementation-plan-writer`, one phase |
 | A plan exists, phase not built | `roy-agents:plan-implementer` |
 | Every phase built | `release-scoper` for the next release |
 
@@ -182,8 +191,13 @@ Never let an interrupt become a detour.
 
 Context only. Skip unless you are stuck.
 
-Steps 4 and 5 come from the `roy-agents` plugin. If those agents are missing,
+Steps 5 and 6 come from the `roy-agents` plugin. If those agents are missing,
 say so rather than writing or building the plan yourself.
+
+Step 4 is the `design` skill, which is Claude Design running inside Claude
+Code. `design-writer` records where the canvas lives and the decisions no
+artboard can show. A release with no interface skips step 4, and the skip gets
+said out loud rather than left implied.
 
 Answer from what you already read where you can: where a feature stands, what
 is in a release, which phase covers a feature. For anything about the code,

@@ -20,7 +20,9 @@ feature, no detail. You are the gate: nothing gets in without passing the test.
    the index. The list says what the product should be, with no version on it.
 5. **Every feature gets an ID.** Next unused number in its area. Never reuse
    one, not even from a deleted feature.
-6. **No code.**
+6. **Every question goes through AskUserQuestion**, so the user can select an
+   option instead of typing a letter. Never present options as plain text.
+7. **No code.**
 
 ## Steps
 
@@ -42,14 +44,16 @@ and write nothing.
 Details belong in a phase plan. They are meant to change many times while
 building, and nobody records that.
 
-If you genuinely cannot tell, ask, with the test in the question:
+If you genuinely cannot tell, ask through AskUserQuestion, never as plain
+lettered text, and put the test in the question:
 
-```
-Does "archive instead of delete" change what a person can do, or is it how
-delete already works underneath?
-A - a person can now archive and delete separately, two different things
-B - same thing, just how it works inside
-```
+> Does "archive instead of delete" change what a person can do, or is it how
+> delete already works underneath?
+
+Options:
+
+- a person can now archive and delete separately, two different things
+- same thing, just how it works inside
 
 ### 2. Read
 
@@ -62,17 +66,19 @@ If neither file exists, ask whether to create them, then create both.
 
 Only when **changing** a feature that already exists.
 
-Look up its row in the index. If the Release column is filled in, stop and say
-what the change makes wrong:
+Look up its row in the index. If the Release column is filled in, stop, say
+what the change makes wrong, then ask through AskUserQuestion:
 
 ```
 TXN-11 is in v0.1 and phase 02 is already built.
 
 Changing it means the built app and the feature list disagree.
-
-A - change the feature and re-scope v0.1
-B - leave the feature, this is a v0.2 change
 ```
+
+Options:
+
+- change the feature and re-scope v0.1
+- leave the feature, this is a v0.2 change
 
 If the Release column is empty, carry on. Nothing depends on it yet.
 

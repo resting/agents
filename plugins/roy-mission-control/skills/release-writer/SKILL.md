@@ -21,7 +21,9 @@ doc is the source of truth for the release.
 5. **Only features that exist.** Refuse any ID that is not in the index.
 6. **Stop on any ambiguity.** Do not write a line while a question is open. A
    guess that looks reasonable is still a guess.
-7. **No implementation detail.** What ships, not how it gets built.
+7. **Every question goes through AskUserQuestion**, so the user can select an
+   option instead of typing a letter. Never present options as plain text.
+8. **No implementation detail.** What ships, not how it gets built.
 
 ## Steps
 
@@ -30,41 +32,40 @@ doc is the source of truth for the release.
 Read `docs/mission-control/source/feature-index.md` first. Then open only the source
 sections for the features in play, and note their section numbers.
 
-If a scope doc already exists for this version, ask:
+If a scope doc already exists for this version, ask through AskUserQuestion:
 
-```
-releases/v0.1/scope.md already exists.
-A - replace it
-B - add to it, keep what is there
-C - skip this version
-```
+> `releases/v0.1/scope.md` already exists.
+
+Options:
+
+- replace it
+- add to it, keep what is there
+- skip this version
 
 ### 2. Match the ask to real features
 
-Where the match is loose, ask. One message, all questions, lettered.
+Where the match is loose, ask. One AskUserQuestion call, every open question in
+it, never plain lettered text.
 
-```
-1. You said "budgets" for v0.1. There are two:
-   A - BUD-01 monthly budget per category
-   B - BUD-04 envelope budgets
-   C - both
+> You said "budgets" for v0.1. There are two.
+> - `BUD-01` monthly budget per category
+> - `BUD-04` envelope budgets
+> - both
 
-2. v0.1 has transactions but no accounts. Add accounts?
-   A - yes, ACC-01 manual accounts
-   B - no, leave it out
-```
+> v0.1 has transactions but no accounts. Add accounts?
+> - yes, `ACC-01` manual accounts
+> - no, leave it out
 
-If the user asked for something the feature list does not cover, stop:
+If the user asked for something the feature list does not cover, stop and ask
+through AskUserQuestion:
 
-```
-"Split bills between people" is not in the feature list yet.
-A - add it first, then scope   (hands over to feature-writer)
-B - leave it out
-C - it is there under another name (tell me which)
-```
+> "Split bills between people" is not in the feature list yet.
+> - add it first, then scope (hands over to `feature-writer`)
+> - leave it out
+> - it is there under another name (the user names it through "Other")
 
-On A, invoke `feature-writer`, wait for it to finish, re-read the index for the
-new ID, then carry on. Never write the feature list yourself.
+If they add it first, invoke `feature-writer`, wait for it to finish, re-read
+the index for the new ID, then carry on. Never write the feature list yourself.
 
 ### 3. Confirm before writing
 
@@ -73,11 +74,10 @@ v0.1: ACC-01 accounts, TXN-01 transactions, CAT-01 categories
 v0.2: BUD-01 budgets, SYN-02 bank sync
 
 ACC-01 is partial: checking, savings, credit card and cash only.
-
-Write these two files?
-A - yes
-B - change something (say what)
 ```
+
+Then ask through AskUserQuestion whether to write the two files. Options: yes,
+or change something, which the user says through "Other".
 
 ### 4. Write the scope doc
 

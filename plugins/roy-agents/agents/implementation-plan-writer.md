@@ -1,5 +1,5 @@
 ---
-name: plan-writer
+name: implementation-plan-writer
 description: Authors implementation plans and design docs. Dispatch to this agent whenever a plan, implementation plan, design doc, or spec needs to be written or substantially rewritten — plan quality matters more than speed here, so it runs on Opus at high effort. Not for reviewing an existing plan (use plan-reviewer for that) and not for implementing an already-approved plan (use plan-implementer).
 model: opus
 effort: high

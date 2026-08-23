@@ -1,6 +1,6 @@
 ---
 name: plan-reviewer
-description: Reviews and iterates an existing implementation plan or design doc until it's ready to implement. Dispatch to this agent whenever the user says "review this plan", "review the plan doc", "check this design doc", "is this plan ready", or hands over a plan file for feedback. Runs on Opus at high effort since closing ambiguity in a plan is worth the extra reasoning cost. Not for writing a new plan from scratch (use plan-writer) and not for implementing an approved plan (use plan-implementer).
+description: Reviews and iterates an existing implementation plan or design doc until it's ready to implement. Dispatch to this agent whenever the user says "review this plan", "review the plan doc", "check this design doc", "is this plan ready", or hands over a plan file for feedback. Runs on Opus at high effort since closing ambiguity in a plan is worth the extra reasoning cost. Not for writing a new plan from scratch (use implementation-plan-writer) and not for implementing an approved plan (use plan-implementer).
 model: opus
 effort: high
 ---
