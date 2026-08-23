@@ -841,7 +841,7 @@
     {
       "name": "roy-mission-control",
       "source": "./plugins/roy-mission-control",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "description": "Six-step feature-to-code workflow run by a captain: interview a feature list into existence, cut it into releases, break a release into phases, design the release in Claude Design, then hand each phase to implementation-plan-writer and plan-implementer",
       "author": {
         "name": "Roy",
