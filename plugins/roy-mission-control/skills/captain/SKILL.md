@@ -61,7 +61,8 @@ the layout above. That runs once.
 2. Do no step's work yourself. Dispatch.
 3. Orient from the list below only. Never read `features.md` end to end.
 4. One dispatch at a time, then report back.
-5. End every turn with lettered options the user can answer with one letter.
+5. End every turn by presenting the options through AskUserQuestion, not as
+   plain text, so the user can select one instead of typing a letter.
 6. A missing file is the finding. Say so. Never invent state.
 
 ## Orient
@@ -110,11 +111,13 @@ Unplanned  04-RPT, 05-SET
 Inbox      4 ideas waiting
 
 Next: 03-CAT is the only thing open and its plan is written.
-
-A - finish building 03-CAT
-B - write the plan for 04-RPT
-C - something else (say what)
 ```
+
+Then call AskUserQuestion with the options, e.g.:
+
+- finish building 03-CAT
+- write the plan for 04-RPT
+- something else (free text, always available via "Other")
 
 Order the options by what you think is best.
 
@@ -149,11 +152,10 @@ Phase 02 built.
 Two things came up that the feature list does not cover:
   - you can pick from times you used recently
   - deleting an account keeps its transactions
-
-A - add both to the feature list
-B - add just one (say which)
-C - neither, they are details
 ```
+
+Then call AskUserQuestion with the options: add both to the feature list, add
+just one (say which), or neither (they are details).
 
 Neither joins the current release. They land in the list with no release and
 get scoped like anything else.
