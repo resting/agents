@@ -58,6 +58,17 @@
       "category": "development"
     },
     {
+      "name": "roy-mission-control",
+      "source": "./plugins/roy-mission-control",
+      "description": "Five-step feature-to-code workflow run by a captain: interview a feature list into existence, cut it into releases, break a release into phases, then hand each phase to plan-writer and plan-implementer",
+      "version": "0.1.0",
+      "author": {
+        "name": "Roy"
+      },
+      "license": "MIT",
+      "category": "development"
+    },
+    {
       "name": "code-documentation",
       "source": "./plugins/code-documentation",
       "description": "Documentation generation, code explanation, and technical writing with automated doc generation and tutorial creation",

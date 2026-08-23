@@ -830,8 +830,19 @@
     {
       "name": "roy-agents",
       "source": "./plugins/roy-agents",
-      "version": "1.0.7",
+      "version": "1.0.8",
       "description": "Custom agents for Roy",
+      "author": {
+        "name": "Roy",
+        "email": ""
+      },
+      "license": "MIT"
+    },
+    {
+      "name": "roy-mission-control",
+      "source": "./plugins/roy-mission-control",
+      "version": "0.1.0",
+      "description": "Five-step feature-to-code workflow run by a captain: interview a feature list into existence, cut it into releases, break a release into phases, then hand each phase to plan-writer and plan-implementer",
       "author": {
         "name": "Roy",
         "email": ""
@@ -859,19 +870,6 @@
         "email": ""
       },
       "license": "MIT"
-    },
-    {
-      "name": "runapi-mcp",
-      "source": "./plugins/runapi-mcp",
-      "version": "0.1.3",
-      "description": "RunAPI MCP server for browsing models, checking pricing, and creating image, video, music, audio, and LLM tasks.",
-      "author": {
-        "name": "RunAPI",
-        "email": ""
-      },
-      "homepage": "https://github.com/runapi-ai/mcp",
-      "license": "Apache-2.0",
-      "category": "ai-ml"
     },
     {
       "name": "security-compliance",
