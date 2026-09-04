@@ -830,7 +830,7 @@
     {
       "name": "roy-agents",
       "source": "./plugins/roy-agents",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "description": "Custom agents for Roy",
       "author": {
         "name": "Roy",
