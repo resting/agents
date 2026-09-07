@@ -978,7 +978,7 @@
     },
     {
       "name": "roy-mission-control",
-      "description": "Six-step feature-to-code workflow run by a captain: interview a feature list into existence, cut it into releases, break a release into phases, design the release in Claude Design, then hand each phase to implementation-plan-writer and plan-implementer",
+      "description": "A captain-led workflow from design to tested code. Specialists report missing context, talk with the user when supported, and return results for acceptance.",
       "source": {
         "source": "local",
         "path": "./plugins/roy-mission-control"
@@ -987,7 +987,7 @@
         "installation": "AVAILABLE",
         "authentication": "ON_USE"
       },
-      "category": "Coding"
+      "category": "Productivity"
     },
     {
       "name": "roy-pstack",

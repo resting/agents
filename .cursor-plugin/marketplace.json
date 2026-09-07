@@ -841,13 +841,14 @@
     {
       "name": "roy-mission-control",
       "source": "./plugins/roy-mission-control",
-      "version": "0.3.0",
-      "description": "Six-step feature-to-code workflow run by a captain: interview a feature list into existence, cut it into releases, break a release into phases, design the release in Claude Design, then hand each phase to implementation-plan-writer and plan-implementer",
+      "version": "0.21.0",
+      "description": "A captain-led workflow from design to tested code. Specialists report missing context, talk with the user when supported, and return results for acceptance.",
       "author": {
         "name": "Roy",
         "email": ""
       },
-      "license": "MIT"
+      "license": "MIT",
+      "category": "Productivity"
     },
     {
       "name": "roy-pstack",

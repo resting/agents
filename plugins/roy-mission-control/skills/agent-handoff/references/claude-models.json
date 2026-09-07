@@ -1,0 +1,146 @@
+{
+  "01-design-intake": {
+    "model": "opus",
+    "effort": "medium",
+    "color": "magenta",
+    "tools": [
+      "Skill",
+      "Read",
+      "Write",
+      "Glob",
+      "Grep",
+      "WebFetch",
+      "AskUserQuestion",
+      "Bash"
+    ]
+  },
+  "02-product-owner": {
+    "model": "opus",
+    "effort": "high",
+    "color": "magenta",
+    "tools": [
+      "Skill",
+      "Read",
+      "Write",
+      "Glob",
+      "Grep",
+      "AskUserQuestion",
+      "Bash"
+    ]
+  },
+  "03-release-scoper": {
+    "model": "opus",
+    "effort": "high",
+    "color": "magenta",
+    "tools": [
+      "Skill",
+      "Read",
+      "Write",
+      "Glob",
+      "Grep",
+      "AskUserQuestion",
+      "Bash"
+    ]
+  },
+  "04-phase-scoper": {
+    "model": "opus",
+    "effort": "high",
+    "color": "cyan",
+    "tools": [
+      "Skill",
+      "Read",
+      "Write",
+      "Glob",
+      "Grep",
+      "AskUserQuestion",
+      "Bash"
+    ]
+  },
+  "05-plan-writer": {
+    "model": "opus",
+    "effort": "high",
+    "color": "green",
+    "tools": [
+      "Skill",
+      "Read",
+      "Write",
+      "Glob",
+      "Grep",
+      "Bash",
+      "AskUserQuestion"
+    ]
+  },
+  "06-plan-reviewer": {
+    "model": "opus",
+    "effort": "xhigh",
+    "color": "yellow",
+    "tools": [
+      "Skill",
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Bash",
+      "AskUserQuestion"
+    ]
+  },
+  "07-builder": {
+    "model": "sonnet",
+    "effort": "medium",
+    "color": "green",
+    "tools": [
+      "Skill",
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Glob",
+      "Grep",
+      "AskUserQuestion"
+    ]
+  },
+  "08-code-reviewer": {
+    "model": "opus",
+    "effort": "high",
+    "color": "yellow",
+    "tools": [
+      "Skill",
+      "Read",
+      "Edit",
+      "Bash",
+      "Glob",
+      "Grep",
+      "AskUserQuestion",
+      "Write"
+    ]
+  },
+  "09-test-scoper": {
+    "model": "opus",
+    "effort": "medium",
+    "color": "cyan",
+    "tools": [
+      "Skill",
+      "Read",
+      "Write",
+      "Glob",
+      "Grep",
+      "Bash",
+      "AskUserQuestion"
+    ]
+  },
+  "10-manual-test-writer": {
+    "model": "sonnet",
+    "effort": "low",
+    "color": "blue",
+    "tools": [
+      "Skill",
+      "Read",
+      "Write",
+      "Glob",
+      "Grep",
+      "AskUserQuestion",
+      "Bash"
+    ]
+  }
+}
