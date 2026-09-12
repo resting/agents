@@ -7,23 +7,16 @@ description: >
   "spec out the work", or hands over a phase and asks for detail before coding.
   Runs after phase scoping, before the plan review.
 metadata:
-  version: "0.1.1"
+  version: "0.1.2"
 ---
 
 # Implementation planning
-
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
 
 One plan per phase. Detailed enough that someone else could build it and get the
 same result.
 
 Load `unslop` and `open-questions`. Read `docs/roy_mission_control/04_phase_scoper/releases/<version>/phases.md` and the release
 scope. Read the existing codebase before planning changes to it.
-
-Load `agent-handoff` for questions, reports, and user conversations. Report gaps to
-the captain before asking the user. Only the captain records gate acceptance and
-starts the next stage.
 
 ## Hard rules
 
@@ -97,6 +90,6 @@ Blocking IDs from docs/roy_mission_control/00_captain/releases/<version>/open_qu
 
 ## Before handing off
 
-Check the plan against the phase definition. Every feature in the phase appears in at
-least one step. Every step has files and a verification. Report the plan to the
-captain, who presents the result and handles the next-stage handoff.
+Check the plan against the phase definition. Every feature in the phase appears in
+at least one step. Every step has files and a verification. Report the plan through
+`agent-handoff`. The captain continues to plan review.

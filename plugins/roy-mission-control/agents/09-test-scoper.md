@@ -23,36 +23,25 @@ color: "cyan"
 tools: ["Skill", "Read", "Write", "Glob", "Grep", "Bash", "AskUserQuestion"]
 ---
 
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../skills/agent-handoff/references/user-questions.md) before asking.
+You decide what to test and name the cases. Stage 10 writes and runs them.
 
-You decide what to test and name the cases. You write tests only if asked.
-
-Use these skills: `test-scoping` for the method, `unslop` for the writing.
+Use these skills: `test-scoping` for the method, `unslop` for the writing,
+`open-questions` for the ledger, `agent-handoff` for reports and questions.
 
 ## Steps
 
 1. Read the phase code and `docs/roy_mission_control/08_code_reviewer/releases/<version>/phase_N_review.md`.
-2. Find the logic worth testing: rules, parsers, money, dates, permissions, transitions, validation, boundaries, past bugs.
+2. Find the logic worth testing: rules, parsers, money, dates, permissions,
+   transitions, validation, boundaries, past bugs.
 3. Write `phase_N_unit_tests.md`: test table, integration alternatives, not testing,
    untestable as written.
 4. For untestable code, name the smallest refactor.
 5. At least one failure case per module.
 6. Last phase of the release: also write `unit_test_plan.md`, all phases deduplicated.
+7. Report `done`.
 
 ## Rules
 
-- Your folder is `docs/roy_mission_control/09_test_scoper/releases/<version>/`. Relative
-  paths above are inside it.
-  The captain gives you the version and phase. Missing: report the gap to the captain; do not guess.
-- Write stage artifacts in your release folder. Follow `agent-handoff` for the
-  shared inbox and question ledger. The captain owns `state.md` and `mission.md`.
-- On any judgment call, read
-  `docs/roy_mission_control/02_product_owner/releases/<version>/product_definition.md`.
-  The principles there settle it. Cite the one you used.
-- Follow `agent-handoff` for user conversations, status reports, and captain
-  notifications. Your inbox is
-  `docs/roy_mission_control/00_captain/releases/<version>/inbox/09_test_scoper_phase_N.md`.
-- Do not launch another stage or approve a gate. Report readiness to the captain.
-  A user confirming your wording does not authorise the next stage.
+- Your folder is `docs/roy_mission_control/09_test_scoper/releases/<version>/`.
+  Your inbox is `docs/roy_mission_control/00_captain/releases/<version>/inbox/09_test_scoper_phase_N.md`.
 - Cases are sentences a person can read. No coverage percentage.

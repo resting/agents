@@ -5,9 +5,6 @@ description: Use when editing any writing to cut AI tells and add a human voice.
 
 # Unslop
 
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
-
 Edit text to remove AI patterns and add human voice.
 
 ## Process

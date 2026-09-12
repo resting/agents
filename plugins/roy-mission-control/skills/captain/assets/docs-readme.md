@@ -1,30 +1,34 @@
 # Mission folder
 
-This folder is the paper trail for the build. One numbered folder per agent, in the order
-they run. Inside each, one folder per release. Agents write their own stage artifacts
-and reports to the captain. They also record questions and answers in the shared
-ledger. The captain owns the mission record, state, and gate decisions.
+This folder is the paper trail for the build. One numbered folder per agent, in the
+order they run. Inside each, one folder per release. Agents write their own stage
+artifacts and reports to the captain. They also record questions and answers in the
+shared ledger. The captain owns the mission record, progress, state, and gates.
 
 You can edit anything in here. Your edits win. Tell the captain what you changed, or
 run `/mission-sync`, and it will work out what needs redoing.
 
-## Where to go for help
+## The file to read first
 
-The captain is your main contact throughout the mission. Return to the captain or
-run `/mission` whenever you are unsure what is happening or what to do next. It will
-check the current reports, explain any blocker, and recommend the next step.
+`00_captain/releases/<version>/progress.md` says what is done, what is being built,
+what is left, and whether anything is waiting on you. The captain rewrites it after
+every stage and prints the same summary in chat. Run `/mission` to see it any time.
 
-When an agent needs a decision, it reports the question to the captain. When it
-needs a longer conversation, the captain explains why and directs you to that agent.
-You can also visit an agent directly. It records your context and informs the captain
-so the mission stays up to date. If direct conversations are unavailable, the captain
-relays questions and answers for you.
+## How the mission runs
 
+The captain runs the stages in order without stopping, and pauses only when you have
+a decision to make. It pauses when the product definition is ready, when the release
+scope is ready, when an agent has a question only you can answer, when something
+fails, and at the end of the release so you can run the checklist. Say `go` or run
+`/go` to continue after a pause.
 
-After the agent has enough information, it finishes its documents and reports back
-to the captain. The captain shows what is ready and asks whether to proceed.
-Answering questions or confirming document wording does not start the next stage.
-You can always return to the captain during a conversation for guidance.
+Want it to stop more often? Tell the captain to pause after every phase, or after
+every stage. Tell it to go back to `auto` when you are done looking.
+
+When an agent needs a longer conversation, the captain explains why and, where the
+host supports it, directs you to that agent. You can always return to the captain
+during a conversation. Answering questions or confirming wording does not pass a
+gate; the captain does that from the saved files.
 
 ## Structure
 
@@ -34,7 +38,8 @@ docs/roy_mission_control/
 ├── 00_captain/
 │   ├── mission.md                             every release, decisions so far
 │   └── releases/v0.1/
-│       ├── state.md                           runtime, active conversation, gates, artifacts
+│       ├── progress.md                        done, in progress, left, waiting on you
+│       ├── state.md                           runtime, mode, gates, artifacts
 │       ├── open_questions.md                  what nobody has decided yet
 │       └── inbox/                             each agent's report to the captain
 ├── 01_design_intake/releases/v0.1/
@@ -57,20 +62,15 @@ docs/roy_mission_control/
 ├── 09_test_scoper/releases/v0.1/
 │   ├── phase_1_unit_tests.md                  what deserves automated tests
 │   └── unit_test_plan.md                      the whole release, written at the end
-└── 10_manual_test_writer/releases/v0.1/
+├── 10_unit_test_writer/releases/v0.1/
+│   └── phase_1_tests.md                       the tests written, and whether they pass
+└── 11_manual_test_writer/releases/v0.1/
     ├── phase_1_checklist.md                   what to click after one phase
     └── release_checklist.md                   the full run-through before shipping
 ```
 
 v0.2 adds a sibling `releases/v0.2/` under every folder. Once a release ships, its
 folder stops changing. It is the record of what was built and why.
-
-## The two files to read first
-
-`00_captain/mission.md` tells you which release is in flight and what has been decided.
-
-`00_captain/releases/<version>/open_questions.md` tells you what the captain is waiting
-on. Answers go here and then get written into the plan that needed them.
 
 ## The three you will read most
 
@@ -79,7 +79,7 @@ being built.
 
 `06_plan_reviewer/releases/<version>/phase_N_reviewed.md` when you want to know how.
 
-`10_manual_test_writer/releases/<version>/release_checklist.md` when you want to try it.
+`11_manual_test_writer/releases/<version>/release_checklist.md` when you want to try it.
 
 ## Editing
 

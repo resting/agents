@@ -4,24 +4,17 @@ description: >
   Decide which parts of the code deserve unit tests and name the cases for each. Use
   this skill whenever the user says "what should we test", "can we unit test this",
   "write a test plan", "add automated tests", "is this testable", or after a code
-  review finishes. Produces the unit test plan, not the tests themselves unless asked.
+  review finishes. Produces the unit test plan that stage 10 writes and runs.
 metadata:
-  version: "0.1.1"
+  version: "0.1.2"
 ---
 
 # Test scoping
-
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
 
 Find the logic worth testing. Name the cases. Say plainly what is not worth it.
 
 Load `unslop` and `open-questions`. Read the phase code and
 `docs/roy_mission_control/08_code_reviewer/releases/<version>/phase_N_review.md`.
-
-Load `agent-handoff` for questions, reports, and user conversations. Report gaps to
-the captain before asking the user. Only the captain records gate acceptance and
-starts the next stage.
 
 ## Worth a unit test
 
@@ -86,12 +79,13 @@ caught the bugs found in this phase's code review.
   wrong shape, and it belongs under "untestable as written".
 - Do not propose a coverage percentage. Name the modules instead.
 
-## If asked to write the tests
+## Who writes the tests
 
-Follow the plan in priority order. Match the project's existing test framework and
-file layout. One assertion idea per test. Test names read as sentences.
+Stage 10, `unit-test-writing`, writes and runs the tests from this plan. Write the
+plan so it can: name the module, the function, the case as a sentence, and the
+fixture. A case it cannot locate from the plan will be skipped.
 
-## Report readiness
+## Report
 
-Report the completed artifacts and any blocking questions to the captain through
-`agent-handoff`. The captain presents them to the user and handles the next step.
+Report `done` through `agent-handoff` with the plan path. The captain continues to
+stage 10, which writes and runs the tests.

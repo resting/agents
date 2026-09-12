@@ -6,22 +6,15 @@ description: >
   "start phase 2", "write the code for this plan", or hands over a reviewed plan and
   expects working code. Runs after the plan review, before the code review.
 metadata:
-  version: "0.1.1"
+  version: "0.1.2"
 ---
 
 # Build execution
-
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
 
 Follow the plan. Verify each step. Change nothing outside it.
 
 Load `unslop` and `open-questions`. Read `docs/roy_mission_control/06_plan_reviewer/releases/<version>/phase_N_reviewed.md`. If only
 the unreviewed plan exists, stop and say the review has not run.
-
-Load `agent-handoff` for questions, reports, and user conversations. Report gaps to
-the captain before asking the user. Only the captain records gate acceptance and
-starts the next stage.
 
 ## The loop
 
@@ -86,8 +79,8 @@ Do not add, even when it seems free:
 Anything spotted outside the plan. Open question IDs.
 ```
 
-## Gate
+## Report
 
-Report readiness when every step and the whole phase pass verification. Include
-the results in the build log. The captain reviews the result and handles acceptance
-and the handoff to code review.
+Report `done` when every step and the whole phase pass verification, with the
+results in the build log. The captain continues to code review. A stop condition is
+a `blocked` or `failed` report, and the captain pauses for the user.

@@ -60,8 +60,8 @@
     {
       "name": "roy-mission-control",
       "source": "./plugins/roy-mission-control",
-      "description": "Captain-led ten-stage workflow from design intake through planning, implementation, review, and testing",
-      "version": "0.21.0",
+      "description": "Captain-led eleven-stage workflow from design intake through planning, implementation, review, and tests, run end to end with pauses only for decisions",
+      "version": "0.22.0",
       "author": {
         "name": "Roy"
       },

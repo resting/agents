@@ -6,21 +6,14 @@ description: >
   this", "what should I click", "QA list", "acceptance list", "let me try it", or
   after a build phase finishes. Written for a human tester, not for a developer.
 metadata:
-  version: "0.1.1"
+  version: "0.1.2"
 ---
 
 # Manual checklist
 
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
-
 A list someone can follow with no help, ticking boxes as they go.
 
 Load `unslop`. Read `docs/roy_mission_control/03_release_scoper/releases/<version>/release_scope.md` and the phase code.
-
-Load `agent-handoff` for questions, reports, and user conversations. Report gaps to
-the captain before asking the user. Only the captain records gate acceptance and
-starts the next stage.
 
 ## Writing rules
 
@@ -33,7 +26,7 @@ starts the next stage.
 6. Say what to do when a step fails. One line at the top is enough.
 7. No jargon in the failure notes either. "Nothing appears" beats "the request 500s".
 
-## Output: docs/roy_mission_control/10_manual_test_writer/releases/<version>/phase_N_checklist.md
+## Output: docs/roy_mission_control/11_manual_test_writer/releases/<version>/phase_N_checklist.md
 
 ```markdown
 # Test checklist: phase N
@@ -77,7 +70,7 @@ build, and say so at the top rather than leaving a gap.
 Write it for a person who did not build this and does not want a lecture. Short lines.
 No praise, no filler, no "great job". Just what to do and what should happen.
 
-## Report readiness
+## Report
 
-Report the completed artifacts and any blocking questions to the captain through
-`agent-handoff`. The captain presents them to the user and handles the next step.
+Report `done` through `agent-handoff`. The captain continues to the next phase, or
+pauses at the end of the release so the user can run the release checklist.

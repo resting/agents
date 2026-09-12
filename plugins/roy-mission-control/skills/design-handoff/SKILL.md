@@ -7,22 +7,15 @@ description: >
   into a spec", "hand this off", or shares mockups, a prototype link, or
   screenshots and wants engineering work to follow. Run this before any scoping.
 metadata:
-  version: "0.1.1"
+  version: "0.1.2"
 ---
 
 # Design handoff
-
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
 
 Read the design. Write down what is actually there. Send everything else to the
 open-questions ledger.
 
 Load `unslop` before writing. Load `open-questions` before asking anything.
-
-Load `agent-handoff` for questions, reports, and user conversations. Report gaps to
-the captain before asking the user. Only the captain records gate acceptance and
-starts the next stage.
 
 ## Read first
 
@@ -94,8 +87,8 @@ Point at docs/roy_mission_control/00_captain/releases/<version>/open_questions.m
 No frameworks, no database choices, no file paths, no API shapes. The brief says
 what the product does. Later stages decide how.
 
-## Gate
+## Report
 
-Report the completed brief to the captain. The captain asks whether it matches
-what the user designed and arranges any corrections. After the user accepts, the
-captain records the gate decision and proposes the next stage.
+Report the completed brief through `agent-handoff`. The captain checks the
+coverage results and any blocking gaps, then continues to product definition or
+pauses on an open decision.
