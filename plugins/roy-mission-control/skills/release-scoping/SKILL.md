@@ -7,7 +7,7 @@ description: >
   "which features ship first", or hands over a design brief and asks what to build.
   Produces the release scope the phase scoper reads.
 metadata:
-  version: "0.1.1"
+  version: "0.2.0"
 ---
 
 # Release scoping
@@ -72,6 +72,9 @@ Short list. One line each. No detail, it will change.
 |-----|--------|--------------|
 | Roles and permissions | Single user in v0.1 (D-01) | A second user asks |
 
+## Coverage
+5 of 9 features considered ship in v0.1. 3 move to v0.2. 1 is cut.
+
 ## Assumptions
 Non-blocking open questions and the default taken for each.
 ```
@@ -83,6 +86,9 @@ Non-blocking open questions and the default taken for each.
 - User-visible behaviour is one sentence in the user's words. No component names, no
   endpoints, no table names.
 - The cut list is the important half. A scope with no cut list means nothing was cut.
+- Coverage is a count, not an impression: the v0.1 rows over v0.1 plus v0.2 plus cut rows.
+  A release with a long cut list is not the whole product. Say the three numbers instead
+  of letting the feature count alone imply it is.
 
 ## Grill the user
 
@@ -97,6 +103,6 @@ unanswered ones through `open-questions` and route them through the captain:
 
 ## Gate
 
-Report the release table and cut list to the captain for review. The captain asks
-which cuts the user disagrees with and routes corrections back. The captain records
-acceptance before starting phase scoping.
+Report the release table, cut list, and coverage ratio to the captain for review. The
+captain asks which cuts the user disagrees with and routes corrections back. The captain
+records acceptance before starting phase scoping.

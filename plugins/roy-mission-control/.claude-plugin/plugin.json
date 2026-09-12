@@ -1,6 +1,6 @@
 {
   "name": "roy-mission-control",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "description": "A captain-led workflow from design to tested code. Specialists report missing context, talk with the user when supported, and return results for acceptance.",
   "author": {
     "name": "Roy"

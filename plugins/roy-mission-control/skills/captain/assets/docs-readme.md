@@ -36,6 +36,7 @@ docs/roy_mission_control/
 │   └── releases/v0.1/
 │       ├── state.md                           runtime, active conversation, gates, artifacts
 │       ├── open_questions.md                  what nobody has decided yet
+│       ├── autonomy_log.md                    gates the captain passed on its own, and why
 │       └── inbox/                             each agent's report to the captain
 ├── 01_design_intake/releases/v0.1/
 │   └── design_brief.md                        what the design shows, in words
@@ -64,6 +65,26 @@ docs/roy_mission_control/
 
 v0.2 adds a sibling `releases/v0.2/` under every folder. Once a release ships, its
 folder stops changing. It is the record of what was built and why.
+
+## How far along this is
+
+`00_captain/mission.md` states the current release's `Coverage`: how many of the
+features considered for it are actually shipping, against how many got deferred or
+cut. Five features shipping out of five considered is the whole thing. Five out of
+nine is a slice, and the other four are named in that release's cut list.
+
+The captain's status messages state the stage, the phase, and roughly how many
+stage-runs are left before the release is done. Ask it directly if you just want
+that number.
+
+## Autonomy
+
+`00_captain/mission.md` also states `Autonomy`: `gated` asks before every stage,
+`checkpoint` skips asking on the stages that are a plain pass-or-fail check,
+`unattended` skips asking on every stage except a real conversation it cannot have
+for you. Change it anytime with `/mission-autonomy`. Whatever the mode, the captain
+never ships a release or starts the next one without asking first, and it logs every
+gate it passed on its own in that release's `autonomy_log.md`.
 
 ## The two files to read first
 

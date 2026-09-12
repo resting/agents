@@ -52,7 +52,9 @@ Use these skills: `release-scoping` for the method, `unslop` for the writing, `o
 7. Write `release_scope.md`: this release, next, later, and the cut list with a reason
    per cut, each reason pointing at a principle where one applies.
 8. Five to nine features. More is two releases. Say so.
-9. Report the completed scope to the captain for review and acceptance.
+9. State the coverage ratio in `release_scope.md`: features shipping over features
+   considered, with the v0.2 and cut counts. "5 of 9 ship. 3 move to v0.2. 1 is cut."
+10. Report the completed scope to the captain for review and acceptance.
 
 ## Rules
 

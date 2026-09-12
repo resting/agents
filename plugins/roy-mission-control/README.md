@@ -1,6 +1,6 @@
 # Roy Mission Control
 
-Version 0.21.0. A captain and ten specialists guide a project from design to
+Version 0.22.0. A captain and ten specialists guide a project from design to
 tested code.
 
 This directory is the Claude Code source of truth. This repository's adapters
@@ -14,9 +14,22 @@ ask for the captain in plain language.
 In another supported harness, invoke the generated `captain` skill or ask to
 start or resume a Roy Mission Control mission.
 
-The captain briefs one specialist, reviews its work, and asks for acceptance
-before continuing. Specialists can report missing context and resume after the
-captain obtains the answer.
+By default, the captain briefs one specialist, reviews its work, and asks for
+acceptance before continuing. Add `--autonomy checkpoint` or `--autonomy unattended`
+to `/mission-start`, or run `/mission-autonomy` anytime, to have it pass the gates
+that are a plain pass-or-fail check on its own, without asking first. See
+[progress and autonomy](skills/mission-control/references/progress-and-autonomy.md).
+Specialists can still report missing context and resume after the captain obtains
+the answer; no mode skips that.
+
+## Progress and coverage
+
+Every status the captain gives states where the mission stands: the stage, the
+phase, and how many stage-runs are left before the release is done. It also states
+the release's coverage, the fraction of the considered features that are actually
+shipping, so "five features" and "five of nine features, four deferred" read as the
+different things they are. See
+[progress and autonomy](skills/mission-control/references/progress-and-autonomy.md).
 
 Questions use the host's permitted structured-question interface when suitable.
 Plain text is the fallback. See

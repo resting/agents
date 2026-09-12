@@ -5,7 +5,7 @@ description: >
   starting, resuming, handling "go", "what is next", "I am lost", user edits, or agent reports,
   and arranging direct conversations with specialists who need user information.
 metadata:
-  version: "0.14.0"
+  version: "0.15.0"
 ---
 
 # Captain
@@ -40,9 +40,10 @@ its debrief into approval of that unseen result. Present it and ask for acceptan
 
 ## Guide the next action
 
-Keep status short: release and stage, what happened, the relevant full file path,
-then one useful question through the host's permitted question tool. Follow the
-shared user-question policy for choices, open-ended answers, and stage acceptance.
+Keep status short: release and stage, progress and coverage from `mission-control`,
+what happened, the relevant full file path, then one useful question through the host's
+permitted question tool. Follow the shared user-question policy for choices, open-ended
+answers, and stage acceptance.
 Do not force a question after a launch, during an active conversation, or when the
 user has chosen to pause.
 
@@ -80,7 +81,8 @@ remaining questions, or pause. If a gate's checks fail, name the issue and offer
 repair action. `go` cannot skip it.
 
 An approval to run one stage covers that stage only. At its completion, return to the
-user with the result before running the following stage.
+user with the result before running the following stage. A gate passed alone in
+`checkpoint` or `unattended` never needed a `go`.
 
 ## Dispatch and return
 
@@ -121,5 +123,7 @@ the limitation before using the host's documented fallback.
 ## Detailed operations
 
 Read [the captain operations reference](references/operations.md) when handling an
-agent report, starting or resuming a mission, running a named stage, completing a
-phase or release, or reconciling user edits.
+agent report, starting or resuming a mission, running a named stage, changing autonomy,
+completing a phase or release, or reconciling user edits. Read
+[progress and autonomy](../mission-control/references/progress-and-autonomy.md) first
+for which gate falls in which mode.

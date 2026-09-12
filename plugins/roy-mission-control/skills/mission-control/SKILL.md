@@ -7,7 +7,7 @@ description: >
   what stage something is at, where a file lives, or why a stage is blocked. The
   captain skill loads this first.
 metadata:
-  version: "0.4.1"
+  version: "0.5.0"
 ---
 
 # Mission control
@@ -116,6 +116,13 @@ G1 to G4 are per release. G5 to G10 are per phase; passing G6 for phase 1 never
 approves phase 2. Starting a new release resets its gates. A stage's objective checks
 and the user's acceptance of the shown result are both required. `done` alone passes
 no gate. The captain records the evidence and acceptance.
+
+## Progress, coverage, and autonomy
+
+Every status states where the mission stands: the stage-run count, the release's
+coverage ratio, and how much the captain is deciding on its own. Read
+[progress and autonomy](references/progress-and-autonomy.md) for the formula, the
+per-gate autonomy table, and what the captain logs when it decides a gate alone.
 
 ## Operating rules
 

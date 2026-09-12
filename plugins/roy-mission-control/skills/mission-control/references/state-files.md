@@ -12,12 +12,13 @@ Global. Survives every release.
 
 Current release: v0.2
 Shipped: v0.1 (2026-08-24)
+Autonomy: checkpoint
 
 ## Releases
-| Version | Status | Features | Phases | Started | Shipped |
+| Version | Status | Coverage | Phases | Started | Shipped |
 |---------|--------|----------|--------|---------|---------|
-| v0.1 | shipped | 7 | 4 | 2026-08-20 | 2026-08-24 |
-| v0.2 | in progress | 5 | 3 | 2026-08-26 | |
+| v0.1 | shipped | 7/7 (0 cut) | 4 | 2026-08-20 | 2026-08-24 |
+| v0.2 | in progress | 5/8 (2 deferred, 1 cut) | 3 | 2026-08-26 | |
 
 ## Decisions
 Decisions carry across releases until something overturns them.
@@ -26,6 +27,10 @@ Decisions carry across releases until something overturns them.
 |----|----------|---------|-------|------|
 | D-01 | Single user only, no roles | v0.1 | 2 | 2026-08-21 |
 ```
+
+`Autonomy` is `gated`, `checkpoint`, or `unattended`. See Autonomy modes in `mission-control`.
+`Coverage` is features shipping over features considered for the release, with the deferred
+and cut counts. Recompute both columns whenever the release scope changes.
 
 ## 00_captain/releases/<version>/state.md
 
@@ -37,6 +42,7 @@ release starts.
 
 Current stage: 2 (product definition)
 Current phase: none
+Progress: stage 2 of 10, phase count not set yet
 Stage status: needs_user
 Blocked by: OQ-014
 
@@ -87,3 +93,24 @@ When reviewing a completed result, record each artifact revision shown to the us
 the exact next action offered, and the later acceptance. The register may use a content
 hash to distinguish substantive changes from an unchanged file. Keep processed run IDs
 so duplicate or late reports do not apply to a retry or a different phase.
+
+Recompute `Progress` on every update, using the formula in `mission-control`. Once G4 passes,
+use the real phase count; before that, write "phase count not set yet" rather than guessing.
+
+## 00_captain/releases/<version>/autonomy_log.md
+
+Written only in `checkpoint` or `unattended` mode. One row per gate the captain passed
+without asking. Absent in `gated` mode.
+
+```markdown
+# v0.2 autonomy log
+
+| Gate | Phase | Decision | Reason | Evidence | Date |
+|------|-------|----------|--------|----------|------|
+| G1 | release | passed | Brief matches the design, no discrepancy found | 01_design_intake/releases/v0.2/design_brief.md | 2026-08-26 |
+| G7 | 1 | passed | All seven build-step verifications passed | 07_builder/releases/v0.2/phase_1_log.md | 2026-08-27 |
+```
+
+The captain appends a row before briefing the next specialist, never after. An empty log
+in `checkpoint` or `unattended` mode means no objective gate has passed yet, not that the
+mode is off. Show the full log to the user before shipping, alongside the release rollup.

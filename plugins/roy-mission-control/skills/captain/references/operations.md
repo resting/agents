@@ -67,18 +67,23 @@ permission prompt and a stopped process need different recovery actions.
 
 ## Start a mission
 
-Use the design location and version already supplied. Ask only for missing details.
-Default an unnamed release to `v0.1` and say so. Establish where the design is: a repo
-folder, share link, screenshots, or the user's description.
+Use the design location, version, and autonomy mode already supplied. Ask only for
+missing details. Default an unnamed release to `v0.1` and an unnamed mode to `gated`,
+and say so. Establish where the design is: a repo folder, share link, screenshots, or
+the user's description.
 
 Create `docs/roy_mission_control/` with `00_captain/` and all ten numbered stage
 folders from `mission-control`, each with `releases/<version>/`. Add the captain inbox,
-`00_captain/mission.md`, and the release `state.md` and `open_questions.md`. Create the
-folder README from the captain skill's `assets/docs-readme.md`. Resolve it from
-the installed skill path, not the mission project path.
+`00_captain/mission.md` with the chosen `Autonomy`, and the release `state.md` and
+`open_questions.md`. Create the folder README from the captain skill's
+`assets/docs-readme.md`. Resolve it from the installed skill path, not the mission
+project path.
 
-Explain design intake and offer `Go` or `Review the input first`. Run it when accepted,
-then return its result for G1 acceptance. Setup does not approve later stages.
+Explain design intake. In `gated` mode, offer `Go` or `Review the input first` and run it
+when accepted. In `checkpoint` or `unattended`, say the mode is on and run it directly;
+G1 is objective, so starting the mission is the only authorization it needs. Either way,
+return the result for G1 acceptance in `gated` mode, or log it and continue otherwise.
+Setup does not approve later stages.
 
 ## Run a named stage
 
@@ -93,11 +98,46 @@ without falsely passing the gate. Nothing bypasses G3 for stages 4 onward, and b
 requires a current reviewed plan. A rerun reopens its gate and marks affected work
 stale. Review its result with the user before the following stage.
 
+A named run goes ahead regardless of autonomy mode. The request itself is the
+authorization; `checkpoint` and `unattended` only change what happens when no request
+was made.
+
+## Deciding a gate alone
+
+In `checkpoint` and `unattended`, when a gate is one you may decide alone, do not stop the
+turn to ask. Verify its objective check, append the decision to
+`00_captain/releases/<version>/autonomy_log.md`, update the gate log, and brief the next
+specialist in the same turn. Surface it at the next stop instead of its own message:
+"stages 1, 5, and 7 passed on their own, see the autonomy log."
+
+In `unattended`, the same applies to G2, G3, G4, and G6: decide using the specialist's own
+documented method (the core-job test for G3, the coverage check for G5, and so on), cite
+which one, log it, and continue. Take a `blocked` report's recommended default the same
+way and record the choice as an assumption in `open_questions.md`. A `needs_user` report
+always stops, in every mode; it asks for a fact only the user has. Shipping a release
+always stops too, with the full autonomy log and the release's coverage ratio shown
+together, because it is the one action a later release cannot quietly undo. Starting the
+next release after that always asks for its goal, in every mode.
+
+## Changing autonomy
+
+On `/mission-autonomy <mode>`, validate it is `gated`, `checkpoint`, or `unattended`,
+write it to `mission.md`, and say what changes: which gates will now stop the mission
+and which will not. It takes effect on the next gate the captain reaches. It does not
+reopen or re-ask for gates already passed under the previous mode, and it does not
+interrupt a specialist already dispatched; that specialist's next report is the first
+one handled under the new mode.
+
 ## Phase and release completion
 
 G1 to G4 apply once per release. G5 to G10 apply separately to every phase. After G10
 is accepted, offer planning the next phase, or the release review if this was the last
 phase. Do not mark a release shipped just because the build gate G7 passed.
+
+In `checkpoint` or `unattended`, G10 is objective, so passing it starts the next phase's
+plan stage in the same turn instead of stopping to offer it. This chains phase to phase
+until the release's last phase reaches G10. At that point both modes stop: present the
+release rollup, the full autonomy log, and the coverage ratio, and ask before shipping.
 
 On `/mission-release <next-version>`, read all phase gates and release rollups. If any
 are open, name them and ask whether to close them or explicitly ship with the listed
@@ -110,6 +150,9 @@ as candidates. Decisions remain available. Ask whether the design changed. If un
 copy the brief into the new release and record G1 carried forward with the user's
 agreement. Route through product definition before release scope; existing information
 may let the product owner finish without another interview. Shipped folders are read-only.
+
+Starting the next release always asks first, in every mode. The new release needs a goal
+only the user can supply, even when the mode that shipped the last one was `unattended`.
 
 ## User edits
 
