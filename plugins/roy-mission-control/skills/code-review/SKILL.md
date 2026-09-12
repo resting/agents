@@ -6,23 +6,16 @@ description: >
   built", "tighten this code", "is this too complex", "check this before I merge", or
   after any build phase finishes. Runs after build execution, before test scoping.
 metadata:
-  version: "0.1.1"
+  version: "0.1.2"
 ---
 
 # Code review
-
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
 
 Review the phase diff. Cut before you critique. Finish with the verification pass
 below, using the current host's tools.
 
 Load `unslop` and `open-questions`. Read `docs/roy_mission_control/06_plan_reviewer/releases/<version>/phase_N_reviewed.md` and
 `docs/roy_mission_control/07_builder/releases/<version>/phase_N_log.md`. Diff the phase against its starting point.
-
-Load `agent-handoff` for questions, reports, and user conversations. Report gaps to
-the captain before asking the user. Only the captain records gate acceptance and
-starts the next stage.
 
 ## Eight passes
 
@@ -107,8 +100,8 @@ Method used, checks run, remaining findings, and their disposition.
    Do not recursively invoke this skill or claim a missing external command ran.
    Repeat only after a new fix or a failed check.
 
-## Gate
+## Report
 
-Report readiness when must-fix items are applied, phase verification passes, and
-the final verification has no unresolved must-fix finding. The captain presents the result, records acceptance,
-and handles the handoff to test scoping.
+Report `done` when must-fix items are applied, phase verification passes, and the
+final verification has no unresolved must-fix finding. The captain continues to
+test scoping.

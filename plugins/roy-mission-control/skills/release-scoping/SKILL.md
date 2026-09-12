@@ -7,22 +7,15 @@ description: >
   "which features ship first", or hands over a design brief and asks what to build.
   Produces the release scope the phase scoper reads.
 metadata:
-  version: "0.1.1"
+  version: "0.1.2"
 ---
 
 # Release scoping
-
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
 
 Pick the smallest release where a real user finishes the core job end to end. Then
 defend it against everything else.
 
 Load `unslop` and `open-questions` first. Read `docs/roy_mission_control/01_design_intake/releases/<version>/design_brief.md`.
-
-Load `agent-handoff` for questions, reports, and user conversations. Report gaps to
-the captain before asking the user. Only the captain records gate acceptance and
-starts the next stage.
 
 ## The v0.1 test
 
@@ -95,8 +88,8 @@ unanswered ones through `open-questions` and route them through the captain:
 - Does anything need to be private from other users
 - What must never break, even in v0.1
 
-## Gate
+## Report
 
-Report the release table and cut list to the captain for review. The captain asks
-which cuts the user disagrees with and routes corrections back. The captain records
-acceptance before starting phase scoping.
+Report the release table and cut list through `agent-handoff`. The captain pauses
+here: the user confirms the scope, or names the cuts they disagree with, before
+phase scoping starts.

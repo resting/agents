@@ -978,7 +978,7 @@
     },
     {
       "name": "roy-mission-control",
-      "description": "A captain-led workflow from design to tested code. Specialists report missing context, talk with the user when supported, and return results for acceptance.",
+      "description": "A captain runs a mission from design to tested code end to end, pausing only when the user has a decision to make, and reports progress after every stage.",
       "source": {
         "source": "local",
         "path": "./plugins/roy-mission-control"

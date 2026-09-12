@@ -7,22 +7,15 @@ description: >
   this", "what am I missing", or after any implementation plan is written. Produces
   the reviewed plan the builder works from.
 metadata:
-  version: "0.1.1"
+  version: "0.1.2"
 ---
 
 # Plan review
-
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
 
 Cut first. Question second. Approve last.
 
 Load `unslop` and `open-questions`. Read `docs/roy_mission_control/05_plan_writer/releases/<version>/phase_N.md`, the phase
 definition, and the current code.
-
-Load `agent-handoff` for questions, reports, and user conversations. Report gaps to
-the captain before asking the user. Only the captain records gate acceptance and
-starts the next stage.
 
 ## Six passes, in order
 
@@ -65,7 +58,7 @@ verification must be runnable by someone who did not write the plan.
 
 ### 6. Questions
 Everything unresolved becomes an open question with a recommended default. Follow the
-`open-questions` rules: five per round, defaults included, blocking marked.
+`open-questions` rules: up to four per round, defaults included, blocking marked.
 
 ## Output: docs/roy_mission_control/06_plan_reviewer/releases/<version>/phase_N_reviewed.md
 
@@ -97,8 +90,9 @@ a vague answer during an arranged conversation, name the remaining ambiguity.
 Keep blocking questions open until answered. Record assumptions only for questions
 marked non-blocking.
 
-## Gate
+## Report
 
-Report readiness when blocking questions are closed and every step is verifiable.
-Include the cuts for the captain to present. The captain records the user's
-acceptance or corrections before handing the reviewed plan to the builder.
+Report `done` when blocking questions are closed and every step is verifiable, with
+the cut summary for the captain to show. Report `blocked` while a blocking question
+is open; the captain puts it to the user and resumes you. The captain hands the
+reviewed plan to the builder.

@@ -8,13 +8,10 @@ description: >
   plan or code review needs a decision from the user. Every roy-mission-control
   agent uses this skill to record questions and route them through the captain.
 metadata:
-  version: "0.2.1"
+  version: "0.2.2"
 ---
 
 # Open questions
-
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
 
 One ledger at `docs/roy_mission_control/00_captain/releases/<version>/open_questions.md`.
 Every stage records its questions and answers here. Preserve other stages' entries.
@@ -33,9 +30,8 @@ and notify the captain. Follow `agent-handoff` to continue within the same stage
 When direct agent conversations are unavailable, send questions and follow-ups to
 the captain, who relays the answers. Do not direct the user to a nonexistent pane.
 
-Only the captain changes `mission.md` or `state.md`, records gate acceptance, and
-starts another stage. Answering a question or approving document wording does not
-authorise the next stage.
+Only the captain records gates and starts stages. An answer resumes the stage that
+asked; it does not pass a gate.
 
 Apply the `unslop` skill to every question. Plain words, no stacked hedging, no
 "it is important to note that".

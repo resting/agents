@@ -5,7 +5,7 @@ description: >
   conversation, and return completed work for user acceptance. Preloaded by every
   pipeline agent. The captain reads this for the shared report format.
 metadata:
-  version: "0.5.0"
+  version: "0.6.0"
 ---
 
 # Agent handoff
@@ -13,9 +13,13 @@ metadata:
 When asking the user, prefer the current host's permitted structured-question tool.
 Read the [user-question policy](references/user-questions.md) before asking.
 
-The captain coordinates the mission and remains available throughout. You own the
-current stage's work. The user can talk to you directly when information is missing,
-then return to the captain. You never launch the next stage or approve a gate.
+The captain runs the mission end to end and remains available throughout. You own
+the current stage's work. When information is missing, report it; the captain puts
+the question to the user or arranges a direct conversation with you. You never
+launch the next stage or pass a gate.
+
+The captain's brief names your version and, from stage 5, your phase. If either is
+missing, report the gap. Do not guess.
 
 ## Runtime and workspace
 
@@ -43,6 +47,10 @@ recorded user answers. Ask only about missing or conflicting information. Comple
 information can come from the current release; a previous release is not required.
 If it is enough, finish the work and report `done` without an interview.
 
+On a judgment call after product definition, read
+`02_product_owner/releases/<version>/product_definition.md` and cite the principle
+you used. A non-blocking question becomes a recorded assumption; keep working.
+
 Use `blocked` for decisions with discrete choices. Use `needs_user` when resolving
 the gaps needs a conversation. Record the gaps and why they matter before reporting.
 Do not begin an interview on your own. The captain explains the need and arranges it.
@@ -69,9 +77,9 @@ round count. Confirm unclear answers; do not invent the user's mission or audien
 Once the gaps are resolved, write the final artifacts, run the stage's checks, and
 report `done`. If the user pauses, keep `needs_user` and record what remains.
 
-Tell the user the captain will review the result and ask before proceeding. Agreement
-on wording in your pane is not permission to launch the next stage. If the user asks
-to proceed here, include that request in the report for the captain to handle.
+Tell the user the captain reviews the result and continues the mission from there.
+Agreement on wording in your pane does not pass a gate. If the user asks to proceed
+here, include that request in the report.
 
 When the delegated run has no direct user channel, return the same report to the
 captain and let it relay questions or arrange a supported interactive session. Do not
@@ -107,7 +115,7 @@ complete. Keep drafts clearly marked. Include relevant evidence in the artifacts
 
 | Status | Meaning | Extra report content |
 |--------|---------|----------------------|
-| `done` | Deliverables complete, required checks pass, no unresolved blockers; ready for captain review | What is ready and any recorded user feedback |
+| `done` | Deliverables complete, required checks pass, no unresolved blockers | What is ready and any recorded user feedback |
 | `blocked` | A user decision is needed before work can finish | `asks` with question IDs, two to four choices and a recommended default |
 | `needs_user` | A conversation is needed, active, or paused | `needs` with missing topics, why they matter, and progress so far |
 | `failed` | The stage could not finish | Failure, partial output if any, and a useful recovery step |
@@ -123,12 +131,13 @@ use the runtime's supported return or callback. Delivery failure never erases th
 saved report or implies success.
 
 Return the report and actual artifact paths. Do not start the next stage. The captain
-reads the saved work, presents it to the user, and records acceptance before proceeding.
+reads the saved work, records the gate, and continues or pauses.
 
 ## File ownership
 
 Write your stage's artifacts, your inbox report, and relevant question-ledger rows.
-Source changes are allowed only where your agent's role permits them. The captain
-alone writes `mission.md`, `state.md`, the gate log, and the artifact register.
-Report proposed cross-stage changes to it instead of editing another agent's work.
-Preserve user edits and never change a shipped release.
+Source changes are allowed only where your agent's role permits them: the builder,
+code reviewer, and unit test writer. The captain alone writes `mission.md`,
+`state.md`, `progress.md`, the gate log, and the artifact register. Report proposed
+cross-stage changes to it instead of editing another agent's work. Preserve user
+edits and never change a shipped release.

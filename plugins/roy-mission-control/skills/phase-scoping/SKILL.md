@@ -7,22 +7,15 @@ description: >
   "what is phase 1", or hands over a release scope and asks how to implement it.
   Runs after release scoping, before plan writing.
 metadata:
-  version: "0.1.1"
+  version: "0.1.2"
 ---
 
 # Phase scoping
-
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
 
 Turn the v0.1 feature list into three to six phases. Every phase ends with something
 that runs and can be shown to a person.
 
 Load `unslop` and `open-questions`. Read `docs/roy_mission_control/03_release_scoper/releases/<version>/release_scope.md`.
-
-Load `agent-handoff` for questions, reports, and user conversations. Report gaps to
-the captain before asking the user. Only the captain records gate acceptance and
-starts the next stage.
 
 ## The rule that decides everything
 
@@ -87,7 +80,7 @@ ones through `open-questions` and the captain:
 - Is any part already built or already decided
 - Does anything need to be real before someone else can start
 
-## Gate
+## Report
 
-Report the phase map to the captain. The captain asks the user to accept the order
-and walking skeleton, then records acceptance before starting the next stage.
+Report the phase map through `agent-handoff`. The captain checks the coverage
+table and continues to planning phase 1, or pauses on an open sequencing question.

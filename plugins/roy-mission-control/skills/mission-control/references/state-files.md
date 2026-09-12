@@ -27,6 +27,44 @@ Decisions carry across releases until something overturns them.
 | D-01 | Single user only, no roles | v0.1 | 2 | 2026-08-21 |
 ```
 
+## 00_captain/releases/<version>/progress.md
+
+Per release. The file the user reads. The captain rewrites it at every transition.
+
+```markdown
+# v0.1 progress
+
+Stage: 7 build, phase 2 of 4
+Mode: auto
+Needs you: nothing
+
+## Features
+| ID | Feature | Phase | Status |
+|----|---------|-------|--------|
+| F1 | Create a task | 1 | done |
+| F2 | Edit a task | 2 | building |
+| F4 | Filter by status | 3 | planned |
+| F6 | Export to CSV | 4 | not started |
+
+## Phases
+| Phase | Name | Gates passed | Status |
+|-------|------|--------------|--------|
+| 1 | Walking skeleton | G5 to G11 | done |
+| 2 | Edit and delete | G5, G6 | building |
+| 3 | Filters | | planned |
+| 4 | Export | | not started |
+
+## Next
+Code review of phase 2 starts when the build passes.
+
+## Recent
+- 2026-09-12 10:42 Phase 2 plan reviewed: 12 steps to 8, nothing blocking.
+- 2026-09-12 09:50 Phase 1 done. Checklist at 11_manual_test_writer/releases/v0.1/phase_1_checklist.md.
+```
+
+Feature status is `not started`, `planned`, `building`, `done`, `blocked`, or `cut`.
+Keep `Recent` to the last five entries.
+
 ## 00_captain/releases/<version>/state.md
 
 Per release. Gates and the artifact register live here, because both reset when a new
@@ -37,6 +75,7 @@ release starts.
 
 Current stage: 2 (product definition)
 Current phase: none
+Mode: auto
 Stage status: needs_user
 Blocked by: OQ-014
 
@@ -81,9 +120,10 @@ Legacy `pane` and `task` values mean the original Claude transports; do not atta
 them as Codex sessions. A host switch reconciles saved files and stops any old writer
 before allocating a new run.
 
-Use `running`, `blocked`, `needs_user`, `awaiting_acceptance`, `accepted`, `failed`, or
-`paused` for stage status. Conversation mode is `none`, `offered`, `direct`, or `relay`.
-When reviewing a completed result, record each artifact revision shown to the user,
-the exact next action offered, and the later acceptance. The register may use a content
+Mode is `auto`, `phase`, or `step`. Use `running`, `blocked`, `needs_user`,
+`awaiting_acceptance`, `accepted`, `failed`, or `paused` for stage status. Conversation mode is `none`, `offered`, `direct`, or `relay`.
+At a pause, record each artifact revision shown to the user, the exact next action
+offered, and the later acceptance. At an automatic gate, record the checks and the
+revision instead. The register may use a content
 hash to distinguish substantive changes from an unchanged file. Keep processed run IDs
 so duplicate or late reports do not apply to a retry or a different phase.

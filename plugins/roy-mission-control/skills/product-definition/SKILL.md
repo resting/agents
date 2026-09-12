@@ -9,13 +9,10 @@ description: >
   is scoped. Produces the document every later stage consults when a judgment call
   comes up.
 metadata:
-  version: "0.2.1"
+  version: "0.2.2"
 ---
 
 # Product definition
-
-When asking the user, prefer `AskUserQuestion`.
-Read the [user-question policy](../agent-handoff/references/user-questions.md) before asking.
 
 Two documents. The first says why the product exists. The second says everything it
 could ever do. Later stages cut the second down using the first.
@@ -137,8 +134,9 @@ principles and check the wording. Save progress before reporting to the captain.
 ## Report readiness
 
 When both documents pass the coverage checks and blocking questions are closed,
-report `done` through `agent-handoff`. Include both output paths and the sources
-used. The captain owns acceptance and the handoff to release scoping.
+report `done` through `agent-handoff` with both output paths and the sources used.
+The captain pauses here: the user confirms the definition and the inventory before
+release scoping starts.
 
 ## Later stages read this
 
