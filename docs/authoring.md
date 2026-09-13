@@ -121,6 +121,20 @@ clean naming — pick distinct names for skill/command pairs within a plugin.
 The adapter handles mapping. The `BARE_MODEL_ALIAS` lint is informational — it just notes
 that the mapping is implicit. If you want explicit, use `inherit`.
 
+For a specific agent, optional `codex-model` and `codex-reasoning-effort` frontmatter
+fields override the Codex output without changing the shared alias map. For example:
+
+```yaml
+model: sonnet
+effort: high
+codex-model: gpt-5.6-terra
+codex-reasoning-effort: high
+```
+
+The Codex adapter emits these as `model` and `model_reasoning_effort`. Check that
+the target host supports both values. Without these fields, existing model mapping
+and reasoning defaults apply. Claude's `effort` field is not translated automatically.
+
 Mapping targets live in `tools/adapters/capabilities.py` (`MODEL_ALIASES`) and track each
 harness's published catalog (last verified July 2026). Copilot CLI serves Claude models
 natively — including Fable 5 and Sonnet 5 since late June 2026 — so its aliases map

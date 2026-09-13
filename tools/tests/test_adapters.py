@@ -11,6 +11,8 @@ import json
 import re
 from pathlib import Path
 
+import pytest
+
 # tools.adapters.* imports happen via the conftest sys.path injection
 from tools.adapters.antigravity import AntigravityAdapter
 from tools.adapters.base import PluginSource, parse_frontmatter
@@ -84,6 +86,56 @@ class TestCodexAdapter:
         assert "color" not in parsed
         # No `tools` key in Codex TOML (silently ignored anyway)
         assert "tools" not in parsed
+        assert "model_reasoning_effort" not in parsed
+
+    def test_agent_codex_overrides_leave_other_harness_models_unchanged(
+        self, synthetic_plugin: PluginSource, output_root: Path
+    ):
+        import tomllib
+
+        agent = synthetic_plugin.agents[0]
+        agent.frontmatter, _ = parse_frontmatter(
+            "---\nname: greeter\ndescription: Use when greeting.\nmodel: sonnet\n"
+            "effort: high\ncodex-model: gpt-5.6-terra\ncodex-reasoning-effort: high\n---\n"
+        )
+        result = CodexAdapter(output_root=output_root).emit_plugin(synthetic_plugin)
+        parsed = tomllib.loads((output_root / ".codex/agents/demo__greeter.toml").read_text())
+        assert parsed["model"] == "gpt-5.6-terra"
+        assert parsed["model_reasoning_effort"] == "high"
+        assert not any("unknown model alias" in warning for warning in result.warnings)
+
+        OpenCodeAdapter(output_root=output_root).emit_plugin(synthetic_plugin)
+        fm, _ = parse_frontmatter((output_root / ".opencode/agents/demo__greeter.md").read_text())
+        assert fm["model"] == "anthropic/claude-sonnet-5"
+        assert "codex-model" not in fm
+        assert "codex-reasoning-effort" not in fm
+
+    def test_codex_effort_override_keeps_default_model_mapping(
+        self, synthetic_plugin: PluginSource, output_root: Path
+    ):
+        import tomllib
+
+        synthetic_plugin.agents[0].frontmatter["codex-reasoning-effort"] = "medium"
+        CodexAdapter(output_root=output_root).emit_plugin(synthetic_plugin)
+        parsed = tomllib.loads((output_root / ".codex/agents/demo__greeter.toml").read_text())
+        assert parsed["model"] == "gpt-5.5"
+        assert parsed["model_reasoning_effort"] == "medium"
+
+    @pytest.mark.parametrize(
+        ("field", "value"),
+        [
+            ("codex-model", ""),
+            ("codex-model", []),
+            ("codex-reasoning-effort", "expensive"),
+            ("codex-reasoning-effort", []),
+        ],
+    )
+    def test_invalid_codex_override_fails_generation(
+        self, synthetic_plugin: PluginSource, output_root: Path, field: str, value
+    ):
+        synthetic_plugin.agents[0].frontmatter[field] = value
+        with pytest.raises(ValueError, match=field):
+            CodexAdapter(output_root=output_root).emit_plugin(synthetic_plugin)
 
     def test_agent_with_write_tools_gets_workspace_write(self, tmp_path: Path, output_root: Path):
         from tools.tests.conftest import _make_agent

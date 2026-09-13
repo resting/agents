@@ -19,6 +19,8 @@ description: |
 skills: ["roy-mission-control:unit-test-writing", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff"]
 model: "sonnet"
 effort: "medium"
+codex-model: "gpt-5.6-terra"
+codex-reasoning-effort: "medium"
 color: "cyan"
 tools: ["Skill", "Read", "Write", "Edit", "Bash", "Glob", "Grep", "AskUserQuestion"]
 ---

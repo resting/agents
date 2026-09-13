@@ -480,10 +480,23 @@ class CodexAdapter(HarnessAdapter):
         agent_id = f"{plugin.name}__{agent.name}"
         rel = Path(".codex") / "agents" / f"{agent_id}.toml"
 
-        # Map model alias; warn if the source model isn't one of the known aliases.
-        model, warning = resolve_model("codex", agent.model)
-        if warning:
-            result.warnings.append(f"agent `{agent_id}`: {warning}")
+        # Per-agent Codex choices take precedence over the shared Claude alias map.
+        model = agent.frontmatter.get("codex-model")
+        if model is not None:
+            if not isinstance(model, str) or not model.strip():
+                raise ValueError(f"agent `{agent_id}`: codex-model must be a non-empty string")
+            model = model.strip()
+        else:
+            model, warning = resolve_model("codex", agent.model)
+            if warning:
+                result.warnings.append(f"agent `{agent_id}`: {warning}")
+
+        effort = agent.frontmatter.get("codex-reasoning-effort")
+        if effort is not None and (
+            not isinstance(effort, str)
+            or effort not in {"none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra"}
+        ):
+            raise ValueError(f"agent `{agent_id}`: invalid codex-reasoning-effort {effort!r}")
 
         # Heuristic for sandbox_mode:
         # - If source frontmatter has NO `tools:` field at all -> agent has all tools by
@@ -511,6 +524,8 @@ class CodexAdapter(HarnessAdapter):
             _toml_kv("sandbox_mode", sandbox_mode),
             _toml_kv("developer_instructions", developer_instructions),
         ]
+        if effort is not None:
+            lines.append(_toml_kv("model_reasoning_effort", effort))
         if agent.name in {"default", "worker", "explorer"}:
             result.warnings.append(
                 f"agent `{agent.name}` collides with Codex built-in role; emitted as `{agent_id}` instead."

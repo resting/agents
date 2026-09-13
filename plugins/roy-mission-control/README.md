@@ -92,7 +92,28 @@ Questions use the host's structured-question tool when one exists; see
 [the question policy](skills/agent-handoff/references/user-questions.md).
 
 Claude Code reads model and effort from each agent file. The repository adapters map
-those to other harnesses. An explicit user choice wins.
+models to other harnesses. Explicit Codex settings also set reasoning effort.
+An explicit user choice wins.
+
+## Build models
+
+| Role | Claude Code | Codex | Effort |
+|------|-------------|-------|--------|
+| Builder | Sonnet | `gpt-5.6-terra` | high |
+| Unit test writer | Sonnet | `gpt-5.6-terra` | medium |
+
+Planning and code review keep their Opus setting, mapped to `gpt-5.5` in Codex.
+The builder follows a reviewed plan, verifies each step, and stops after repeated
+failures. Code review and tests still follow every build.
+
+This choice aims to reduce build usage. It does not establish equal quality or
+guaranteed savings. Compare usage for a completed phase, including review fixes and
+retries. If a build stalls, inspect the failed step and verification evidence before
+choosing a stronger model for that step. An unclear plan needs a plan correction.
+Keep the existing failure pause; do not silently retry on a more expensive model.
+
+Terra must be available on the Codex host. If it is unavailable, report the limitation
+and ask for an available model choice. Do not silently substitute another model.
 
 ## Maintaining this plugin
 

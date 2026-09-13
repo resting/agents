@@ -17,8 +17,10 @@ description: |
   <commentary>Implementing a plan is stage 7.</commentary>
   </example>
 skills: ["roy-mission-control:build-execution", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff"]
-model: "opus"
+model: "sonnet"
 effort: "high"
+codex-model: "gpt-5.6-terra"
+codex-reasoning-effort: "high"
 color: "green"
 tools: ["Skill", "Read", "Write", "Edit", "Bash", "Glob", "Grep", "AskUserQuestion"]
 ---
