@@ -15,7 +15,7 @@ import sys
 import time
 from pathlib import Path
 
-THRESHOLD = 95
+THRESHOLD = 90
 MAX_AGE = 120
 
 

@@ -46,7 +46,7 @@ remaining topics in the draft and the ledger as you go. Show the wording for
 correction.
 
 Load `usage-monitor` before work. Check usage between work steps and before
-completion. At 95% consumed or when readings are unavailable, save a checkpoint,
+completion. At 90% consumed or when readings are unavailable, save a checkpoint,
 report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps

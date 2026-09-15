@@ -15,7 +15,7 @@ metadata:
 The pipeline, the folders, the gates. The `captain` skill runs it. The eleven
 agents work inside it. Load `unslop` before writing anything this pipeline
 produces, including plans, code comments, commit messages, and questions.
-Load `usage-monitor` before work or dispatch. A window at 95% consumed or more,
+Load `usage-monitor` before work or dispatch. A window at 90% consumed or more,
 or usage that cannot be verified, requires a checkpoint and `paused_usage` report.
 The captain informs the user after saving state. No mode skips this check.
 

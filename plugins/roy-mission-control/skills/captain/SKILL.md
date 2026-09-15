@@ -93,7 +93,7 @@ user override wins.
 ## go
 
 For `paused_usage`, `go` requests resumption from the checkpoint after a fresh
-usage check. It does not override the 95% threshold or missing readings. Follow
+usage check. It does not override the 90% threshold or missing readings. Follow
 `usage-monitor` only. The result-acceptance flow below does not apply to a usage
 pause and must not pass an incomplete stage gate.
 

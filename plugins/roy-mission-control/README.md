@@ -118,12 +118,14 @@ and ask for an available model choice. Do not silently substitute another model.
 ## Usage pauses
 
 The captain and all eleven agents check account usage before work and between
-steps. At **95% consumed**, they save a checkpoint and pause. Missing or stale
+steps. At **90% consumed**, they save a checkpoint and pause. Missing or stale
 readings also pause work. The agent saves its handoff before notifying the captain.
 The captain records the pause, tells you what remains, and waits for your decision.
+The handoff includes the objective, saved changes, verification, and ordered remaining
+steps. Any suitable agent or model can resume it without the original conversation.
 
 `go` requests a fresh check and resumes the unfinished step only when usage is
-available and below 95%. A reset never resumes the mission by itself. The captain
+available and below 90%. A reset never resumes the mission by itself. The captain
 does not buy credits, consume resets, or switch accounts without your instruction.
 
 Codex uses the desktop account tool or the local CLI's account protocol. Claude
@@ -134,7 +136,7 @@ as unsupported. See [usage-monitor](skills/usage-monitor/SKILL.md) for the rule 
 [usage sources](skills/usage-monitor/references/sources.md) for setup and limits.
 
 Checks run between work steps. They cannot interrupt an ongoing model request or
-guarantee that the last 5% will cover a handoff. Agents save progress throughout work.
+guarantee that the last 10% will cover a handoff. Agents save progress throughout work.
 
 ## Maintaining this plugin
 

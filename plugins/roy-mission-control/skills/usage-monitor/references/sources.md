@@ -12,7 +12,7 @@ budget source. Until one exists, report `usage_unknown`.
 Discover and call the host's `get_usage_limits` tool with an empty argument object.
 Prefer `rateLimitsByLimitId`; fall back to `rateLimits` only when the map is absent
 or empty. Check `usedPercent` on each returned `primary` and `secondary` window.
-At 95 or higher, pause. Also pause if the account reports usage blocked, a reached
+At 90 or higher, pause. Also pause if the account reports usage blocked, a reached
 limit, or reached spend control. Missing buckets or percentages are unknown.
 
 Use the host's known allowance bucket mapping when available. Otherwise check all

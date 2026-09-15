@@ -30,7 +30,7 @@
 11. Shipped release folders are read-only. Changes belong in a later release.
 12. The captain rewrites `progress.md` and prints the progress block at every
     transition, whether or not it pauses.
-13. Every agent and the captain follow `usage-monitor`. At 95% consumed or when
+13. Every agent and the captain follow `usage-monitor`. At 90% consumed or when
     usage cannot be verified, stop substantive work and checkpoint before reporting.
     No new stage, retry, or interview proceeds during the pause. The captain saves
     state, then informs the user. Only the user's decision can request resumption.

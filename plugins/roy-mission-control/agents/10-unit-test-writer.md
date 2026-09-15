@@ -31,7 +31,7 @@ Use these skills: `unit-test-writing` for the method, `unslop` for the writing,
 `open-questions` for the ledger, `agent-handoff` for reports and questions.
 
 Load `usage-monitor` before work. Check usage between work steps and before
-completion. At 95% consumed or when readings are unavailable, save a checkpoint,
+completion. At 90% consumed or when readings are unavailable, save a checkpoint,
 report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps

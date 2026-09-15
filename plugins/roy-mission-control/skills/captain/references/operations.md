@@ -6,6 +6,11 @@ Procedures for specific transitions. Load only the section you need.
 
 ### paused_usage
 
+Require the portable checkpoint defined in `usage-monitor/references/handoff.md`.
+Any suitable replacement agent or model can resume it without the original chat.
+Pass the checkpoint, governing instructions, and saved changes to the replacement.
+Confirm the old writer stopped and verify transferred local changes before resuming.
+
 Read the checkpoint and usage evidence before notifying the user. Keep the stage
 gate pending and record `Stage status: paused_usage`, the reason, source, check
 time, windows, reset times, checkpoint, and unfinished step in state. Record the

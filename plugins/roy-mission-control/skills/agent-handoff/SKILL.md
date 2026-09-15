@@ -11,9 +11,12 @@ metadata:
 # Agent handoff
 
 Load `usage-monitor` before stage work. Its checks and checkpoint rules apply to
-every specialist, including direct interviews. At 95% consumed or when usage is
+every specialist, including direct interviews. At 90% consumed or when usage is
 unavailable, save work, report `paused_usage`, notify the captain, and end the turn.
 This takes precedence over instructions to finish, retry, or report `done`.
+Usage checkpoints follow `usage-monitor/references/handoff.md`. They must be
+self-contained for any replacement agent or model, independent of the original
+conversation, runtime session, or private memory.
 
 When asking the user, prefer the current host's permitted structured-question tool.
 Read the [user-question policy](references/user-questions.md) before asking.
@@ -124,7 +127,7 @@ complete. Keep drafts clearly marked. Include relevant evidence in the artifacts
 | `blocked` | A user decision is needed before work can finish | `asks` with question IDs, two to four choices and a recommended default |
 | `needs_user` | A conversation is needed, active, or paused | `needs` with missing topics, why they matter, and progress so far |
 | `failed` | The stage could not finish | Failure, partial output if any, and a useful recovery step |
-| `paused_usage` | Account usage reached 95% or cannot be verified | `usage_reason`, `usage`, and `checkpoint`; completed and remaining work saved |
+| `paused_usage` | Account usage reached 90% or cannot be verified | `usage_reason`, `usage`, and `checkpoint`; completed and remaining work saved |
 
 For a usage pause, keep the same run and next report sequence. Set `usage_reason`
 to `threshold` or `unavailable`. `usage` contains the normalized reading with its

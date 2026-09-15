@@ -36,7 +36,7 @@ Esc to cancel
 
 @pytest.mark.parametrize(
     "consumed,status",
-    [(0, "ok"), (94.99, "ok"), (95, "paused_usage"), (100, "paused_usage")],
+    [(0, "ok"), (89.99, "ok"), (90, "paused_usage"), (100, "paused_usage")],
 )
 @pytest.mark.parametrize("which", ["session", "weekly"])
 def test_claude_usage_boundary(consumed, status, which):
@@ -85,7 +85,7 @@ def test_claude_checks_model_window_and_ignores_contribution_percentages():
     assert reading["windows"][0]["reset_text"] == "Resets 10pm (Asia/Singapore)"
     assert reading["windows"][0]["resets_at"] is None
     extra = (
-        "Current week (Sonnet only)\n95% used\nResets Sep 20 at 10pm (Asia/Singapore)\n"
+        "Current week (Sonnet only)\n90% used\nResets Sep 20 at 10pm (Asia/Singapore)\n"
     )
     assert usage.claude_usage(claude_screen() + extra)["status"] == "paused_usage"
     assert usage.claude_usage(claude_screen() * 2)["status"] == "usage_unknown"
@@ -176,8 +176,8 @@ def codex_payload(primary=10, secondary=20):
     "consumed,status",
     [
         (0, "ok"),
-        (94.99, "ok"),
-        (95, "paused_usage"),
+        (89.99, "ok"),
+        (90, "paused_usage"),
         (100, "paused_usage"),
         (103, "paused_usage"),
     ],
@@ -189,7 +189,7 @@ def test_codex_boundary(consumed, status, which):
     assert usage.codex_usage(payload, now=NOW)["status"] == status
 
 
-@pytest.mark.parametrize("invalid", [None, True, "95", -1, float("nan"), float("inf")])
+@pytest.mark.parametrize("invalid", [None, True, "90", -1, float("nan"), float("inf")])
 def test_invalid_usage_is_unknown(invalid):
     assert (
         usage.codex_usage(codex_payload(invalid), now=NOW)["status"] == "usage_unknown"
@@ -200,7 +200,7 @@ def test_codex_prefers_map_and_checks_all_buckets():
     payload = codex_payload()
     payload["rateLimits"] = {"primary": {"usedPercent": 100}}
     assert usage.codex_usage(payload, now=NOW)["status"] == "ok"
-    payload["rateLimitsByLimitId"]["other"] = {"primary": {"usedPercent": 95}}
+    payload["rateLimitsByLimitId"]["other"] = {"primary": {"usedPercent": 90}}
     assert usage.codex_usage(payload, now=NOW)["status"] == "paused_usage"
     assert usage.codex_usage(payload, ["codex"], now=NOW)["status"] == "ok"
     assert usage.codex_usage(payload, ["missing"], now=NOW)["status"] == "usage_unknown"
@@ -208,7 +208,7 @@ def test_codex_prefers_map_and_checks_all_buckets():
 
 def test_codex_legacy_missing_and_blocked():
     assert (
-        usage.codex_usage({"rateLimits": {"primary": {"usedPercent": 95}}})["status"]
+        usage.codex_usage({"rateLimits": {"primary": {"usedPercent": 90}}})["status"]
         == "paused_usage"
     )
     assert usage.codex_usage({})["status"] == "usage_unknown"
@@ -227,7 +227,7 @@ def test_cli_invalid_and_stale_inputs_pause(tmp_path):
     process = subprocess.run(command, capture_output=True, text=True, check=False)
     assert process.returncode == 2
     assert json.loads(process.stdout)["status"] == "usage_unknown"
-    source.write_text(json.dumps({"rateLimits": {"primary": {"usedPercent": 95}}}))
+    source.write_text(json.dumps({"rateLimits": {"primary": {"usedPercent": 90}}}))
     process = subprocess.run(command, capture_output=True, text=True, check=False)
     assert process.returncode == 2
     assert json.loads(process.stdout)["status"] == "paused_usage"
@@ -262,7 +262,7 @@ def test_codex_protocol_and_process_cleanup(tmp_path, monkeypatch, reply):
         f"reply = {reply!r}\n"
         "if reply == 'success':\n"
         "    print(json.dumps({'method': 'unrelated', 'params': {}}), flush=True)\n"
-        "    print(json.dumps({'id': 2, 'result': {'rateLimits': {'primary': {'usedPercent': 95}}}}), flush=True)\n"
+        "    print(json.dumps({'id': 2, 'result': {'rateLimits': {'primary': {'usedPercent': 90}}}}), flush=True)\n"
         "elif reply == 'error':\n"
         "    print(json.dumps({'id': 2, 'error': {'message': 'private diagnostic'}}), flush=True)\n"
         "elif reply == 'timeout':\n"

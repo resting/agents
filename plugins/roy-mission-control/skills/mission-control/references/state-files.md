@@ -100,7 +100,7 @@ Proposed next action: review product definition and inventory when ready
 Status: ok
 Source: codex native account usage
 Applicable buckets: codex
-Threshold consumed: 95%
+Threshold consumed: 90%
 Checked at: <Unix seconds>
 Windows: <name, consumed percentage, reset Unix seconds or displayed reset label>
 Pause reason: none

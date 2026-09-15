@@ -3,12 +3,12 @@ name: usage-monitor
 description: >
   Use when a roy-mission-control captain or specialist starts, resumes, dispatches,
   or works on a stage. Check Codex or Claude Code account usage and save a handoff
-  at 95 percent consumed, or when usage cannot be verified.
+  at 90 percent consumed, or when usage cannot be verified.
 ---
 
 # Usage monitor
 
-Check account allowance before doing mission work. At **95% consumed or more** in
+Check account allowance before doing mission work. At **90% consumed or more** in
 any applicable window, stop substantive work and save a handoff. Missing, stale,
 invalid, or unsupported readings also pause the mission. Never interpret them as
 zero usage. This rule applies in `auto`, `phase`, `step`, named reruns, interviews,
@@ -23,7 +23,7 @@ and inline work. It takes precedence over instructions to finish or advance a st
 - Both: refresh at least every two minutes while active. Check before launching a
   long operation. A running model request cannot be stopped by this skill.
 
-Save progress after each useful step. Five percent is a reserve, not a guarantee
+Save progress after each useful step. Ten percent is a reserve, not a guarantee
 that the remaining job or even its handoff will fit. Other sessions share allowance.
 Do not estimate whether a large job will fit from a percentage alone.
 
@@ -50,7 +50,9 @@ On `paused_usage` or `usage_unknown`:
    minimum action needed to leave an in-flight write safe. Do not finish the stage
    or run its remaining checks. Preserve unverified changes as unverified.
 2. Save a checkpoint in your own stage folder, named
-   `usage_handoff_<run_id>.md`. Include version, phase, run ID, runtime, model,
+   `usage_handoff_<run_id>.md`. Follow [the portable handoff](references/handoff.md).
+   It must let another agent or model resume without this conversation or session.
+   Include version, phase, run ID, runtime, model,
    completed steps, changed files, pending work, checks passed or not run, active
    commands and their real IDs, and the exact next action. Keep existing drafts.
    The captain writes `usage_handoff_captain.md` in its own release folder when it
@@ -79,7 +81,7 @@ Keep check timestamps as Unix seconds. Preserve Claude reset labels as shown. As
 The pause stays recorded after an allowance reset, session restart, or a later
 `done` notification. A status request never resumes it. `go` after a usage pause
 requests a fresh check and resumption of the saved step. Resume only if all
-applicable readings are available and below 95%. If not, explain why it stays paused.
+applicable readings are available and below 90%. If not, explain why it stays paused.
 The user may choose to wait, repair monitoring, or switch to another available
 account or host. Reconcile the old writer and saved artifacts before switching.
 Never silently switch models, buy credits, consume a reset, or bypass monitoring.
@@ -88,3 +90,5 @@ Only an explicit user instruction can change this policy; record its scope.
 Read the checkpoint on resume. Confirm the previous writer stopped, allocate a new
 run ID for a stopped run, and link the old checkpoint in the brief. Resume the
 unfinished step. Do not replay completed work or pass incomplete gates.
+The captain may assign any suitable replacement agent or model. Follow the portable
+handoff's transfer and recovery checks; the original session is never required.
