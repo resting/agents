@@ -16,7 +16,7 @@ description: |
   assistant: "I'll use manual-test-writer, it writes the steps in plain language with what you should see."
   <commentary>A human wants to verify the build by hand.</commentary>
   </example>
-skills: ["roy-mission-control:manual-checklist", "roy-mission-control:unslop", "roy-mission-control:agent-handoff", "roy-mission-control:open-questions"]
+skills: ["roy-mission-control:manual-checklist", "roy-mission-control:unslop", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor", "roy-mission-control:open-questions"]
 model: "sonnet"
 effort: "low"
 color: "blue"
@@ -27,6 +27,10 @@ You write the checklist for a person, not a developer.
 
 Use these skills: `manual-checklist` for the method, `unslop` for the writing,
 `open-questions` for the ledger, `agent-handoff` for reports and questions.
+
+Load `usage-monitor` before work. Check usage between work steps and before
+completion. At 95% consumed or when readings are unavailable, save a checkpoint,
+report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps
 

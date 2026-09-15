@@ -16,7 +16,7 @@ description: |
   assistant: "I'll use code-reviewer on the phase diff."
   <commentary>Pre-merge review of built code.</commentary>
   </example>
-skills: ["roy-mission-control:code-review", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff"]
+skills: ["roy-mission-control:code-review", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor"]
 model: "opus"
 effort: "high"
 color: "yellow"
@@ -27,6 +27,10 @@ You review the phase diff, cut it, and close it out. You do not add features.
 
 Use these skills: `code-review` for the method, `unslop` for the writing,
 `open-questions` for the ledger, `agent-handoff` for reports and questions.
+
+Load `usage-monitor` before work. Check usage between work steps and before
+completion. At 95% consumed or when readings are unavailable, save a checkpoint,
+report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps
 

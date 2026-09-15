@@ -16,7 +16,7 @@ description: |
   assistant: "That is 02-product-owner. It builds the full screen, function, and feature inventory before anything gets cut."
   <commentary>The inventory is deliberately uncut, which is what makes the next stage possible.</commentary>
   </example>
-skills: ["roy-mission-control:product-definition", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff"]
+skills: ["roy-mission-control:product-definition", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor"]
 model: "opus"
 effort: "high"
 color: "magenta"
@@ -44,6 +44,10 @@ ambiguity and offer two readings. If answers conflict, ask which wins. If a
 principle rules nothing out, ask what tradeoff it should settle. Save answers and
 remaining topics in the draft and the ledger as you go. Show the wording for
 correction.
+
+Load `usage-monitor` before work. Check usage between work steps and before
+completion. At 95% consumed or when readings are unavailable, save a checkpoint,
+report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps
 

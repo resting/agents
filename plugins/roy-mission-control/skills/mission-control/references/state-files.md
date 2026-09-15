@@ -96,6 +96,18 @@ Remaining: primary audience and core job
 Awaiting acceptance: no
 Proposed next action: review product definition and inventory when ready
 
+## Usage
+Status: ok
+Source: codex native account usage
+Applicable buckets: codex
+Threshold consumed: 95%
+Checked at: <Unix seconds>
+Windows: <name, consumed percentage, reset Unix seconds or displayed reset label>
+Pause reason: none
+Checkpoint: none
+Unfinished step: none
+Resume requested by user: no
+
 ## Gate log
 | Gate | Phase | Passed | Date | User acceptance and evidence |
 |------|-------|--------|------|------------------------------|
@@ -121,7 +133,13 @@ them as Codex sessions. A host switch reconciles saved files and stops any old w
 before allocating a new run.
 
 Mode is `auto`, `phase`, or `step`. Use `running`, `blocked`, `needs_user`,
-`awaiting_acceptance`, `accepted`, `failed`, or `paused` for stage status. Conversation mode is `none`, `offered`, `direct`, or `relay`.
+`awaiting_acceptance`, `accepted`, `failed`, `paused`, or `paused_usage` for stage
+status. Conversation mode is `none`, `offered`, `direct`, or `relay`.
+Usage status is `ok`, `paused_usage`, or `usage_unknown`. Either non-ok usage status
+sets stage status to `paused_usage` with reason `threshold` or `unavailable`.
+Record the checkpoint and unfinished step before informing the user. An allowance
+reset never clears a saved pause. Add `Usage paused` and the pending user decision
+to progress; mark affected unfinished features `blocked` rather than `done`.
 At a pause, record each artifact revision shown to the user, the exact next action
 offered, and the later acceptance. At an automatic gate, record the checks and the
 revision instead. The register may use a content

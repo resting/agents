@@ -34,3 +34,11 @@ captain.
 
 Installing the plugin exposes generated skills and agent definitions. Start a
 new task after installation so Codex discovers them.
+
+## Account usage
+
+Follow `usage-monitor` before stage work and between steps. Read its
+`references/sources.md` for this runtime. Pass the verified source identity in the
+brief. Save the checkpoint and `paused_usage` inbox before the normal notification.
+Keep a usage-paused session available, but do not continue without the captain
+relaying the user's decision and a fresh passing usage check.

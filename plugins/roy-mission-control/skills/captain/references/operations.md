@@ -4,7 +4,30 @@ Procedures for specific transitions. Load only the section you need.
 
 ## Handling a report
 
+### paused_usage
+
+Read the checkpoint and usage evidence before notifying the user. Keep the stage
+gate pending and record `Stage status: paused_usage`, the reason, source, check
+time, windows, reset times, checkpoint, and unfinished step in state. Record the
+processed run ID and sequence as usual. Stop dispatch in every mode. Preserve
+valid earlier gates, but never pass this stage from a partial result.
+
+If the captain's own check triggers the pause, first ask any active specialist to
+checkpoint through its existing channel. Confirm it stopped before another writer
+starts. Save the captain's checkpoint even if the specialist cannot respond. Say
+which work remains unconfirmed. Do not abruptly kill a writer to save allowance.
+
+Rewrite progress, then tell the user what was saved and what remains. Show the
+limiting window and reset time in their timezone, or explain unavailable usage.
+Ask whether to wait, repair the source, or switch to an available host or account.
+Do not start a reset, purchase, switch, or automatic retry. Follow `usage-monitor`
+for the user's eventual decision. A reset alone never resumes work.
+
 ### done
+
+If a usage pause is pending, retain it and record the report for later review.
+Do not accept a late `done` as permission to resume. Otherwise check usage before
+reviewing outputs or advancing. A low or unavailable reading enters `paused_usage`.
 
 Verify the outputs and the stage's gate checks in `mission-control`. Record the gate
 with the artifact revisions. Then:
@@ -69,6 +92,11 @@ folders from `mission-control`, each with `releases/<version>/`. Add the inbox,
 `open_questions.md`. Copy the folder README from the captain skill's
 `assets/docs-readme.md`, resolved from the installed plugin path.
 
+Establish the account usage source through `usage-monitor`. In Claude Code, run
+and verify the `/usage` probe. Record the account source in state and pass the
+probe instructions to every specialist. If usage cannot be read, save the setup state and
+report `paused_usage`; do not dispatch design intake.
+
 Say what will happen: design intake runs now, then product definition, and the first
 pause is the product definition unless a question comes up sooner. Then dispatch
 design intake in the same turn.
@@ -132,4 +160,7 @@ relevant drafts. Check the saved specialist session through the matching runtime
 Restore the mode, conversation mode, processed sequence, and any pending acceptance.
 Print progress and say the next action without replaying history. An active
 interview stays active; a result awaiting a decision still waits. If the mode is
-`auto` and nothing is pending or running, continue the run.
+`auto` and nothing is pending or running, run the usage check before continuing.
+A saved `paused_usage` always requires the user's request to resume plus a fresh
+passing check. Resume its checkpoint, not the next stage. Reconcile the stopped
+writer and assign a new run ID for the resumed attempt.

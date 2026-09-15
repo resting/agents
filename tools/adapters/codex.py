@@ -465,16 +465,19 @@ class CodexAdapter(HarnessAdapter):
         content = _frontmatter_block(fm) + "\n\n" + head
         result.written.append(self.write(skill_dir / "SKILL.md", content))
 
-        # Mirror any existing references/ assets — use binary copy so non-text assets
-        # (PDFs, images, fonts) don't crash the run with UnicodeDecodeError.
-        # The overflow vs source-details collision was handled above by routing
-        # overflow to references/_overflow.md when source already has details.md.
-        if skill.references_dir:
-            for ref in sorted(skill.references_dir.rglob("*")):
-                if not ref.is_file():
+        # Skills can call bundled scripts and load binary assets as well as references.
+        # Overflow uses a separate path above when source details.md already exists.
+        for directory in ("references", "scripts", "assets"):
+            source_dir = skill.dir / directory
+            for source in sorted(source_dir.rglob("*")):
+                rel = source.relative_to(skill.dir)
+                if (
+                    not source.is_file()
+                    or any(part.startswith(".") or part == "__pycache__" for part in rel.parts)
+                    or source.suffix == ".pyc"
+                ):
                     continue
-                rel = ref.relative_to(skill.references_dir)
-                result.written.append(self.mirror_file(ref, skill_dir / "references" / rel))
+                result.written.append(self.mirror_file(source, skill_dir / rel))
 
     def _emit_agent(self, plugin: PluginSource, agent: AgentSource, result: EmitResult) -> None:
         agent_id = f"{plugin.name}__{agent.name}"

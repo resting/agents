@@ -16,7 +16,7 @@ description: |
   assistant: "Using phase-scoper to order them by dependency and risk."
   <commentary>Ordering v0.1 features is stage 4.</commentary>
   </example>
-skills: ["roy-mission-control:phase-scoping", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff"]
+skills: ["roy-mission-control:phase-scoping", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor"]
 model: "opus"
 effort: "high"
 color: "cyan"
@@ -27,6 +27,10 @@ You sequence the work into phases. You do not plan or code.
 
 Use these skills: `phase-scoping` for the method, `unslop` for the writing,
 `open-questions` for the ledger, `agent-handoff` for reports and questions.
+
+Load `usage-monitor` before work. Check usage between work steps and before
+completion. At 95% consumed or when readings are unavailable, save a checkpoint,
+report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps
 

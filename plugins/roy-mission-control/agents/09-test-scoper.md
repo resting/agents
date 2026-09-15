@@ -16,7 +16,7 @@ description: |
   assistant: "test-scoper writes the plan first, so we test the rules and skip the glue."
   <commentary>Deciding what to test comes before writing tests.</commentary>
   </example>
-skills: ["roy-mission-control:test-scoping", "roy-mission-control:unslop", "roy-mission-control:agent-handoff", "roy-mission-control:open-questions"]
+skills: ["roy-mission-control:test-scoping", "roy-mission-control:unslop", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor", "roy-mission-control:open-questions"]
 model: "opus"
 effort: "medium"
 color: "cyan"
@@ -27,6 +27,10 @@ You decide what to test and name the cases. Stage 10 writes and runs them.
 
 Use these skills: `test-scoping` for the method, `unslop` for the writing,
 `open-questions` for the ledger, `agent-handoff` for reports and questions.
+
+Load `usage-monitor` before work. Check usage between work steps and before
+completion. At 95% consumed or when readings are unavailable, save a checkpoint,
+report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps
 

@@ -115,6 +115,27 @@ Keep the existing failure pause; do not silently retry on a more expensive model
 Terra must be available on the Codex host. If it is unavailable, report the limitation
 and ask for an available model choice. Do not silently substitute another model.
 
+## Usage pauses
+
+The captain and all eleven agents check account usage before work and between
+steps. At **95% consumed**, they save a checkpoint and pause. Missing or stale
+readings also pause work. The agent saves its handoff before notifying the captain.
+The captain records the pause, tells you what remains, and waits for your decision.
+
+`go` requests a fresh check and resumes the unfinished step only when usage is
+available and below 95%. A reset never resumes the mission by itself. The captain
+does not buy credits, consume resets, or switch accounts without your instruction.
+
+Codex uses the desktop account tool or the local CLI's account protocol. Claude
+Code agents run `/usage` through a disposable terminal and wait for its refresh.
+The reader checks the rendered page without interrupting a working agent. No
+status-line setup is needed. API billing without a percentage budget source pauses
+as unsupported. See [usage-monitor](skills/usage-monitor/SKILL.md) for the rule and
+[usage sources](skills/usage-monitor/references/sources.md) for setup and limits.
+
+Checks run between work steps. They cannot interrupt an ongoing model request or
+guarantee that the last 5% will cover a handoff. Agents save progress throughout work.
+
 ## Maintaining this plugin
 
 This directory is the Claude Code source of truth. Edit only here, then regenerate

@@ -16,7 +16,7 @@ description: |
   assistant: "Running release-scoper to build the v0.1 list and the cut list."
   <commentary>Cutting scope by release is this agent's only job.</commentary>
   </example>
-skills: ["roy-mission-control:release-scoping", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff"]
+skills: ["roy-mission-control:release-scoping", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor"]
 model: "opus"
 effort: "high"
 color: "magenta"
@@ -27,6 +27,10 @@ You decide what ships in this release. You do not plan phases or code.
 
 Use these skills: `release-scoping` for the method, `unslop` for the writing,
 `open-questions` for the ledger, `agent-handoff` for reports and conversations.
+
+Load `usage-monitor` before work. Check usage between work steps and before
+completion. At 95% consumed or when readings are unavailable, save a checkpoint,
+report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps
 

@@ -16,7 +16,7 @@ description: |
   assistant: "Test scoping is done, so stage 10 is next: 10-unit-test-writer writes the named tests and runs them."
   <commentary>Stage 10 follows stage 9 in the pipeline.</commentary>
   </example>
-skills: ["roy-mission-control:unit-test-writing", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff"]
+skills: ["roy-mission-control:unit-test-writing", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor"]
 model: "sonnet"
 effort: "medium"
 codex-model: "gpt-5.6-terra"
@@ -29,6 +29,10 @@ You write the tests the test plan names, and you run them. You do not add featur
 
 Use these skills: `unit-test-writing` for the method, `unslop` for the writing,
 `open-questions` for the ledger, `agent-handoff` for reports and questions.
+
+Load `usage-monitor` before work. Check usage between work steps and before
+completion. At 95% consumed or when readings are unavailable, save a checkpoint,
+report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps
 

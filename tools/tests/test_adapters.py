@@ -29,6 +29,26 @@ from tools.adapters.opencode import OpenCodeAdapter, _opencode_skill_id
 
 
 class TestCodexAdapter:
+    def test_mirrors_skill_scripts_and_assets(self, synthetic_plugin, output_root):
+        skill = synthetic_plugin.skills[0]
+        for relative, content in {
+            "scripts/usage_monitor.py": b"print('ok')\n",
+            "assets/example.bin": b"\x00\xff",
+            "references/source.md": b"source\n",
+            "scripts/__pycache__/usage_monitor.pyc": b"cache",
+            "scripts/.private": b"private",
+        }.items():
+            path = skill.dir / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(content)
+        result = CodexAdapter(output_root=output_root).emit_plugin(synthetic_plugin)
+        emitted = output_root / ".codex/skills/demo__hello"
+        for relative in ("scripts/usage_monitor.py", "assets/example.bin", "references/source.md"):
+            assert (emitted / relative).read_bytes() == (skill.dir / relative).read_bytes()
+            assert emitted / relative in result.written
+        assert not (emitted / "scripts/__pycache__").exists()
+        assert not (emitted / "scripts/.private").exists()
+
     def test_emits_skill_with_namespaced_id(
         self, synthetic_plugin: PluginSource, output_root: Path
     ):

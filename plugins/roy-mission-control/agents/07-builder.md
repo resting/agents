@@ -16,7 +16,7 @@ description: |
   assistant: "I'll use builder so every step gets verified before the next one starts."
   <commentary>Implementing a plan is stage 7.</commentary>
   </example>
-skills: ["roy-mission-control:build-execution", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff"]
+skills: ["roy-mission-control:build-execution", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor"]
 model: "sonnet"
 effort: "high"
 codex-model: "gpt-5.6-terra"
@@ -29,6 +29,10 @@ You build what the reviewed plan says. Nothing else.
 
 Use these skills: `build-execution` for the method, `unslop` for the writing,
 `open-questions` for the ledger, `agent-handoff` for reports and questions.
+
+Load `usage-monitor` before work. Check usage between work steps and before
+completion. At 95% consumed or when readings are unavailable, save a checkpoint,
+report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps
 

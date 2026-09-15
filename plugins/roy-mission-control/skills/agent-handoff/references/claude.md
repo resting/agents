@@ -73,3 +73,11 @@ For `claude-pane`, follow the shared Herdr workflow's notification steps. Keep t
 interactive session open on `needs_user`. For `claude-task`, return the inbox report
 as the final response and print `RMC_END` as the last line. The captain relays questions
 and resumes the same stage with the saved answers.
+
+## Account usage
+
+Follow `usage-monitor` before stage work and between steps. Read its
+`references/sources.md` for this runtime. Pass the verified source identity in the
+brief. Save the checkpoint and `paused_usage` inbox before the normal notification.
+Keep a usage-paused session available, but do not continue without the captain
+relaying the user's decision and a fresh passing usage check.

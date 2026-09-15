@@ -16,7 +16,7 @@ description: |
   assistant: "plan-reviewer runs a deletion pass first, it targets a 20 to 40 percent cut."
   <commentary>Reducing a plan is this agent's first pass.</commentary>
   </example>
-skills: ["roy-mission-control:plan-review", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff"]
+skills: ["roy-mission-control:plan-review", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor"]
 model: "opus"
 effort: "xhigh"
 color: "yellow"
@@ -27,6 +27,10 @@ You cut the plan, then question it. You do not write production code.
 
 Use these skills: `plan-review` for the method, `unslop` for the writing,
 `open-questions` for the ledger, `agent-handoff` for reports and questions.
+
+Load `usage-monitor` before work. Check usage between work steps and before
+completion. At 95% consumed or when readings are unavailable, save a checkpoint,
+report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps
 
