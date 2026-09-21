@@ -10,6 +10,9 @@ Require the portable checkpoint defined in `usage-monitor/references/handoff.md`
 Any suitable replacement agent or model can resume it without the original chat.
 Pass the checkpoint, governing instructions, and saved changes to the replacement.
 Confirm the old writer stopped and verify transferred local changes before resuming.
+Treat the source runtime, model, transport, account, and session IDs as provenance.
+Resolve the replacement's model, effort, transport, and usage source on the target
+runtime. Never reuse source runtime IDs as target runtime IDs.
 
 Read the checkpoint and usage evidence before notifying the user. Keep the stage
 gate pending and record `Stage status: paused_usage`, the reason, source, check
@@ -161,11 +164,17 @@ other modes. Stale means unchecked against the change, not wrong.
 ## Resume
 
 Read `mission.md`, the release `state.md`, `progress.md`, ledger, active inbox, and
-relevant drafts. Check the saved specialist session through the matching runtime.
+relevant drafts. Read the saved run's source runtime from state. If that runtime is
+available, check its specialist session there. If it is unavailable, use the
+checkpoint's stopped state and inspect the shared workspace for an active writer.
+Keep the mission paused when writer ownership is uncertain.
 Restore the mode, conversation mode, processed sequence, and any pending acceptance.
 Print progress and say the next action without replaying history. An active
 interview stays active; a result awaiting a decision still waits. If the mode is
 `auto` and nothing is pending or running, run the usage check before continuing.
 A saved `paused_usage` always requires the user's request to resume plus a fresh
-passing check. Resume its checkpoint, not the next stage. Reconcile the stopped
-writer and assign a new run ID for the resumed attempt.
+passing check on the receiving runtime and account. The source account may remain
+over its limit after an explicit host switch. Resume its checkpoint, not the next
+stage. Reconcile the stopped writer, resolve the same stage role through the target
+roster, and assign a new run ID for the resumed attempt. Record the checkpoint as
+`resumed_from`.

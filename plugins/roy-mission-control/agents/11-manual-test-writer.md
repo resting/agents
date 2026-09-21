@@ -18,6 +18,7 @@ description: |
   </example>
 skills: ["roy-mission-control:manual-checklist", "roy-mission-control:unslop", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor", "roy-mission-control:open-questions"]
 model: "sonnet"
+codex-model: "gpt-5.6-terra"
 effort: "low"
 color: "blue"
 tools: ["Skill", "Read", "Write", "Glob", "Grep", "AskUserQuestion", "Bash"]

@@ -18,6 +18,7 @@ description: |
   </example>
 skills: ["roy-mission-control:phase-scoping", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor"]
 model: "opus"
+codex-model: "gpt-5.6-sol"
 effort: "high"
 color: "cyan"
 tools: ["Skill", "Read", "Write", "Glob", "Grep", "AskUserQuestion", "Bash"]

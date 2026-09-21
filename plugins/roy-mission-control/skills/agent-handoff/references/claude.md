@@ -54,7 +54,7 @@ Do not switch to a permission-bypassing mode to make a handoff work.
 | `04-phase-scoper` | opus | high |
 | `05-plan-writer` | opus | high |
 | `06-plan-reviewer` | opus | xhigh |
-| `07-builder` | opus | high |
+| `07-builder` | sonnet | high |
 | `08-code-reviewer` | opus | high |
 | `09-test-scoper` | opus | medium |
 | `10-unit-test-writer` | sonnet | medium |

@@ -92,17 +92,22 @@ Questions use the host's structured-question tool when one exists; see
 [the question policy](skills/agent-handoff/references/user-questions.md).
 
 Claude Code reads model and effort from each agent file. The repository adapters map
-models to other harnesses. Explicit Codex settings also set reasoning effort.
+models to other harnesses. Explicit Codex model and reasoning fields override the
+shared defaults.
 An explicit user choice wins.
 
-## Build models
+## Codex model mapping
 
-| Role | Claude Code | Codex | Effort |
-|------|-------------|-------|--------|
-| Builder | Sonnet | `gpt-5.6-terra` | high |
-| Unit test writer | Sonnet | `gpt-5.6-terra` | medium |
+| Claude tier | Codex model |
+|-------------|-------------|
+| Opus | `gpt-5.6-sol` |
+| Sonnet | `gpt-5.6-terra` |
 
-Planning and code review keep their Opus setting, mapped to `gpt-5.5` in Codex.
+This mapping applies to all roy-mission-control agents. It does not change the shared
+adapter mapping used by other plugins.
+
+The builder uses Terra at high effort. The unit test writer uses Terra at medium
+effort. Other agents use the Codex host's default reasoning effort.
 The builder follows a reviewed plan, verifies each step, and stops after repeated
 failures. Code review and tests still follow every build.
 
@@ -112,8 +117,9 @@ retries. If a build stalls, inspect the failed step and verification evidence be
 choosing a stronger model for that step. An unclear plan needs a plan correction.
 Keep the existing failure pause; do not silently retry on a more expensive model.
 
-Terra must be available on the Codex host. If it is unavailable, report the limitation
-and ask for an available model choice. Do not silently substitute another model.
+Sol and Terra must be available on the Codex host. If either is unavailable, report
+the limitation and ask for an available model choice. Do not silently substitute
+another model.
 
 ## Usage pauses
 
@@ -123,6 +129,10 @@ readings also pause work. The agent saves its handoff before notifying the capta
 The captain records the pause, tells you what remains, and waits for your decision.
 The handoff includes the objective, saved changes, verification, and ordered remaining
 steps. Any suitable agent or model can resume it without the original conversation.
+The source model, runtime, and session are recorded only as provenance. After an
+explicit switch, the receiving host checks its own usage and resolves the same stage
+role through its own model roster. A low Codex account can hand work to Claude Code,
+and a low Claude Code account can hand work to Codex.
 
 `go` requests a fresh check and resumes the unfinished step only when usage is
 available and below 90%. A reset never resumes the mission by itself. The captain

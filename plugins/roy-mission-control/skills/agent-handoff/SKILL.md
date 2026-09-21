@@ -133,8 +133,18 @@ For a usage pause, keep the same run and next report sequence. Set `usage_reason
 to `threshold` or `unavailable`. `usage` contains the normalized reading with its
 runtime, account source, check time, threshold, windows, and problems.
 `checkpoint` is the actual stage checkpoint path. Add it to `outputs` and keep
-partial deliverables marked as drafts. The captain must read these files before
-telling the user. An allowance reset does not authorize you to continue.
+partial deliverables marked as drafts. Add `resume_role`, `first_action`, and
+`required_capabilities`. These describe the work without naming a replacement
+model or transport. The captain must read these files before telling the user. An
+allowance reset does not authorize you to continue.
+
+```yaml
+resume_role: 07-builder
+first_action: Re-run the failed phase verification, then continue step 4.
+required_capabilities:
+  - edit source files in the target checkout
+  - run the project's verification commands
+```
 
 Missing release or run information: report the problem back to the captain. Do not
 guess identifiers or write into an arbitrary release.

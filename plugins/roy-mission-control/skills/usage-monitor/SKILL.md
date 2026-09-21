@@ -52,9 +52,11 @@ On `paused_usage` or `usage_unknown`:
 2. Save a checkpoint in your own stage folder, named
    `usage_handoff_<run_id>.md`. Follow [the portable handoff](references/handoff.md).
    It must let another agent or model resume without this conversation or session.
-   Include version, phase, run ID, runtime, model,
-   completed steps, changed files, pending work, checks passed or not run, active
-   commands and their real IDs, and the exact next action. Keep existing drafts.
+   Include version, phase, run ID, source runtime and model, completed steps,
+   changed files, pending work, checks passed or not run, active commands and their
+   real IDs, and the exact next action. Source runtime and model are provenance,
+   not resume requirements. Name the required stage role and capabilities separately.
+   Keep existing drafts.
    The captain writes `usage_handoff_captain.md` in its own release folder when it
    is the one pausing, including when no specialist run has started.
 3. Save the inbox report with `status: paused_usage`. Include `usage_reason` as
@@ -81,14 +83,19 @@ Keep check timestamps as Unix seconds. Preserve Claude reset labels as shown. As
 The pause stays recorded after an allowance reset, session restart, or a later
 `done` notification. A status request never resumes it. `go` after a usage pause
 requests a fresh check and resumption of the saved step. Resume only if all
-applicable readings are available and below 90%. If not, explain why it stays paused.
+applicable readings for the selected receiving runtime and account are available
+and below 90%. If not, explain why it stays paused.
 The user may choose to wait, repair monitoring, or switch to another available
 account or host. Reconcile the old writer and saved artifacts before switching.
+An explicit cross-runtime switch does not require the source account to recover.
+The receiving runtime must pass its own usage check.
 Never silently switch models, buy credits, consume a reset, or bypass monitoring.
 Only an explicit user instruction can change this policy; record its scope.
 
 Read the checkpoint on resume. Confirm the previous writer stopped, allocate a new
 run ID for a stopped run, and link the old checkpoint in the brief. Resume the
 unfinished step. Do not replay completed work or pass incomplete gates.
-The captain may assign any suitable replacement agent or model. Follow the portable
-handoff's transfer and recovery checks; the original session is never required.
+The captain may assign any suitable replacement agent or model. Resolve model and
+effort from the receiving runtime's roster instead of copying the source model.
+Follow the portable handoff's transfer and recovery checks; the original session
+is never required.
