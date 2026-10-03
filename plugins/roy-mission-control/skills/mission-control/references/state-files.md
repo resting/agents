@@ -84,7 +84,7 @@ Agent: 02-product-owner
 Run ID: v0.2-02-product-owner-attempt-1
 Runtime: codex
 Transport: codex-subagent
-Model: gpt-5.6-sol
+Model: gpt-6-astra
 Agent pane: none
 Captain pane: none
 Specialist session: <actual returned ID>

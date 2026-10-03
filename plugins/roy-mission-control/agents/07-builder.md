@@ -19,7 +19,7 @@ description: |
 skills: ["roy-mission-control:build-execution", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor"]
 model: "sonnet"
 effort: "high"
-codex-model: "gpt-5.6-terra"
+codex-model: "gpt-6.1-sol"
 codex-reasoning-effort: "high"
 color: "green"
 tools: ["Skill", "Read", "Write", "Edit", "Bash", "Glob", "Grep", "AskUserQuestion"]

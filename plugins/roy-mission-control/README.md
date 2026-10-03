@@ -100,13 +100,13 @@ An explicit user choice wins.
 
 | Claude tier | Codex model |
 |-------------|-------------|
-| Opus | `gpt-5.6-sol` |
-| Sonnet | `gpt-5.6-terra` |
+| Opus 5.5 | `gpt-6-astra` |
+| Sonnet 5.5 | `gpt-6.1-sol` |
 
 This mapping applies to all roy-mission-control agents. It does not change the shared
 adapter mapping used by other plugins.
 
-The builder uses Terra at high effort. The unit test writer uses Terra at medium
+The builder uses 6.1 Sol at high effort. The unit test writer uses 6.1 Sol at medium
 effort. Other agents use the Codex host's default reasoning effort.
 The builder follows a reviewed plan, verifies each step, and stops after repeated
 failures. Code review and tests still follow every build.
@@ -117,7 +117,7 @@ retries. If a build stalls, inspect the failed step and verification evidence be
 choosing a stronger model for that step. An unclear plan needs a plan correction.
 Keep the existing failure pause; do not silently retry on a more expensive model.
 
-Sol and Terra must be available on the Codex host. If either is unavailable, report
+Astra and 6.1 Sol must be available on the Codex host. If either is unavailable, report
 the limitation and ask for an available model choice. Do not silently substitute
 another model.
 
