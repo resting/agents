@@ -8,7 +8,7 @@ def test_every_rmc_agent_has_the_expected_codex_model():
     assert plugin is not None
 
     expected = {
-        "opus": "gpt-6-astra",
+        "opus": "gpt-6.1-sol",
         "sonnet": "gpt-6.1-sol",
     }
     assert plugin.agents

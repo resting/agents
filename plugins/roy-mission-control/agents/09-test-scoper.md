@@ -18,7 +18,7 @@ description: |
   </example>
 skills: ["roy-mission-control:test-scoping", "roy-mission-control:unslop", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor", "roy-mission-control:open-questions"]
 model: "opus"
-codex-model: "gpt-6-astra"
+codex-model: "gpt-6.1-sol"
 effort: "medium"
 color: "cyan"
 tools: ["Skill", "Read", "Write", "Glob", "Grep", "Bash", "AskUserQuestion"]

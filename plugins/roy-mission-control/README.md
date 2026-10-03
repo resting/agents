@@ -100,7 +100,7 @@ An explicit user choice wins.
 
 | Claude tier | Codex model |
 |-------------|-------------|
-| Opus 5.5 | `gpt-6-astra` |
+| Opus 5.5 | `gpt-6.1-sol` |
 | Sonnet 5.5 | `gpt-6.1-sol` |
 
 This mapping applies to all roy-mission-control agents. It does not change the shared
@@ -117,7 +117,7 @@ retries. If a build stalls, inspect the failed step and verification evidence be
 choosing a stronger model for that step. An unclear plan needs a plan correction.
 Keep the existing failure pause; do not silently retry on a more expensive model.
 
-Astra and 6.1 Sol must be available on the Codex host. If either is unavailable, report
+6.1 Sol must be available on the Codex host. If it is unavailable, report
 the limitation and ask for an available model choice. Do not silently substitute
 another model.
 
