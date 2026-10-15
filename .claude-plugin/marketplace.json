@@ -58,6 +58,17 @@
       "category": "development"
     },
     {
+      "name": "roy-mods",
+      "source": "./plugins/roy-mods",
+      "description": "Custom Claude Code mods for Roy: tracking-list pane",
+      "version": "0.1.0",
+      "author": {
+        "name": "Roy"
+      },
+      "license": "MIT",
+      "category": "development"
+    },
+    {
       "name": "roy-mission-control",
       "source": "./plugins/roy-mission-control",
       "description": "Captain-led eleven-stage workflow from design intake through planning, implementation, review, and tests, run end to end with pauses only for decisions",

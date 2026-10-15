@@ -1,0 +1,10 @@
+{
+  "name": "roy-mods",
+  "version": "0.1.0",
+  "description": "Custom Claude Code mods for Roy",
+  "author": {
+    "name": "Roy"
+  },
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}
