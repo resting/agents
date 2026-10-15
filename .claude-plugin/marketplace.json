@@ -61,7 +61,7 @@
       "name": "roy-mods",
       "source": "./plugins/roy-mods",
       "description": "Custom Claude Code mods for Roy: tracking-list pane",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Roy"
       },

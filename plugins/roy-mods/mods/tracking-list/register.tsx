@@ -56,6 +56,13 @@ export const register: Register = on => {
     return next(e)
   })
 
+  // /clear starts a new session with empty $.state and no session.start; force the next poll to reload the file.
+  on('classic.SessionStart', async ($, e, next) => {
+    if (e.source === 'clear') lastText = ''
+
+    return next(e)
+  })
+
   on('command.run', { command: 'tracking-list' }, async ($, e) => {
     const args = e.args.trim()
     if (!args) {
