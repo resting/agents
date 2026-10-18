@@ -10,14 +10,6 @@ metadata:
 
 # Agent handoff
 
-Load `usage-monitor` before stage work. Its checks and checkpoint rules apply to
-every specialist, including direct interviews. At 90% consumed or when usage is
-unavailable, save work, report `paused_usage`, notify the captain, and end the turn.
-This takes precedence over instructions to finish, retry, or report `done`.
-Usage checkpoints follow `usage-monitor/references/handoff.md`. They must be
-self-contained for any replacement agent or model, independent of the original
-conversation, runtime session, or private memory.
-
 When asking the user, prefer the current host's permitted structured-question tool.
 Read the [user-question policy](references/user-questions.md) before asking.
 
@@ -86,7 +78,7 @@ Once the gaps are resolved, write the final artifacts, run the stage's checks, a
 report `done`. If the user pauses, keep `needs_user` and record what remains.
 
 Tell the user the captain reviews the result and continues the mission from there.
-Agreement on wording in your pane does not pass a gate. If the user asks to proceed
+Agreement on wording in your session does not pass a gate. If the user asks to proceed
 here, include that request in the report.
 
 When the delegated run has no direct user channel, return the same report to the
@@ -127,24 +119,6 @@ complete. Keep drafts clearly marked. Include relevant evidence in the artifacts
 | `blocked` | A user decision is needed before work can finish | `asks` with question IDs, two to four choices and a recommended default |
 | `needs_user` | A conversation is needed, active, or paused | `needs` with missing topics, why they matter, and progress so far |
 | `failed` | The stage could not finish | Failure, partial output if any, and a useful recovery step |
-| `paused_usage` | Account usage reached 90% or cannot be verified | `usage_reason`, `usage`, and `checkpoint`; completed and remaining work saved |
-
-For a usage pause, keep the same run and next report sequence. Set `usage_reason`
-to `threshold` or `unavailable`. `usage` contains the normalized reading with its
-runtime, account source, check time, threshold, windows, and problems.
-`checkpoint` is the actual stage checkpoint path. Add it to `outputs` and keep
-partial deliverables marked as drafts. Add `resume_role`, `first_action`, and
-`required_capabilities`. These describe the work without naming a replacement
-model or transport. The captain must read these files before telling the user. An
-allowance reset does not authorize you to continue.
-
-```yaml
-resume_role: 07-builder
-first_action: Re-run the failed phase verification, then continue step 4.
-required_capabilities:
-  - edit source files in the target checkout
-  - run the project's verification commands
-```
 
 Missing release or run information: report the problem back to the captain. Do not
 guess identifiers or write into an arbitrary release.
@@ -152,8 +126,7 @@ guess identifiers or write into an arbitrary release.
 ## Notify the captain
 
 Save the artifacts and inbox report first. Then follow the runtime's notification
-instructions. Pane sessions use the Herdr report-back workflow. Non-pane sessions
-use the runtime's supported return or callback. Delivery failure never erases the
+instructions. Use the runtime's supported return or callback. Delivery failure never erases the
 saved report or implies success.
 
 Return the report and actual artifact paths. Do not start the next stage. The captain

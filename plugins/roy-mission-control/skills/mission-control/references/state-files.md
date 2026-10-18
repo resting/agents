@@ -85,8 +85,6 @@ Run ID: v0.2-02-product-owner-attempt-1
 Runtime: codex
 Transport: codex-subagent
 Model: gpt-6.1-sol
-Agent pane: none
-Captain pane: none
 Specialist session: <actual returned ID>
 Captain task: <actual ID when available>
 Conversation: relay
@@ -96,19 +94,6 @@ Draft: 02_product_owner/releases/v0.2/product_definition.md
 Remaining: primary audience and core job
 Awaiting acceptance: no
 Proposed next action: review product definition and inventory when ready
-Resumed from: none
-
-## Usage
-Status: ok
-Source: codex native account usage
-Applicable buckets: codex
-Threshold consumed: 90%
-Checked at: <Unix seconds>
-Windows: <name, consumed percentage, reset Unix seconds or displayed reset label>
-Pause reason: none
-Checkpoint: none
-Unfinished step: none
-Resume requested by user: no
 
 ## Gate log
 | Gate | Phase | Passed | Date | User acceptance and evidence |
@@ -128,22 +113,13 @@ Resume requested by user: no
 | v0.2-02-product-owner-attempt-1 | 02-product-owner | none | 1 | needs_user |
 ```
 
-Runtime is `codex` or `claude`. Transport is `codex-pane`, `codex-subagent`, `codex-task`,
-`inline`, `claude-pane`, or `claude-task`. Save only IDs returned by the host.
-Legacy `pane` and `task` values mean the original Claude transports; do not attach
-them as Codex sessions. Runtime, transport, model, account, and IDs describe the
-active or paused source run. They do not configure a replacement. A host switch
-reconciles saved files, stops any old writer, resolves the target roster and usage
-source, allocates a new run, and records the old checkpoint in `Resumed from`.
+Runtime names the current host, such as `codex` or `claude`. Transport is
+`codex-subagent`, `codex-task`, `inline`, or `claude-task`. Save only IDs returned
+by the host.
 
 Mode is `auto`, `phase`, or `step`. Use `running`, `blocked`, `needs_user`,
-`awaiting_acceptance`, `accepted`, `failed`, `paused`, or `paused_usage` for stage
+`awaiting_acceptance`, `accepted`, `failed`, or `paused` for stage
 status. Conversation mode is `none`, `offered`, `direct`, or `relay`.
-Usage status is `ok`, `paused_usage`, or `usage_unknown`. Either non-ok usage status
-sets stage status to `paused_usage` with reason `threshold` or `unavailable`.
-Record the checkpoint and unfinished step before informing the user. An allowance
-reset never clears a saved pause. Add `Usage paused` and the pending user decision
-to progress; mark affected unfinished features `blocked` rather than `done`.
 At a pause, record each artifact revision shown to the user, the exact next action
 offered, and the later acceptance. At an automatic gate, record the checks and the
 revision instead. The register may use a content

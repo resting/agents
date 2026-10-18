@@ -24,11 +24,11 @@ Report discrete decisions as `blocked`, with options and a recommendation. Repor
 missing context that needs a conversation as `needs_user`, with the topics to cover.
 The captain explains the need to the user and arranges the conversation.
 
-Do not initiate questions in an agent pane before that handoff. If the user visits
+Do not initiate questions in an agent session before that handoff. If the user visits
 an agent directly, welcome them, save the context they provide, report `needs_user`,
 and notify the captain. Follow `agent-handoff` to continue within the same stage.
 When direct agent conversations are unavailable, send questions and follow-ups to
-the captain, who relays the answers. Do not direct the user to a nonexistent pane.
+the captain, who relays the answers. Do not direct the user to a nonexistent session.
 
 Only the captain records gates and starts stages. An answer resumes the stage that
 asked; it does not pass a gate.

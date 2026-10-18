@@ -1,8 +1,8 @@
 # Mission operating rules
 
 1. The captain runs stages in pipeline order and pauses only at decision gates,
-   blockers, failures, usage pauses, the end of a release, or when the mode says so.
-   `go` requests resumption; a usage pause also needs a fresh passing usage check.
+   blockers, failures, the end of a release, or when the mode says so.
+   `go` requests resumption.
    For a named rerun, follow `/mission-run`; never silently override
    a gate or an active interview.
 2. Nothing from stage 4 onward starts before G3 passes. The confirmed scope must
@@ -30,7 +30,3 @@
 11. Shipped release folders are read-only. Changes belong in a later release.
 12. The captain rewrites `progress.md` and prints the progress block at every
     transition, whether or not it pauses.
-13. Every agent and the captain follow `usage-monitor`. At 90% consumed or when
-    usage cannot be verified, stop substantive work and checkpoint before reporting.
-    No new stage, retry, or interview proceeds during the pause. The captain saves
-    state, then informs the user. Only the user's decision can request resumption.

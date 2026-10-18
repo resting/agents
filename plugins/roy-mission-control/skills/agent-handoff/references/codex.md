@@ -5,10 +5,7 @@ acceptance gates as Claude Code. The captain stays in the main task.
 
 ## Delegation
 
-Inside Herdr, follow [the pane workflow](herdr.md) first and use
-`transport: codex-pane`.
-
-Outside Herdr, use the available native subagent interface. Give the subagent a
+Use the available native subagent interface. Give the subagent a
 bounded stage assignment and absolute paths to the generated agent definition,
 required skills, project root, mission root, inputs, outputs, and report. Do not
 create a sidebar task for ordinary delegation. If native delegation is absent,
@@ -34,11 +31,3 @@ captain.
 
 Installing the plugin exposes generated skills and agent definitions. Start a
 new task after installation so Codex discovers them.
-
-## Account usage
-
-Follow `usage-monitor` before stage work and between steps. Read its
-`references/sources.md` for this runtime. Pass the verified source identity in the
-brief. Save the checkpoint and `paused_usage` inbox before the normal notification.
-Keep a usage-paused session available, but do not continue without the captain
-relaying the user's decision and a fresh passing usage check.

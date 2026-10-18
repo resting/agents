@@ -4,38 +4,7 @@ Procedures for specific transitions. Load only the section you need.
 
 ## Handling a report
 
-### paused_usage
-
-Require the portable checkpoint defined in `usage-monitor/references/handoff.md`.
-Any suitable replacement agent or model can resume it without the original chat.
-Pass the checkpoint, governing instructions, and saved changes to the replacement.
-Confirm the old writer stopped and verify transferred local changes before resuming.
-Treat the source runtime, model, transport, account, and session IDs as provenance.
-Resolve the replacement's model, effort, transport, and usage source on the target
-runtime. Never reuse source runtime IDs as target runtime IDs.
-
-Read the checkpoint and usage evidence before notifying the user. Keep the stage
-gate pending and record `Stage status: paused_usage`, the reason, source, check
-time, windows, reset times, checkpoint, and unfinished step in state. Record the
-processed run ID and sequence as usual. Stop dispatch in every mode. Preserve
-valid earlier gates, but never pass this stage from a partial result.
-
-If the captain's own check triggers the pause, first ask any active specialist to
-checkpoint through its existing channel. Confirm it stopped before another writer
-starts. Save the captain's checkpoint even if the specialist cannot respond. Say
-which work remains unconfirmed. Do not abruptly kill a writer to save allowance.
-
-Rewrite progress, then tell the user what was saved and what remains. Show the
-limiting window and reset time in their timezone, or explain unavailable usage.
-Ask whether to wait, repair the source, or switch to an available host or account.
-Do not start a reset, purchase, switch, or automatic retry. Follow `usage-monitor`
-for the user's eventual decision. A reset alone never resumes work.
-
 ### done
-
-If a usage pause is pending, retain it and record the report for later review.
-Do not accept a late `done` as permission to resume. Otherwise check usage before
-reviewing outputs or advancing. A low or unavailable reading enters `paused_usage`.
 
 Verify the outputs and the stage's gate checks in `mission-control`. Record the gate
 with the artifact revisions. Then:
@@ -77,13 +46,13 @@ from the saved files in a supported session.
 
 When a delegated run has no writable conversation view, say so and offer `Answer
 through me`. Never confuse a read-only inspector with a conversation. If the user
-starts talking in a specialist pane without returning here, process its notice,
+starts talking in a specialist session without returning here, process its notice,
 update state, and let the discussion continue.
 
 ### failed
 
 Keep the gate pending. Explain what failed and what was saved. Offer retry, a
-supported fallback, or pause. When no report arrives, check the actual pane or task:
+supported fallback, or pause. When no report arrives, check the actual delegated task:
 a permission prompt and a stopped process need different recovery. A product bug
 found by stage 10 is a decision: offer a builder rerun with the failing test as the
 brief, or accepting it as a known issue noted in the release checklist.
@@ -99,11 +68,6 @@ folders from `mission-control`, each with `releases/<version>/`. Add the inbox,
 `00_captain/mission.md`, and the release `state.md`, `progress.md`, and
 `open_questions.md`. Copy the folder README from the captain skill's
 `assets/docs-readme.md`, resolved from the installed plugin path.
-
-Establish the account usage source through `usage-monitor`. In Claude Code, run
-and verify the `/usage` probe. Record the account source in state and pass the
-probe instructions to every specialist. If usage cannot be read, save the setup state and
-report `paused_usage`; do not dispatch design intake.
 
 Say what will happen: design intake runs now, then product definition, and the first
 pause is the product definition unless a question comes up sooner. Then dispatch
@@ -166,15 +130,9 @@ other modes. Stale means unchecked against the change, not wrong.
 Read `mission.md`, the release `state.md`, `progress.md`, ledger, active inbox, and
 relevant drafts. Read the saved run's source runtime from state. If that runtime is
 available, check its specialist session there. If it is unavailable, use the
-checkpoint's stopped state and inspect the shared workspace for an active writer.
+saved run status and inspect the shared workspace for an active writer.
 Keep the mission paused when writer ownership is uncertain.
 Restore the mode, conversation mode, processed sequence, and any pending acceptance.
 Print progress and say the next action without replaying history. An active
 interview stays active; a result awaiting a decision still waits. If the mode is
-`auto` and nothing is pending or running, run the usage check before continuing.
-A saved `paused_usage` always requires the user's request to resume plus a fresh
-passing check on the receiving runtime and account. The source account may remain
-over its limit after an explicit host switch. Resume its checkpoint, not the next
-stage. Reconcile the stopped writer, resolve the same stage role through the target
-roster, and assign a new run ID for the resumed attempt. Record the checkpoint as
-`resumed_from`.
+`auto` and nothing is pending or running, continue the mission from the saved stage.

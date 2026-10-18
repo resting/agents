@@ -15,10 +15,6 @@ metadata:
 The pipeline, the folders, the gates. The `captain` skill runs it. The eleven
 agents work inside it. Load `unslop` before writing anything this pipeline
 produces, including plans, code comments, commit messages, and questions.
-Load `usage-monitor` before work or dispatch. A window at 90% consumed or more,
-or usage that cannot be verified, requires a checkpoint and `paused_usage` report.
-The captain informs the user after saving state. No mode skips this check.
-
 ## The pipeline
 
 Every path below is relative to `docs/roy_mission_control/`, and `<version>` is the
@@ -115,8 +111,7 @@ or reconciling `mission.md`, `state.md`, and `progress.md`.
 
 G1 to G4 are per release. G5 to G11 are per phase; passing G6 for phase 1 never
 passes it for phase 2. A new release resets its gates. `done` alone passes no gate:
-the captain checks the evidence and records it. A `blocked`, `needs_user`,
-`paused_usage`, or `failed` report pauses any stage. `phase` mode pauses after every G11 and `step`
+the captain checks the evidence and records it. A `blocked`, `needs_user`, or `failed` report pauses any stage. `phase` mode pauses after every G11 and `step`
 mode after every gate.
 
 ## Operating rules
