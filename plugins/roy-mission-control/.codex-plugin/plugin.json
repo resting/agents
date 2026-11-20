@@ -6,6 +6,8 @@
   "author": {
     "name": "Roy"
   },
+  "homepage": "https://github.com/wshobson/agents/tree/main/plugins/roy-mission-control",
+  "repository": "https://github.com/wshobson/agents",
   "license": "MIT",
   "keywords": [
     "workflow",

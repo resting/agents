@@ -6,7 +6,14 @@
   "author": {
     "name": "Roy"
   },
+  "homepage": "https://github.com/wshobson/agents/tree/main/plugins/roy-agents",
+  "repository": "https://github.com/wshobson/agents",
   "license": "MIT",
+  "keywords": [
+    "herdr-subagent-pane",
+    "obsidian-learning",
+    "spec-presentation"
+  ],
   "interface": {
     "displayName": "Roy Agents",
     "shortDescription": "Custom agents for Roy",

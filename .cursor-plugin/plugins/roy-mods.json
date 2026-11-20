@@ -1,0 +1,11 @@
+{
+  "name": "roy-mods",
+  "displayName": "Roy Mods",
+  "version": "0.1.1",
+  "description": "Custom Claude Code mods for Roy",
+  "author": {
+    "name": "Roy",
+    "email": ""
+  },
+  "license": "MIT"
+}
