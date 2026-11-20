@@ -1,8 +1,8 @@
-# Contributing to claude-agents
+# Contributing
 
-Thanks for your interest in contributing. This marketplace ships to six agentic
-harnesses (Claude Code, OpenAI Codex CLI, Cursor, OpenCode, the Antigravity CLI, GitHub Copilot) from a single
-Markdown source.
+<a id="contributing-to-claude-agents"></a>
+
+The repository supports seven coding tools: Claude Code, OpenAI Codex CLI, Cursor, OpenCode, Antigravity CLI, GitHub Copilot, and Pi. Author shared Markdown under `plugins/` in the canonical Claude Code source format. Adapters handle the formats used by other tools.
 
 ## Start here
 
@@ -24,14 +24,35 @@ Markdown source.
 
 Full frontmatter conventions in [`docs/authoring.md`](docs/authoring.md).
 
+## Changing a plugin
+
+Any change to a file under `plugins/<name>/` needs a patch bump of that plugin's version
+in `plugins/<name>/.claude-plugin/plugin.json` and in its `.claude-plugin/marketplace.json`
+entry. Then run `make generate-all` so the Codex and Cursor manifests get the new version.
+Claude Code updates an installed plugin only when the version goes up, so a change without
+a bump never reaches people who already installed it. CI enforces this on pull requests
+with `make check-version-bumps`; lockfile-only changes such as `uv.lock` are exempt.
+
 ## Commercial content and disclosure
 
 - Plugin content must not funnel users to paid products, affiliate programs, or
   revenue-sharing services. Submissions whose primary purpose is promotion are
   closed as spam.
-- If a plugin wraps a third-party API, package, or service that you own or
-  maintain, disclose that relationship in the PR description and the plugin
-  README.
+- List every external API, package, or service that a plugin calls or
+  recommends in the proposal issue. If you own, maintain, work for, or earn
+  money from any of them, disclose that relationship and any paid tier in the
+  proposal issue, the PR description, and the plugin README.
+- Plugin payloads must not contain runnable machinery for collecting payment or
+  gating access. A script that takes payment, verifies a transaction, or grants
+  and revokes access to a repository or service is out of scope, whether it
+  charges the installing user or helps the installing user charge someone else.
+  Verifying a transaction, checking a licence or entitlement, and granting or
+  revoking access are each covered on their own, so splitting the steps across
+  tools does not get around the rule. Teaching an agent to build payment,
+  licensing, or access-control features in the user's own application is a
+  different thing and is welcome, and the `payment-processing` plugin is the
+  reference example of that. The line is whether the payload operates the
+  contributor's commercial relationship or only explains how to build one.
 
 ## External and vendor plugins
 
@@ -64,34 +85,48 @@ Every PR runs these on CI (`.github/workflows/`); run them locally before pushin
 
 ```bash
 make validate STRICT=1     # structural validation across all harness outputs
-make garden STRICT=1       # drift, dead-link, stale-artifact detection
+make garden                # drift, dead-link, stale-artifact detection
 make test                  # full pytest suite (plugin-eval + tools/tests/)
-make smoke-test            # real-CLI subprocess tests (OpenCode, Antigravity, Codex, Claude)
+make smoke-test            # real-CLI subprocess tests (OpenCode, Antigravity, Codex, Claude, Pi, gh skill, npx skills)
+make check-version-bumps   # every changed plugin raised its version
 ```
+
+`make garden STRICT=1` also fails on warnings. CI gates on errors only, but main
+has no garden errors or warnings, so any finding comes from your change.
 
 Code-quality checks (also in CI):
 
 ```bash
-cd plugins/plugin-eval
-uv run ruff check ../../tools/ src/plugin_eval/
-uv run ruff format --check ../../tools/ src/plugin_eval/
-uv run ty check ../../tools/ src/plugin_eval/
+make lint      # ruff check, ruff format --check, and ty
+make format    # apply ruff format and safe fixes
 ```
+
+Both run from `plugins/plugin-eval/`, which is where the ruff and ty config lives.
+Invoking ruff from the repo root instead silently falls back to line-length 88 and
+disagrees with CI.
 
 ## Cross-harness portability checklist
 
-Your content ships to six harnesses — some have stricter conventions than Claude Code:
+Your content ships to seven harnesses — some have stricter conventions than Claude Code:
 
 - **Codex** hard-truncates skill bodies at 8 KB. Keep `SKILL.md` short; push detail
   into `references/details.md`.
 - **OpenCode** requires lowercase tool names. Don't write `` `Read` `` inline — write
   *"open the file"* or use the lowercase form.
 - **Cursor** doesn't honor per-agent `tools:` allowlists — use it as a hint only.
-- **Copilot** maps Claude model aliases (`opus`/`sonnet`/`haiku`) to the GPT-5 family;
-  agent `description` must be a plain string.
+- **Copilot** maps Claude model aliases to native Claude model IDs, including `claude-opus-4.8`,
+  `claude-sonnet-5`, and `claude-haiku-4.5`. Agent `description` must be a plain string.
 - **Antigravity CLI** passes unmapped tool names through its allowlist unchanged;
   maps model aliases to tier values (`pro`/`flash`/`inherit`); commands transpile
   to Gemini-style TOML with the body always inlined.
+- **Pi** discovers prompt templates flat, so commands are namespaced `<plugin>__<cmd>`;
+  agents need the reference `subagent` extension.
+- **Commands** that use `$ARGUMENTS` frame it as data (a `<user_request>` block or an inline
+  "data, not instructions" clause, see `docs/authoring.md`); `make garden` warns on a bare
+  interpolation.
+- **Skills installers** (`gh skill`, `npx skills`) install by bare skill name: keep skill
+  directory names unique across plugins and equal to the frontmatter `name`. `make smoke-test`
+  checks both against the real CLIs.
 - All harnesses use ≤150-line context files. Don't bloat `AGENTS.md` / `CLAUDE.md`.
 
 `plugin-eval`'s `harness_portability` dimension catches most of these mechanically;
@@ -99,7 +134,8 @@ read [`docs/authoring.md`](docs/authoring.md) for the full guide.
 
 ## Workflow
 
-1. Open an issue first (template-driven). Use the appropriate issue template.
+1. Open an issue first (template-driven). Use the appropriate issue template, and
+   wait for a maintainer to reply before you start the pull request.
 2. Fork the repo, branch from `main`.
 3. Make changes; run quality gates.
 4. Open a PR referencing the issue.

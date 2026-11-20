@@ -1,6 +1,6 @@
 # Complete Plugin Reference
 
-Browse all **92 marketplace plugins** organized by category: 91 local plugins plus 1 externally hosted `git-subdir` entry (`pensyve`).
+Browse all 93 marketplace plugins organized by category: 91 local plugins plus 2 external Claude Code marketplace entries (`pensyve` and `deja-vu`). The local source supports seven coding tools through native formats and adapters. Install commands below use Claude Code syntax. See the [tool setup guide](./harnesses.md) for other installation routes.
 
 ## Quick Start - Essential Plugins
 
@@ -123,13 +123,13 @@ Next.js, React + Vite, and Node.js project setup with pnpm and TypeScript best p
 
 | Plugin                       | Description                                                                                                                                     | Install                                    |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| **documentation-standards**  | HADS semantic tagging conventions for human- and AI-friendly documentation                                                                       | `/plugin install documentation-standards`  |
+| **documentation-standards**  | HADS semantic tagging conventions plus the grounded-vault pattern for provenance-linked, drift-checked knowledge stores                          | `/plugin install documentation-standards`  |
 | **code-documentation**       | Documentation generation and code explanation                                                                                                   | `/plugin install code-documentation`       |
 | **documentation-generation** | OpenAPI specs, Mermaid diagrams, tutorials                                                                                                      | `/plugin install documentation-generation` |
 | **c4-architecture**          | Comprehensive C4 architecture documentation workflow with bottom-up code analysis, component synthesis, container mapping, and context diagrams | `/plugin install c4-architecture`          |
 | **avoid-ai-writing**         | Audit and rewrite prose that reads as machine-generated across READMEs, changelogs, PR descriptions, and docs                                    | `/plugin install avoid-ai-writing`         |
 
-### 🔄 Workflows (7 plugins)
+### 🔄 Workflows (8 plugins)
 
 | Plugin                       | Description                                                                    | Install                                    |
 | ---------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------ |
@@ -140,6 +140,7 @@ Next.js, React + Vite, and Node.js project setup with pnpm and TypeScript best p
 | **tdd-workflows**            | Test-driven development methodology                                            | `/plugin install tdd-workflows`            |
 | **agent-teams**              | Parallel code review, debugging, feature, and research teams                   | `/plugin install agent-teams`              |
 | **ship-mate**                | Story-file to reviewed, tested PR workflow orchestration                       | `/plugin install ship-mate`                |
+| **superself**                | Drive the Superself `self` CLI: project state (goals, decisions, work units, reports) outside the code repo, context at session start, done gated by evidence | `/plugin install superself`                |
 
 ### ✅ Testing (1 plugin)
 
@@ -153,7 +154,7 @@ Next.js, React + Vite, and Node.js project setup with pnpm and TypeScript best p
 | ------------------------------ | --------------------------------------------- | -------------------------------------------- |
 | **comprehensive-review**       | Multi-perspective code analysis               | `/plugin install comprehensive-review`       |
 | **performance-testing-review** | Performance analysis and test coverage review | `/plugin install performance-testing-review` |
-| **plugin-eval**                | Three-layer quality evaluation framework for Claude Code plugins | `/plugin install plugin-eval`                |
+| **plugin-eval**                | Static lint for Claude Code plugins and skills, with experimental LLM scoring for skills | `/plugin install plugin-eval`                |
 | **skill-forge-essentials**    | Behavioral skills for AI code debt detection and session compaction survival | `/plugin install skill-forge-essentials`    |
 
 ### 🛠️ Utilities (5 plugins)
@@ -163,7 +164,7 @@ Next.js, React + Vite, and Node.js project setup with pnpm and TypeScript best p
 | **code-refactoring**      | Code cleanup and technical debt management | `/plugin install code-refactoring`      |
 | **dependency-management** | Dependency auditing and version management | `/plugin install dependency-management` |
 | **error-debugging**       | Error analysis and trace debugging         | `/plugin install error-debugging`       |
-| **file-conversion**       | Convert files across 1,000+ format pairs   | `/plugin install file-conversion`       |
+| **file-conversion**       | Local file conversion with installed tools | `/plugin install file-conversion`       |
 | **team-collaboration**    | Team workflows and standup automation      | `/plugin install team-collaboration`    |
 
 ### 🤖 AI & ML (6 plugins)
@@ -177,11 +178,12 @@ Next.js, React + Vite, and Node.js project setup with pnpm and TypeScript best p
 | **llm-finetuning**       | Eval-gated LLM fine-tuning lifecycle: dataset prep, LoRA/QLoRA training, and promotion gating | `/plugin install llm-finetuning`       |
 | **dgx-spark-ops**        | NVIDIA DGX Spark (GB10) environment ops: aarch64/CUDA-13 stack setup, training preflights, unified-memory/thermal management | `/plugin install dgx-spark-ops`        |
 
-### 🧠 Memory (1 external plugin)
+### 🧠 Memory (2 external plugins)
 
 | Plugin      | Description                                                                                  | Install                   |
 | ----------- | -------------------------------------------------------------------------------------------- | ------------------------- |
 | **pensyve** | Cross-session memory runtime with MCP-backed recall, skills, commands, agents, and hooks     | `/plugin install pensyve` |
+| **deja-vu** | Local cross-agent session transcript recall (BM25 over 43 coding agents) with MCP, hooks, skill, and `/deja` command | `/plugin install deja-vu` |
 
 ### 📊 Data (2 plugins)
 
@@ -325,7 +327,6 @@ Next.js, React + Vite, and Node.js project setup with pnpm and TypeScript best p
 
 | Plugin               | Description                                                              | Install                            |
 | -------------------- | ------------------------------------------------------------------------ | ---------------------------------- |
-| **meigen-ai-design** | AI image generation with creative workflow orchestration and prompt MCPs | `/plugin install meigen-ai-design` |
 | **brand-landingpage** | Brand discovery through deployment-ready landing page HTML              | `/plugin install brand-landingpage` |
 | **pptx-deck-creation** | Production-ready editable PowerPoint decks via spec-first, coordinate-explicit workflow | `/plugin install pptx-deck-creation` |
 
@@ -357,13 +358,15 @@ plugins/python-development/
 
 ## Installation
 
+The marketplace commands in this section run inside Claude Code. Other tools use the [per-tool installation routes](./harnesses.md#native-install).
+
 ### Step 1: Add the Marketplace
 
 ```bash
 /plugin marketplace add wshobson/agents
 ```
 
-This makes all 92 marketplace plugins available for installation, but **does not load any agents or tools** into your context.
+This makes all 93 marketplace plugins available for installation, but **does not load any agents or tools** into your context.
 
 ### Step 2: Install Specific Plugins
 
@@ -380,7 +383,18 @@ Install only the plugins you need:
 /plugin install backend-development
 ```
 
-Each installed plugin loads **only its specific agents, commands, and skills** into Claude's context.
+Installing a Claude Code plugin makes its agents, commands, and skills available. Claude loads skill guidance when relevant to the task.
+
+### Skills Only (Any Agent)
+
+To take one skill without its plugin, use an Agent Skills installer. Both read `plugins/*/skills/` from GitHub directly and install into Claude Code or any other agent they support:
+
+```bash
+gh skill install wshobson/agents python-testing-patterns --agent claude-code   # GitHub CLI 2.90+
+npx skills add wshobson/agents --skill python-testing-patterns -a claude-code  # vercel-labs/skills
+```
+
+Selectors, install paths, and gotchas: [harnesses.md](./harnesses.md#skills-only-installers).
 
 ## Plugin Design Principles
 
@@ -406,7 +420,7 @@ Each installed plugin loads **only its specific agents, commands, and skills** i
 
 ## See Also
 
-- [Agent Skills](./agent-skills.md) - 181 specialized skills across plugins
+- [Agent Skills](./agent-skills.md) - 185 specialized skills across plugins
 - [Agent Reference](./agents.md) - Complete agent catalog
 - [Usage Guide](./usage.md) - Commands and workflows
 - [Architecture](./architecture.md) - Design principles

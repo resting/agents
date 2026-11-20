@@ -9,19 +9,17 @@ from __future__ import annotations
 
 import json
 import re
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
+import yaml
 
 # tools.adapters.* imports happen via the conftest sys.path injection
 from tools.adapters.antigravity import AntigravityAdapter
-from tools.adapters.base import PluginSource, parse_frontmatter
+from tools.adapters.base import PluginSource, parse_frontmatter, yaml_scalar
 from tools.adapters.codex import CodexAdapter, _split_body_if_oversized
-from tools.adapters.copilot import (
-    CopilotAdapter,
-    _build_tools_list,
-    _needs_yaml_quoting,
-)
+from tools.adapters.copilot import CopilotAdapter, _build_tools_list
 from tools.adapters.cursor import CursorAdapter
 from tools.adapters.opencode import OpenCodeAdapter, _opencode_skill_id
 
@@ -265,6 +263,7 @@ class TestCodexAdapter:
             name="no-desc",
             dir=empty_repo / "no-desc",
             plugin_json={"name": "no-desc", "version": "0.1.0"},
+            skills=synthetic_plugin.skills,
         )
         adapter.emit_global([synthetic_plugin, no_desc_plugin])
 
@@ -282,7 +281,7 @@ class TestCodexAdapter:
         )
 
     def test_plugin_manifest_description_falls_back_to_name(
-        self, tmp_path: Path, output_root: Path
+        self, synthetic_plugin: PluginSource, tmp_path: Path, output_root: Path
     ):
         """`codex-marketplace`'s installer parses each plugin's
         `.codex-plugin/plugin.json` with `pluginManifestSchema`, which requires
@@ -303,6 +302,7 @@ class TestCodexAdapter:
             name="no-description-plugin",
             dir=plugin_dir,
             plugin_json={"name": "no-description-plugin", "version": "0.1.0"},
+            skills=synthetic_plugin.skills,
         )
         assert plugin.description == ""  # sanity: this is the empty-description case
 
@@ -313,6 +313,119 @@ class TestCodexAdapter:
         )
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         assert manifest["description"] == "no-description-plugin"
+
+    @pytest.mark.parametrize("components", ["skills", "commands", "agents", "agents-commands"])
+    def test_native_discovery_requires_source_skills(
+        self, synthetic_plugin: PluginSource, output_root: Path, components: str
+    ):
+        plugin = replace(
+            synthetic_plugin,
+            skills=synthetic_plugin.skills if components == "skills" else [],
+            agents=synthetic_plugin.agents if "agents" in components else [],
+            commands=synthetic_plugin.commands if "commands" in components else [],
+        )
+        adapter = CodexAdapter(output_root=output_root)
+        result = adapter.emit_plugin(plugin)
+        adapter.emit_global([plugin])
+
+        manifest_dir = output_root / "plugins" / "demo" / ".codex-plugin"
+        manifest = manifest_dir / "plugin.json"
+        registry = json.loads((output_root / ".agents/plugins/marketplace.json").read_text())
+        assert [entry["name"] for entry in registry["plugins"]] == (
+            ["demo"] if plugin.skills else []
+        )
+        assert manifest.is_file() == bool(plugin.skills)
+        assert (manifest in result.written) == bool(plugin.skills)
+        assert manifest_dir.exists() == bool(plugin.skills)
+        if plugin.skills:
+            assert json.loads(manifest.read_text())["skills"] == "./skills/"
+        if plugin.agents:
+            assert (output_root / ".codex/agents/demo__greeter.toml").is_file()
+        if plugin.commands:
+            assert (output_root / ".codex/skills/demo__say-hi/SKILL.md").is_file()
+
+    @pytest.mark.parametrize("keep_adjacent_file", [False, True])
+    def test_losing_last_skill_removes_only_native_manifest(
+        self, synthetic_plugin: PluginSource, output_root: Path, keep_adjacent_file: bool
+    ):
+        adapter = CodexAdapter(output_root=output_root)
+        adapter.emit_plugin(synthetic_plugin)
+        adapter.emit_global([synthetic_plugin])
+        manifest_dir = output_root / "plugins/demo/.codex-plugin"
+        author_file = manifest_dir / "notes.md"
+        if keep_adjacent_file:
+            author_file.write_text("Author-maintained notes.\n")
+        source_file = output_root / "plugins/demo/README.md"
+        source_file.write_text("Plugin documentation.\n")
+        artifacts = [
+            output_root / ".codex/agents/demo__greeter.toml",
+            output_root / ".codex/skills/demo__say-hi/SKILL.md",
+        ]
+        before = {path: path.read_bytes() for path in artifacts}
+
+        plugin = replace(synthetic_plugin, skills=[])
+        result = adapter.emit_plugin(plugin)
+        adapter.emit_global([plugin])
+
+        assert not (manifest_dir / "plugin.json").exists()
+        assert (manifest_dir / "plugin.json") not in result.written
+        assert manifest_dir.exists() == keep_adjacent_file
+        if keep_adjacent_file:
+            assert author_file.read_text() == "Author-maintained notes.\n"
+        assert source_file.read_text() == "Plugin documentation.\n"
+        assert {path: path.read_bytes() for path in artifacts} == before
+        registry = json.loads((output_root / ".agents/plugins/marketplace.json").read_text())
+        assert registry["plugins"] == []
+
+    def test_gaining_first_skill_restores_native_discovery(
+        self, synthetic_plugin: PluginSource, output_root: Path
+    ):
+        adapter = CodexAdapter(output_root=output_root)
+        without_skills = replace(synthetic_plugin, skills=[])
+        adapter.emit_plugin(without_skills)
+        adapter.emit_global([without_skills])
+        manifest = output_root / "plugins/demo/.codex-plugin/plugin.json"
+        assert not manifest.exists()
+
+        adapter.emit_plugin(synthetic_plugin)
+        adapter.emit_global([synthetic_plugin])
+
+        assert json.loads(manifest.read_text())["skills"] == "./skills/"
+        registry = json.loads((output_root / ".agents/plugins/marketplace.json").read_text())
+        assert [entry["name"] for entry in registry["plugins"]] == ["demo"]
+        assert (output_root / ".codex/skills/demo__hello/SKILL.md").is_file()
+
+    def test_native_manifest_preserves_explicit_metadata(
+        self, synthetic_plugin: PluginSource, output_root: Path
+    ):
+        metadata = {
+            "author": {"name": "Contributor", "url": "https://example.com/author"},
+            "homepage": "https://example.com/plugin",
+            "repository": "https://example.com/repository",
+            "license": "Apache-2.0",
+            "keywords": ["greetings", "documentation"],
+        }
+        plugin = replace(synthetic_plugin, plugin_json={**synthetic_plugin.plugin_json, **metadata})
+        CodexAdapter(output_root=output_root).emit_plugin(plugin)
+        manifest = json.loads((output_root / "plugins/demo/.codex-plugin/plugin.json").read_text())
+        assert {key: manifest[key] for key in metadata} == metadata
+
+    def test_native_manifest_metadata_defaults_describe_source_repository(
+        self, synthetic_plugin: PluginSource, output_root: Path, tmp_path: Path
+    ):
+        repo_root = tmp_path / "repo"
+        (repo_root / ".claude-plugin").mkdir(parents=True)
+        owner = {"name": "Repository Owner", "url": "https://example.com/owner"}
+        (repo_root / ".claude-plugin/marketplace.json").write_text(json.dumps({"owner": owner}))
+        plugin = replace(synthetic_plugin, plugin_json={"name": "demo"})
+        CodexAdapter(output_root=output_root, repo_root=repo_root).emit_plugin(plugin)
+        manifest = json.loads((output_root / "plugins/demo/.codex-plugin/plugin.json").read_text())
+        assert manifest["author"] == owner
+        assert manifest["homepage"] == "https://github.com/wshobson/agents/tree/main/plugins/demo"
+        assert manifest["repository"] == "https://github.com/wshobson/agents"
+        assert manifest["license"] == "MIT"
+        assert manifest["keywords"] == ["hello"]
+        assert all(isinstance(keyword, str) for keyword in manifest["keywords"])
 
     def test_emit_global_validates_committed_agents_md(
         self, synthetic_plugin: PluginSource, output_root: Path, tmp_path: Path
@@ -1295,6 +1408,57 @@ class TestAntigravityAdapter:
 
 
 class TestCopilotAdapter:
+    def test_mirrors_nested_binary_support_and_prunes_removed_files(
+        self, synthetic_plugin: PluginSource, output_root: Path
+    ):
+        """Skill links survive generation and stale support files remain prune-owned."""
+        from tools.generate import prune_orphans
+
+        skill = synthetic_plugin.skills[0]
+        source = skill.dir / "references" / "nested" / "sample.bin"
+        source.parent.mkdir(parents=True)
+        source.write_bytes(b"\xff\x00\x89PNG\r\n")
+        hidden = skill.dir / ".private"
+        hidden.mkdir()
+        (hidden / "notes.md").write_text("do not distribute")
+        adapter = CopilotAdapter(output_root=output_root)
+        result = adapter.emit_plugin(synthetic_plugin)
+        target = (
+            output_root
+            / ".copilot"
+            / "skills"
+            / "demo__hello"
+            / "references"
+            / "nested"
+            / "sample.bin"
+        )
+        assert target.read_bytes() == source.read_bytes()
+        assert target in result.written
+        assert not (target.parents[2] / ".private").exists()
+        assert target not in prune_orphans("copilot", output_root, set(result.written))
+        source.unlink()
+        refreshed = adapter.emit_plugin(synthetic_plugin)
+        assert target in prune_orphans("copilot", output_root, set(refreshed.written))
+        assert not target.exists()
+
+    @pytest.mark.parametrize("directory", [False, True])
+    def test_rejects_support_symlinks_outside_skill(
+        self, synthetic_plugin: PluginSource, output_root: Path, tmp_path: Path, directory: bool
+    ):
+        """A linked file cannot pull unrelated local data into a generated skill."""
+        outside = tmp_path / "outside.txt"
+        if directory:
+            outside.mkdir()
+            (outside / "private.txt").write_text("outside source boundary")
+        else:
+            outside.write_text("outside source boundary")
+        (synthetic_plugin.skills[0].dir / "linked.txt").symlink_to(
+            outside, target_is_directory=directory
+        )
+        with pytest.raises(ValueError, match="symlink"):
+            CopilotAdapter(output_root=output_root).emit_plugin(synthetic_plugin)
+        assert not (output_root / ".copilot" / "skills" / "demo__hello" / "linked.txt").exists()
+
     def test_emits_agent_profile(self, synthetic_plugin: PluginSource, output_root: Path):
         adapter = CopilotAdapter(output_root=output_root)
         result = adapter.emit_plugin(synthetic_plugin)
@@ -1424,20 +1588,6 @@ class TestCopilotAdapter:
         assert _build_tools_list(["CustomTool"]) == ["CustomTool"]
         assert _build_tools_list([]) == []
 
-    def test_yaml_quoting(self):
-        assert _needs_yaml_quoting("123")
-        assert _needs_yaml_quoting("3.14")
-        assert _needs_yaml_quoting("true")
-        assert _needs_yaml_quoting("false")
-        assert _needs_yaml_quoting("yes")
-        assert _needs_yaml_quoting("no")
-        assert _needs_yaml_quoting("on")
-        assert _needs_yaml_quoting("off")
-        assert _needs_yaml_quoting("null")
-        assert _needs_yaml_quoting("~")
-        assert not _needs_yaml_quoting("hello world")
-        assert not _needs_yaml_quoting("Use when testing.")
-
     def test_explicit_empty_tools(self, tmp_path: Path, output_root: Path):
         from tools.tests.conftest import _make_agent
 
@@ -1487,6 +1637,268 @@ class TestCopilotAdapter:
         assert fm["description"] == "Use when unrestricted."
         assert fm["model"] == "claude-opus-4.8"
         assert "tools" not in fm
+
+
+# ── Cross-cutting: emitted frontmatter must parse as YAML ────────────────────
+
+# Both values are shapes that exist in the repo today: `conductor:manage` has a colon
+# in its description, and `agent-teams:team-delegate` has a bracketed argument hint.
+# Their source files quote them correctly, so an adapter that drops the quotes turns
+# valid source into an artifact the target harness cannot load.
+_COLON_DESCRIPTION = "Manage track lifecycle: archive, restore, delete"
+_BRACKET_HINT = "[--archive | --restore | --list]"
+
+# Strings a YAML loader silently retypes when they are emitted bare. `+1` and `+0x1A`
+# come back as ints, `.5` and `.0` as floats, `.inf`/`.INF`/`+.inf` as float infinity,
+# `.nan`/`.NaN` as float not-a-number, `+1:30` as a sexagesimal int, and `+.5` as a float
+# under YAML 1.2. A version, port, offset or flag field holding one of these must survive
+# as the string that was written.
+_IMPLICIT_NUMBERS = (
+    "+1",
+    "+3",
+    "+0x1A",
+    "+1_000",
+    "+1:30",
+    ".0",
+    ".5",
+    "+.5",
+    ".inf",
+    ".Inf",
+    ".INF",
+    "+.inf",
+    "-.inf",
+    ".nan",
+    ".NaN",
+    ".NAN",
+)
+
+# Flow collections treat each of these as structural, so an item carrying one anywhere,
+# not only in the leading position, has to be quoted.
+_FLOW_DELIMITER_ITEMS = (
+    "a {b",
+    "a [b",
+    "a }b",
+    "a ]b",
+    "a ,b",
+    "{a}",
+    "[a]",
+)
+
+
+def _ambiguous_plugin(tmp_path: Path) -> PluginSource:
+    """A one-command plugin whose frontmatter needs quoting to stay parseable."""
+    from tools.tests.conftest import _make_command
+
+    plugin_json = {"name": "demo", "description": _COLON_DESCRIPTION}
+    plugin_dir = tmp_path / "demo"
+    plugin_dir.mkdir()
+    (plugin_dir / ".claude-plugin").mkdir()
+    (plugin_dir / ".claude-plugin" / "plugin.json").write_text(json.dumps(plugin_json))
+    command = _make_command(
+        plugin_dir,
+        "manage",
+        f'description: "{_COLON_DESCRIPTION}"\nargument-hint: "{_BRACKET_HINT}"',
+        "# Manage\n\nBody.\n",
+    )
+    return PluginSource(name="demo", dir=plugin_dir, plugin_json=plugin_json, commands=[command])
+
+
+def _ambiguous_skill_plugin(tmp_path: Path) -> PluginSource:
+    """A one-skill plugin whose frontmatter needs quoting to stay parseable.
+
+    Antigravity emits commands as TOML, so `_ambiguous_plugin` gives it no Markdown to
+    check. A skill lands at `skills/<skill>/SKILL.md` in every harness that writes
+    Markdown, which makes this the fixture the Antigravity YAML test needs.
+    """
+    from tools.tests.conftest import _make_skill
+
+    plugin_json = {"name": "demo", "description": _COLON_DESCRIPTION}
+    plugin_dir = tmp_path / "demo"
+    plugin_dir.mkdir()
+    (plugin_dir / ".claude-plugin").mkdir()
+    (plugin_dir / ".claude-plugin" / "plugin.json").write_text(json.dumps(plugin_json))
+    skill = _make_skill(
+        plugin_dir,
+        "manage",
+        f'name: manage\ndescription: "{_COLON_DESCRIPTION}"\n'
+        f'argument-hint: "{_BRACKET_HINT}"\nversion: "+1"',
+        "# Manage\n\nBody.\n",
+    )
+    return PluginSource(name="demo", dir=plugin_dir, plugin_json=plugin_json, skills=[skill])
+
+
+def _safe_load_frontmatter(path: Path) -> dict:
+    """Parse a generated file's frontmatter with a real YAML parser."""
+    text = path.read_text(encoding="utf-8")
+    assert text.startswith("---\n"), f"{path} has no frontmatter"
+    end = text.index("\n---", 3)
+    loaded = yaml.safe_load(text[4:end])
+    assert isinstance(loaded, dict), f"{path} frontmatter is not a mapping: {loaded!r}"
+    return loaded
+
+
+class TestFrontmatterYamlSafety:
+    """Every adapter must emit frontmatter a real YAML parser accepts.
+
+    `parse_frontmatter` is a tolerant hand-rolled reader, so the repo's own validators
+    accept output that PyYAML rejects. These tests use PyYAML directly.
+    """
+
+    def test_yaml_scalar_round_trips_ambiguous_values(self):
+        for value in (
+            _COLON_DESCRIPTION,
+            _BRACKET_HINT,
+            "",
+            "  padded  ",
+            "true",
+            "false",
+            "yes",
+            "NO",
+            "on",
+            "off",
+            "null",
+            "~",
+            "123",
+            "3.14",
+            "- leading dash",
+            "trailing # hash",
+            'has "quotes" and \\ backslash',
+        ):
+            assert yaml.safe_load(f"k: {yaml_scalar(value)}") == {"k": value}
+
+    def test_yaml_scalar_leaves_plain_values_unquoted(self):
+        for value in ("hello world", "Use when testing.", "claude-sonnet-5"):
+            assert yaml_scalar(value) == value
+
+    def test_copilot_emits_parseable_frontmatter(self, tmp_path: Path, output_root: Path):
+        plugin = _ambiguous_plugin(tmp_path)
+        result = CopilotAdapter(output_root=output_root).emit_plugin(plugin)
+
+        emitted = [p for p in result.written if p.suffix == ".md"]
+        assert emitted
+        for path in emitted:
+            fm = _safe_load_frontmatter(path)
+            assert fm["description"] == _COLON_DESCRIPTION
+            if "argument-hint" in fm:
+                assert fm["argument-hint"] == _BRACKET_HINT
+
+    def test_opencode_emits_parseable_frontmatter(self, tmp_path: Path, output_root: Path):
+        plugin = _ambiguous_plugin(tmp_path)
+        result = OpenCodeAdapter(output_root=output_root).emit_plugin(plugin)
+
+        emitted = [p for p in result.written if p.suffix == ".md"]
+        assert emitted
+        for path in emitted:
+            fm = _safe_load_frontmatter(path)
+            assert fm["description"] == _COLON_DESCRIPTION
+            assert fm["argument-hint"] == _BRACKET_HINT
+
+    def test_antigravity_emits_parseable_frontmatter(self, tmp_path: Path, output_root: Path):
+        # A skill, not a command: Antigravity writes commands as `.toml`, so a
+        # command-only plugin gives this test nothing to parse.
+        plugin = _ambiguous_skill_plugin(tmp_path)
+        result = AntigravityAdapter(output_root=output_root).emit_plugin(plugin)
+
+        emitted = [p for p in result.written if p.suffix == ".md"]
+        assert emitted, "Antigravity emitted no Markdown, so no frontmatter was checked"
+        for path in emitted:
+            fm = _safe_load_frontmatter(path)
+            assert fm["description"] == _COLON_DESCRIPTION
+            assert fm["argument-hint"] == _BRACKET_HINT
+            assert fm["version"] == "+1"
+
+    def test_pi_emits_parseable_frontmatter(self, tmp_path: Path, output_root: Path):
+        from tools.adapters.pi import PiAdapter
+
+        plugin = _ambiguous_skill_plugin(tmp_path)
+        result = PiAdapter(output_root=output_root).emit_plugin(plugin)
+
+        emitted = [p for p in result.written if p.suffix == ".md"]
+        assert emitted
+        for path in emitted:
+            fm = _safe_load_frontmatter(path)
+            assert fm["description"] == _COLON_DESCRIPTION
+            assert fm["argument-hint"] == _BRACKET_HINT
+            assert fm["version"] == "+1"
+
+    def test_yaml_scalar_round_trips_implicit_numbers(self):
+        for value in _IMPLICIT_NUMBERS:
+            loaded = yaml.safe_load(f"k: {yaml_scalar(value)}")["k"]
+            assert loaded == value, f"{value!r} came back as {loaded!r}"
+            assert isinstance(loaded, str), f"{value!r} came back as {type(loaded).__name__}"
+
+    def test_yaml_scalar_leaves_non_numeric_dot_and_sign_values_unquoted(self):
+        # The implicit-number rule must not swallow ordinary values that merely open
+        # with `.` or `+`, or every dotfile name in frontmatter would gain quotes.
+        for value in (".gitignore", ".info", ".", "+", "+abc", "..", ".x5"):
+            assert yaml_scalar(value) == value
+
+    def test_antigravity_flow_sequence_round_trips_delimiters(self):
+        from tools.adapters.antigravity import _antigravity_frontmatter
+
+        block = _antigravity_frontmatter({"tools": list(_FLOW_DELIMITER_ITEMS)})
+        loaded = yaml.safe_load(block[len("---\n") : -len("\n---")])
+        assert loaded["tools"] == list(_FLOW_DELIMITER_ITEMS)
+
+    def test_every_frontmatter_emitter_round_trips_hostile_values(self):
+        """The adapters that share `yaml_scalar` must agree on every hostile shape.
+
+        `yaml_scalar` is the single quoting rule, so a value it mishandles is wrong in
+        every output at once. Antigravity additionally renders lists as flow
+        sequences, which is the one place an adapter adds a rule of its own.
+        """
+        from tools.adapters.antigravity import _antigravity_frontmatter
+        from tools.adapters.codex import _frontmatter_block
+        from tools.adapters.copilot import _copilot_frontmatter
+        from tools.adapters.opencode import _opencode_frontmatter
+        from tools.adapters.pi import _pi_frontmatter
+
+        values = (
+            _COLON_DESCRIPTION,
+            _BRACKET_HINT,
+            *_IMPLICIT_NUMBERS,
+            *_FLOW_DELIMITER_ITEMS,
+            "trailing # hash",
+            'has "quotes" and \\ backslash',
+        )
+        fm: dict = {f"field{i}": value for i, value in enumerate(values)}
+        fm["listed"] = list(values)
+        fm["mapped"] = {f"sub{i}": value for i, value in enumerate(values)}
+
+        for name, emitter in (
+            ("antigravity", _antigravity_frontmatter),
+            ("codex", _frontmatter_block),
+            ("copilot", _copilot_frontmatter),
+            ("opencode", _opencode_frontmatter),
+            ("pi", _pi_frontmatter),
+        ):
+            block = emitter(fm)
+            body = block[len("---\n") : -len("\n---")]
+            loaded = yaml.safe_load(body)
+            assert loaded == fm, f"{name} frontmatter did not round-trip"
+
+    def test_copilot_preserves_mapping_valued_fields(self, tmp_path: Path, output_root: Path):
+        from tools.tests.conftest import _make_skill
+
+        plugin_dir = tmp_path / "demo"
+        plugin_dir.mkdir()
+        (plugin_dir / ".claude-plugin").mkdir()
+        (plugin_dir / ".claude-plugin" / "plugin.json").write_text('{"name": "demo"}')
+        skill = _make_skill(
+            plugin_dir,
+            "hello",
+            "name: hello\ndescription: Use when greeting.\nmetadata:\n  owner: platform\n  tier: 1",
+            "# Hello\n\nBody.\n",
+        )
+        plugin = PluginSource(
+            name="demo", dir=plugin_dir, plugin_json={"name": "demo"}, skills=[skill]
+        )
+        CopilotAdapter(output_root=output_root).emit_plugin(plugin)
+
+        fm = _safe_load_frontmatter(
+            output_root / ".copilot" / "skills" / "demo__hello" / "SKILL.md"
+        )
+        assert fm["metadata"] == {"owner": "platform", "tier": "1"}
 
 
 # ── Cross-cutting: capabilities consistency ──────────────────────────────────
@@ -1585,3 +1997,402 @@ class TestCapabilities:
         for harness in supported_harnesses():
             for alias in ("fable", "opus", "sonnet", "haiku", "inherit"):
                 assert alias in MODEL_ALIASES[harness], f"{harness} missing {alias}"
+
+
+# ── Tool-reference rewriting ─────────────────────────────────────────────────
+
+
+class TestStripClaudeToolRefs:
+    """Characterization tests for `HarnessAdapter.strip_claude_tool_refs`.
+
+    Copilot command bodies are rewritten through this method, and its output is not
+    otherwise asserted anywhere. These tests pin the exact strings so that a refactor
+    which changes them has to say so instead of slipping through.
+    """
+
+    SAMPLE = "Use the `Read` tool first, then the Bash tool. Prefer `Grep` over `Glob`."
+
+    def _adapter(self, tmp_path: Path) -> CopilotAdapter:
+        return CopilotAdapter(output_root=tmp_path)
+
+    def test_lower_case_output_is_exact(self, tmp_path: Path):
+        assert (
+            self._adapter(tmp_path).strip_claude_tool_refs(self.SAMPLE, tool_case="lower")
+            == "Use `open` first, then `shell`. Prefer `grep` over `glob`."
+        )
+
+    def test_normal_case_output_is_exact(self, tmp_path: Path):
+        """`normal` keeps Read as `read` and leaves bare backticked names alone."""
+        assert (
+            self._adapter(tmp_path).strip_claude_tool_refs(self.SAMPLE, tool_case="normal")
+            == "Use `read` first, then `shell`. Prefer `Grep` over `Glob`."
+        )
+
+    def test_replacements_keep_their_backticks(self, tmp_path: Path):
+        out = self._adapter(tmp_path).strip_claude_tool_refs("Run the Bash tool.")
+        assert out == "Run `shell`."
+        assert "`shell`" in out, "replacement must stay inside backticks"
+
+    def test_backticked_prose_form(self, tmp_path: Path):
+        assert (
+            self._adapter(tmp_path).strip_claude_tool_refs("Call the `WebFetch` tool now.")
+            == "Call `fetch` now."
+        )
+
+    def test_bare_backticked_name_is_lowercased_not_verbed(self, tmp_path: Path):
+        """`Grep` on its own becomes `grep` — the lowercased name, not the `rg` verb."""
+        assert self._adapter(tmp_path).strip_claude_tool_refs("Prefer `Grep`.") == "Prefer `grep`."
+
+    def test_prose_words_are_left_alone(self, tmp_path: Path):
+        """Conservative by design: only the two tool phrasings are touched."""
+        sample = "Read the docs, then write a summary and edit it."
+        assert self._adapter(tmp_path).strip_claude_tool_refs(sample) == sample
+
+    def test_every_mapped_tool_is_covered(self, tmp_path: Path):
+        """Both cases, passed explicitly so a change to the default is caught.
+
+        Only Read differs between the two. The rest are pinned in both modes so a
+        future divergence has to be deliberate.
+        """
+        adapter = self._adapter(tmp_path)
+        # camel -> (tool_case="lower", tool_case="normal")
+        expected = {
+            "Read": ("open", "read"),
+            "Edit": ("edit", "edit"),
+            "Write": ("write", "write"),
+            "Bash": ("shell", "shell"),
+            "Grep": ("rg", "rg"),
+            "Glob": ("glob", "glob"),
+            "WebFetch": ("fetch", "fetch"),
+            "WebSearch": ("search", "search"),
+            "TodoWrite": ("todo", "todo"),
+        }
+        for camel, (lower_verb, normal_verb) in expected.items():
+            body = f"Use the {camel} tool."
+            assert adapter.strip_claude_tool_refs(body, tool_case="lower") == f"Use `{lower_verb}`."
+            assert (
+                adapter.strip_claude_tool_refs(body, tool_case="normal") == f"Use `{normal_verb}`."
+            )
+
+    def test_emitted_copilot_command_rewrites_tool_refs(self, tmp_path: Path):
+        """Cover the real path: what a generated Copilot command body actually says.
+
+        The unit assertions above pin the method. Copilot's two call sites pass
+        `tool_case="lower"` explicitly, so this asserts the emitted file instead of the
+        method default, which is what would actually regress.
+        """
+        from tools.adapters.base import CommandSource, PluginSource
+
+        plugin_dir = tmp_path / "src" / "demo"
+        cmds = plugin_dir / "commands"
+        cmds.mkdir(parents=True)
+        body = "Use the `Read` tool first, then the Bash tool. Prefer `Grep` over `Glob`."
+        content = f"---\ndescription: Demo command.\n---\n\n{body}\n"
+        (cmds / "demo-cmd.md").write_text(content, encoding="utf-8")
+        fm, parsed_body = parse_frontmatter(content)
+        command = CommandSource(
+            plugin="demo",
+            name="demo-cmd",
+            path=cmds / "demo-cmd.md",
+            frontmatter=fm,
+            body=parsed_body,
+        )
+        plugin = PluginSource(
+            name="demo", dir=plugin_dir, plugin_json={"name": "demo"}, commands=[command]
+        )
+
+        out = tmp_path / "out"
+        result = CopilotAdapter(output_root=out).emit_plugin(plugin)
+        emitted = [p for p in result.written if p.suffix == ".md"]
+        # Copilot writes the command twice, as a skill and as a legacy command, and
+        # also writes a plugin index that carries no command body.
+        command_files = [p for p in emitted if p.name in {"SKILL.md", "demo-cmd.md"}]
+        assert len(command_files) == 2, [p.name for p in emitted]
+
+        # Per file, not joined: a joined string would let one emitter regress to
+        # `read` while the other's `open` still satisfied the assertion.
+        for path in command_files:
+            text = path.read_text(encoding="utf-8")
+            assert "`open`" in text, path
+            assert "`shell`" in text, path
+            assert "`grep`" in text, path
+            assert "`read`" not in text, path
+            assert "the `Read` tool" not in text, path
+            assert "the Bash tool" not in text, path
+
+
+# ── Pi: capability matrix entries ────────────────────────────────────────────
+
+
+class TestPiCapabilities:
+    def test_pi_is_a_supported_harness(self):
+        from tools.adapters.capabilities import CAPABILITIES, supported_harnesses
+
+        assert "pi" in supported_harnesses()
+        cap = CAPABILITIES["pi"]
+        assert cap.display_name == "Pi"
+        assert cap.skills_native is True
+        assert cap.commands_native is True
+        assert cap.agents_native is False  # only via the reference `subagent` extension
+        assert cap.plugin_marketplace is False
+        assert cap.tool_name_case == "lowercase"
+        assert cap.context_file_name == "AGENTS.md"
+        assert cap.skill_body_max_bytes == 0
+
+    def test_pi_model_aliases_resolve_to_anthropic_ids(self):
+        from tools.adapters.capabilities import resolve_model
+
+        assert resolve_model("pi", "fable") == ("anthropic/claude-fable-5", None)
+        assert resolve_model("pi", "opus") == ("anthropic/claude-opus-4-8", None)
+        assert resolve_model("pi", "sonnet") == ("anthropic/claude-sonnet-5", None)
+        assert resolve_model("pi", "haiku") == ("anthropic/claude-haiku-4-5", None)
+        assert resolve_model("pi", "inherit") == ("inherit", None)
+        resolved, warning = resolve_model("pi", "gpt-9")
+        assert resolved == "inherit"
+        assert warning and "gpt-9" in warning
+
+    def test_pi_tool_map_uses_builtin_lowercase_names(self):
+        from tools.adapters.capabilities import TOOL_NAME_MAPS
+
+        m = TOOL_NAME_MAPS["pi"]
+        assert m == {
+            "Read": "read",
+            "Edit": "edit",
+            "Write": "write",
+            "Bash": "bash",
+            "Grep": "grep",
+            "Glob": "find",
+            "Agent": "subagent",
+            "Task": "subagent",
+        }
+
+
+# ── Pi adapter ───────────────────────────────────────────────────────────────
+
+
+class TestPiAdapter:
+    def test_emits_skill_under_plugin_dir_with_bare_name(
+        self, synthetic_plugin: PluginSource, output_root: Path
+    ):
+        from tools.adapters.pi import PiAdapter
+
+        PiAdapter(output_root=output_root).emit_plugin(synthetic_plugin)
+        skill_md = output_root / ".pi" / "skills" / "demo" / "hello" / "SKILL.md"
+        assert skill_md.is_file()
+        fm, body = parse_frontmatter(skill_md.read_text())
+        assert fm["name"] == "hello"
+        assert fm["description"] == "Use when greeting users."
+        # Claude tool references are rewritten away from Claude tool vocabulary.
+        assert "`Read`" not in body and "`Bash`" not in body
+
+    def test_mirrors_skill_support_files_and_skips_hidden(self, tmp_path: Path, output_root: Path):
+        from tools.adapters.pi import PiAdapter
+        from tools.tests.conftest import _make_skill
+
+        plugin_dir = tmp_path / "demo"
+        plugin_dir.mkdir()
+        (plugin_dir / ".claude-plugin").mkdir()
+        (plugin_dir / ".claude-plugin" / "plugin.json").write_text('{"name": "demo"}')
+        skill = _make_skill(
+            plugin_dir,
+            "toolkit",
+            "name: toolkit\ndescription: Use when running the toolkit.",
+            "# Toolkit\n\nRun `scripts/preflight.sh`.\n",
+        )
+        (skill.dir / "references").mkdir()
+        (skill.dir / "references" / "notes.md").write_text("notes")
+        (skill.dir / "scripts").mkdir()
+        (skill.dir / "scripts" / "preflight.sh").write_text("#!/bin/sh\necho ok\n")
+        (skill.dir / "assets").mkdir()
+        (skill.dir / "assets" / "logo.png").write_bytes(b"\x89PNG\r\n")
+        (skill.dir / ".DS_Store").write_text("junk")
+        plugin = PluginSource(
+            name="demo", dir=plugin_dir, plugin_json={"name": "demo"}, skills=[skill]
+        )
+
+        result = PiAdapter(output_root=output_root).emit_plugin(plugin)
+
+        root = output_root / ".pi" / "skills" / "demo" / "toolkit"
+        assert (root / "references" / "notes.md").is_file()
+        assert (root / "scripts" / "preflight.sh").is_file()
+        assert (root / "assets" / "logo.png").read_bytes() == b"\x89PNG\r\n"
+        assert not (root / ".DS_Store").exists()
+        assert (root / "SKILL.md").read_text().count("# Toolkit") == 1
+        # written is the prune set, so a mirrored file missing from it would be
+        # deleted on the next run.
+        assert (root / "references" / "notes.md") in result.written
+        assert (root / "scripts" / "preflight.sh") in result.written
+        assert (root / "assets" / "logo.png") in result.written
+
+    def test_emits_prompt_template_with_namespaced_filename(
+        self, synthetic_plugin: PluginSource, output_root: Path
+    ):
+        from tools.adapters.pi import PiAdapter, pi_prompt_id
+
+        PiAdapter(output_root=output_root).emit_plugin(synthetic_plugin)
+        assert pi_prompt_id("demo", "say-hi") == "demo__say-hi"
+        prompt_md = output_root / ".pi" / "prompts" / "demo__say-hi.md"
+        assert prompt_md.is_file()
+        fm, body = parse_frontmatter(prompt_md.read_text())
+        assert fm["description"] == "Send a greeting"
+        assert fm["argument-hint"] == "<name>"
+        # Pi substitutes $ARGUMENTS itself; the body keeps it verbatim and adds no wrapper.
+        assert "$ARGUMENTS" in body
+        assert body.lstrip().startswith("# Say Hi")
+
+    def test_prompt_description_falls_back_to_title_cased_name(
+        self, tmp_path: Path, output_root: Path
+    ):
+        from tools.adapters.pi import PiAdapter
+        from tools.tests.conftest import _make_command
+
+        plugin_dir = tmp_path / "demo"
+        plugin_dir.mkdir()
+        (plugin_dir / ".claude-plugin").mkdir()
+        (plugin_dir / ".claude-plugin" / "plugin.json").write_text('{"name": "demo"}')
+        cmd = _make_command(plugin_dir, "tech-debt", "", "# Tech debt\n\nFind it.\n")
+        plugin = PluginSource(
+            name="demo", dir=plugin_dir, plugin_json={"name": "demo"}, commands=[cmd]
+        )
+
+        PiAdapter(output_root=output_root).emit_plugin(plugin)
+
+        fm, _ = parse_frontmatter(
+            (output_root / ".pi" / "prompts" / "demo__tech-debt.md").read_text()
+        )
+        assert fm["description"] == "Tech Debt"
+        assert "argument-hint" not in fm
+
+    def test_emits_agent_in_subagent_extension_format(
+        self, synthetic_plugin: PluginSource, output_root: Path
+    ):
+        from tools.adapters.pi import PiAdapter, pi_agent_id
+
+        result = PiAdapter(output_root=output_root).emit_plugin(synthetic_plugin)
+        assert pi_agent_id("demo", "greeter") == "demo__greeter"
+        agent_md = output_root / ".pi" / "agents" / "demo__greeter.md"
+        assert agent_md.is_file()
+        fm, body = parse_frontmatter(agent_md.read_text())
+        assert fm["name"] == "greeter"  # source frontmatter name is kept
+        assert fm["description"] == "Use when delegating greetings."
+        assert fm["model"] == "anthropic/claude-opus-4-8"
+        assert fm["tools"] == "read, grep"
+        assert "color" not in fm
+        assert body.lstrip().startswith("# Greeter agent")
+        assert result.warnings == []
+
+    def test_agent_omits_model_when_inherit_and_name_falls_back_to_id(
+        self, tmp_path: Path, output_root: Path
+    ):
+        from tools.adapters.pi import PiAdapter
+        from tools.tests.conftest import _make_agent
+
+        plugin_dir = tmp_path / "demo"
+        plugin_dir.mkdir()
+        (plugin_dir / ".claude-plugin").mkdir()
+        (plugin_dir / ".claude-plugin" / "plugin.json").write_text('{"name": "demo"}')
+        agent = _make_agent(plugin_dir, "helper", "description: Use when helping.", "# Helper\n")
+        plugin = PluginSource(
+            name="demo", dir=plugin_dir, plugin_json={"name": "demo"}, agents=[agent]
+        )
+
+        PiAdapter(output_root=output_root).emit_plugin(plugin)
+
+        fm, _ = parse_frontmatter((output_root / ".pi" / "agents" / "demo__helper.md").read_text())
+        assert fm["name"] == "demo__helper"
+        assert "model" not in fm
+        assert "tools" not in fm  # no source `tools:` means inherit every tool
+
+    def test_locked_agent_gets_read_only_tool_set(self, tmp_path: Path, output_root: Path):
+        from tools.adapters.pi import PiAdapter
+        from tools.tests.conftest import _make_agent
+
+        plugin_dir = tmp_path / "demo"
+        plugin_dir.mkdir()
+        (plugin_dir / ".claude-plugin").mkdir()
+        (plugin_dir / ".claude-plugin" / "plugin.json").write_text('{"name": "demo"}')
+        agent = _make_agent(
+            plugin_dir,
+            "locked",
+            "name: locked\ndescription: Use when reviewing.\ntools: []",
+            "# Locked\n",
+        )
+        plugin = PluginSource(
+            name="demo", dir=plugin_dir, plugin_json={"name": "demo"}, agents=[agent]
+        )
+
+        PiAdapter(output_root=output_root).emit_plugin(plugin)
+
+        fm, _ = parse_frontmatter((output_root / ".pi" / "agents" / "demo__locked.md").read_text())
+        assert fm["tools"] == "read, grep, find, ls"
+
+    def test_unmapped_tools_pass_through_and_unknown_model_warns(
+        self, tmp_path: Path, output_root: Path
+    ):
+        from tools.adapters.pi import PiAdapter
+        from tools.tests.conftest import _make_agent
+
+        plugin_dir = tmp_path / "demo"
+        plugin_dir.mkdir()
+        (plugin_dir / ".claude-plugin").mkdir()
+        (plugin_dir / ".claude-plugin" / "plugin.json").write_text('{"name": "demo"}')
+        agent = _make_agent(
+            plugin_dir,
+            "webby",
+            "name: webby\ndescription: Use when browsing.\nmodel: gpt-9\ntools: WebFetch, mcp__x__y, Glob",
+            "# Webby\n",
+        )
+        plugin = PluginSource(
+            name="demo", dir=plugin_dir, plugin_json={"name": "demo"}, agents=[agent]
+        )
+
+        result = PiAdapter(output_root=output_root).emit_plugin(plugin)
+
+        fm, _ = parse_frontmatter((output_root / ".pi" / "agents" / "demo__webby.md").read_text())
+        assert fm["tools"] == "WebFetch, mcp__x__y, find"
+        assert "model" not in fm  # unknown alias falls back to inherit, which is omitted
+        assert any("gpt-9" in w for w in result.warnings)
+
+    def test_emit_result_lists_every_written_file(
+        self, synthetic_plugin: PluginSource, output_root: Path
+    ):
+        from tools.adapters.pi import PiAdapter
+
+        result = PiAdapter(output_root=output_root).emit_plugin(synthetic_plugin)
+        rel = sorted(str(p.relative_to(output_root)) for p in result.written)
+        assert rel == [
+            ".pi/agents/demo__greeter.md",
+            ".pi/prompts/demo__say-hi.md",
+            ".pi/skills/demo/hello/SKILL.md",
+        ]
+
+    def test_clean_and_prune_leave_developer_pi_files_alone(
+        self, synthetic_plugin: PluginSource, output_root: Path
+    ):
+        """`.pi/` is also Pi's project-local config dir. Clean and prune own only
+        `.pi/skills`, `.pi/prompts` and `.pi/agents`, so a developer's own settings and
+        extensions survive a full regeneration."""
+        from tools.adapters.pi import PiAdapter
+        from tools.generate import clean_output, prune_orphans
+
+        PiAdapter(output_root=output_root).emit_plugin(synthetic_plugin)
+        settings = output_root / ".pi" / "settings.json"
+        settings.write_text('{"trusted": true}\n')
+        extension = output_root / ".pi" / "extensions" / "keep.ts"
+        extension.parent.mkdir(parents=True, exist_ok=True)
+        extension.write_text("export const keep = 1;\n")
+        stale = output_root / ".pi" / "prompts" / "zz__stale.md"
+        stale.write_text("---\ndescription: gone\n---\n\nOld.\n")
+
+        clean_output("pi", output_root)
+        assert settings.is_file()
+        assert extension.is_file()
+
+        stale.parent.mkdir(parents=True, exist_ok=True)
+        stale.write_text("---\ndescription: gone\n---\n\nOld.\n")
+        removed = prune_orphans("pi", output_root, written=set())
+
+        assert stale.resolve() in {p.resolve() for p in removed}
+        assert not stale.exists()
+        assert settings.is_file()
+        assert extension.is_file()

@@ -51,7 +51,7 @@ jobs:
       - name: Validate marketplace entries resolve to plugin dirs
         run: |
           python3 - <<'PY'
-          import json, os, posixpath, sys
+          import json, os, posixpath, re, sys
           from urllib.parse import urlparse
           with open('.claude-plugin/marketplace.json') as f:
               mp = json.load(f)
@@ -69,9 +69,14 @@ jobs:
                       errors.append(f"{p['name']}: unsupported source object {src.get('source')!r}")
                       continue
 
-                  extra_keys = set(src) - {'source', 'url', 'path'}
+                  # Claude Code's git-subdir schema: url, path, ref?, sha? (sha is the effective pin).
+                  extra_keys = set(src) - {'source', 'url', 'path', 'ref', 'sha'}
                   if extra_keys:
                       errors.append(f"{p['name']}: git-subdir entry has unsupported keys: {sorted(extra_keys)}")
+
+                  sha = src.get('sha')
+                  if sha is not None and not re.fullmatch(r'[0-9a-f]{40}', sha):
+                      errors.append(f"{p['name']}: git-subdir sha must be a 40-character lowercase hex commit")
 
                   url = src.get('url')
                   path = src.get('path')
@@ -104,6 +109,25 @@ jobs:
 
       - name: Check agent name uniqueness
         run: python3 tools/check_agent_name_collisions.py --fail-on-duplicates
+
+  plugin-version-bumps:
+    name: Changed plugins raise their version
+    # Claude Code updates an installed plugin only when its plugin.json version goes up,
+    # so a PR that changes files under plugins/<name>/ must raise that version. Pushes
+    # to main have no target branch to compare with, so this runs on pull requests only.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
+        with:
+          persist-credentials: false
+          # Full history, so the merge base with the target branch can be found.
+          fetch-depth: 0
+
+      - name: Check version bumps
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: python3 tools/check_version_bumps.py --base "origin/$BASE_REF"
 
   plugin-eval-tests:
     name: plugin-eval pytest
@@ -158,6 +182,10 @@ jobs:
   multi-harness-generate:
     name: Cross-harness generation + validation
     runs-on: ubuntu-latest
+    # plugins/plugin-eval/.python-version pins other jobs to 3.14. UV_PYTHON
+    # overrides it here, so uv sync and uv run keep this job on 3.12.
+    env:
+      UV_PYTHON: "3.12"
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
         with:
@@ -211,15 +239,20 @@ jobs:
             .opencode/
             opencode.json
             .antigravity/
+            .pi/
             AGENTS.md
           retention-days: 7
 
   cli-smoke-test:
-    name: Real-CLI smoke test (OpenCode + Antigravity)
+    name: Real-CLI smoke test (OpenCode + Antigravity + Pi)
     runs-on: ubuntu-latest
     # Real-CLI subprocess tests: invokes the actual harness binaries against our
     # generated artifacts to catch issues that pure-Python parsing misses (CLI
     # version drift, schema-loader surprises, plugin discovery bugs).
+    # plugins/plugin-eval/.python-version pins other jobs to 3.14. UV_PYTHON
+    # overrides it here, so uv sync and uv run keep this job on 3.12.
+    env:
+      UV_PYTHON: "3.12"
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
         with:
@@ -231,21 +264,66 @@ jobs:
           bun-version: latest
 
       - name: Install OpenCode CLI
+        # Pinned. Without a version the installer asks api.github.com for the
+        # latest release, and shared runners hit the unauthenticated rate limit
+        # ("Failed to fetch version information"). Bump alongside the OpenCode
+        # release notes when the adapter needs a newer CLI.
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash -s -- --version 1.18.30
           echo "$HOME/.opencode/bin" >> "$GITHUB_PATH"
 
       - name: Install Antigravity CLI
         # Bootstrapper defaults to $HOME/.local/bin; bump alongside any agy
-        # plugin-schema changes it ships.
+        # plugin-schema changes it ships. The CDN sometimes returns the script
+        # gzip-compressed, and bash can't run that from a pipe, so the step
+        # downloads it first and decompresses it when needed.
         run: |
-          curl -fsSL https://antigravity.google/cli/install.sh | bash
+          installer="$RUNNER_TEMP/agy-install.sh"
+          curl -fsSL --compressed --retry 3 -o "$installer" https://antigravity.google/cli/install.sh
+          if gzip -t "$installer" 2>/dev/null; then
+            gunzip -c "$installer" > "$installer.plain"
+            mv "$installer.plain" "$installer"
+          fi
+          bash "$installer"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Set up Node.js (for npx skills)
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4.4.0
+        with:
+          node-version: 22
+
+      - name: Install Pi CLI
+        # Pinned to the version the adapter was verified against. Bump alongside any
+        # change to Pi's skill, prompt-template, or agent discovery rules.
+        # Only the direct version is pinned; the package's own dependencies still resolve
+        # within their caret ranges, which is acceptable for a smoke-test CLI install.
+        run: npm install -g --ignore-scripts @earendil-works/pi-coding-agent@0.85.1
+
+      - name: Ensure GitHub CLI has `gh skill` (2.90+)
+        # Runner images ship gh, but the skills smoke tests need the `gh skill`
+        # command group. Upgrade from GitHub's apt repository only when the
+        # preinstalled build predates it, so the job never depends on the image.
+        run: |
+          if gh skill --help > /dev/null 2>&1; then
+            echo "preinstalled $(gh --version | head -1) already has gh skill"
+            exit 0
+          fi
+          sudo mkdir -p -m 755 /etc/apt/keyrings
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+            | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
+          sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+            | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          sudo apt-get update -qq && sudo apt-get install -y -qq gh
 
       - name: Verify CLI versions
         run: |
           opencode --version
           agy --version
+          pi --version
+          gh --version
+          gh skill --help > /dev/null   # hard requirement: the skills smoke tests must run, not skip
+          npx --version
 
       - name: Install uv
         uses: astral-sh/setup-uv@e58605a9b6da7c637471fab8847a5e5a6b8df081  # v5

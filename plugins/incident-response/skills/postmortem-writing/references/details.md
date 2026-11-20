@@ -105,7 +105,7 @@ The deployment completed at 14:23, but the first alert didn't fire until 14:31 (
 ### Customer Impact
 - 12,000 unique customers affected
 - Average impact duration: 35 minutes
-- 847 support tickets (23% of affected users)
+- 847 support tickets (~7% of affected users)
 - Customer satisfaction score dropped 12 points
 
 ### Business Impact
@@ -161,4 +161,7 @@ The deployment completed at 14:23, but the first alert didn't fire until 14:31 (
 ### Related Incidents
 - 2023-11-02: Similar connection issue in User Service (POSTMORTEM-42)
 
-#
+## References
+- [Connection Pool Best Practices](internal-wiki/connection-pools)
+- [Deployment Runbook](internal-wiki/deployment-runbook)
+```

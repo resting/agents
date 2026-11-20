@@ -3,7 +3,8 @@
 Require a human approval signal before an AI agent can post PR reviews,
 comments, merges, or writes to CI configuration. Built on
 [`protect-mcp`](https://www.npmjs.com/package/protect-mcp) + Cedar, with
-every decision producing an Ed25519-signed receipt that verifies offline.
+every tool call that runs producing an Ed25519-signed receipt that verifies
+offline.
 
 ## The failure mode this addresses
 
@@ -31,9 +32,9 @@ Two hooks run around every Claude Code tool call:
    actions unconditionally. Cedar deny means the tool call exits with code
    2 and Claude Code blocks it.
 
-2. **`PostToolUse`** signs an Ed25519 receipt of the attempt, whether it
-   was approved, denied, or skipped. The receipt chain records exactly
-   which actions were authorized and when.
+2. **`PostToolUse`** signs an Ed25519 receipt for each tool call that ran
+   and appends it to `./review-receipts/receipts.jsonl`. A denied call
+   never runs, so it gets no receipt.
 
 Approved windows are opened by creating a `./.review-approved` flag file,
 or by running the `/approve-review` slash command shipped with this plugin.
@@ -46,15 +47,54 @@ The default policy forbids (unless approved):
 - **`gh pr review`, `gh pr comment`, `gh pr merge`, `gh pr close`, `gh pr edit`**
 - **`gh issue comment`, `gh issue close`, `gh issue edit`**
 - **`gh release create`, `gh release edit`**
-- **`gh api repos`** (catches arbitrary GitHub REST calls)
-- **GitLab / Bitbucket equivalents** (`glab mr comment` etc.)
-- **`git push` to `main`, `master`, `release`, `production`**
-- **Writes to `.github/workflows/`, `.gitlab-ci.yml`, `.circleci/config.yml`**
-- **`WebFetch` POSTs to `api.github.com`, `hooks.slack.com`, Discord**
+- **`gh api` calls that can write**: any call with `graphql`, `-X` /
+  `--method`, or `-f` / `-F` / `--field` / `--raw-field` / `--input`
+  (including attached forms such as `-fbody=x`). This is conservative:
+  GraphQL queries and parameterized GETs (`-X GET -f q=...`) are blocked too,
+  because a command string cannot prove the request is a read. Open an
+  approval window for them. Plain `gh api repos/o/r/pulls` reads pass.
+- **GitLab equivalents** (`glab mr comment`, `glab mr approve`, `glab mr merge`, `glab issue comment`)
+- **`git push` naming `main`, `master`, `release`, or `production`** as a whole
+  word (`origin main`, `HEAD:main`, `refs/heads/main`), so `maintenance` or
+  `fix-release-notes` pass
+- **Force pushes to any branch** (`--force`, `--force-with-lease`, `-f`,
+  `--mirror`, or a `+`-prefixed refspec such as `+feature`)
+- **Chained or quoted pushes**: a `git push` that also contains `;`, `&`,
+  `|`, a newline, a backtick, `$`, `<`, a quote, or a parenthesis, such as
+  `git push origin main; true`, `git push origin "main"`, or
+  `(git push origin main)`. This is conservative: a push with `2>&1` or a
+  push option such as `git push -o "ci.skip"` also needs an approval window.
+- **Remote branch deletes** (`--delete`, `-d`, `--prune`, or
+  `git push origin :feature`) and **`git push --all`**, which updates `main`
+  without naming it
+- **Writes and edits to `.github/workflows/`, `.github/CODEOWNERS`, `.gitlab-ci.yml`, `.circleci/config.yml`, `buildkite/pipeline.yml`**
 
 Everything else passes through. This plugin is focused on the review
 surface; use it alongside [protect-mcp](../protect-mcp/) if you want
 general tool-call policy enforcement.
+
+### Known limits
+
+Matching shell commands as strings is best-effort: the rules use substring
+patterns such as `*gh *pr merge*`, which also catch `cd x && gh pr merge 1`,
+`env gh ...`, `/usr/bin/gh ...`, and `gh -R o/r pr merge 1`, but a determined
+rewording (a tab or extra spaces between `pr` and `merge`, a gh alias, `curl`
+against the API, or a Bash redirect into `.github/workflows/`) can still get
+through. They can also over-match, for example `echo gh pr merge`; open an
+approval window for those. Other limits:
+
+- A bare `git push` is allowed. The evaluator sees only the command string,
+  not the upstream branch it pushes to.
+- Force and delete flags are matched alone, when a bundle starts with `-f`,
+  or in two-letter bundles such as `-uf` or `-df`. A longer bundle is matched
+  only when it starts with `-f` or one of those pairs (`-fuv` and `-qdf` are,
+  `-uvf` is not), because Cedar `like` has no character classes.
+- `gh pr create` and `gh issue create` are not gated on purpose: opening a PR
+  or an issue is how an agent hands work to a human.
+- `WebFetch` is not gated. Claude Code's WebFetch tool only issues GET
+  requests, so it cannot post a review, comment, or webhook message.
+- Path patterns are case-sensitive, so on a case-insensitive file system a
+  write to `.GITHUB/workflows/` is not matched.
 
 ## Installation
 
@@ -103,14 +143,21 @@ receipts**. They do not flow through `protect-mcp sign`, so
 operator-trust; it records what the human intended to approve but can be
 edited after the fact without detection.
 
-What IS signed and tamper-evident: the `PostToolUse` tool-call receipts
-that every action (allowed or denied) produces under
-`./review-receipts/*.json`. Those are the authoritative audit trail. Use
-`npx @veritasacta/verify ./review-receipts/*.json` to verify them.
+What is signed and tamper-evident: the `PostToolUse` receipts in
+`./review-receipts/receipts.jsonl`, one for each tool call that ran. Verify
+them with the public key from `./review-governance.key`:
 
-If you need signed approval records as well (for regulated environments),
-run them through protect-mcp directly, or emit them as separate receipts
-via `npx protect-mcp@latest sign --tool approve-review --input ...`.
+```bash
+PUB=$(node -p 'JSON.parse(require("fs").readFileSync("./review-governance.key")).publicKey')
+npx @veritasacta/verify@0.11.1 --replay-chain ./review-receipts/receipts.jsonl --key "$PUB"
+```
+
+To add a signed record of an approval, emit a separate receipt. protect-mcp
+0.32.4 receives only the name `approve-review` here, not the approval reason:
+
+```bash
+npx protect-mcp@0.32.4 sign --tool approve-review --receipts ./review-receipts/ --key ./review-governance.key
+```
 
 ### Listing pending or denied actions
 
@@ -118,20 +165,15 @@ via `npx protect-mcp@latest sign --tool approve-review --input ...`.
 /list-pending
 ```
 
-Walks the receipt chain at `./review-receipts/` and prints any recent
-`decision: deny` entries, so you can see what the agent tried to do that
-was blocked.
+Lists the tool calls that the policy blocked in the current session. A
+denied call writes no receipt, so the receipts file cannot show denials.
 
-### A note on what the signed chain covers
+### A note on what the signed receipts cover
 
-When the approval flag is present, the `PreToolUse` hook short-circuits
-to `exit 0` without calling `protect-mcp evaluate`. The downstream
-`PostToolUse` receipt for that approved action will therefore have
-`decision: allow` but no `policy_digest` field, because no Cedar policy
-was evaluated. Auditors walking the chain should expect this: an approved
-tool call shows up as a signed receipt with `reason: human_approved` and
-no policy reference. Denied tool calls and non-review actions (which do
-go through Cedar) carry the `policy_digest` as usual.
+The hook signs the same observation fields for every tool call that ran: the
+tool name, `decision: allow`, and `policy_digest: none`. A receipt does not
+show whether the approval flag was present, and a denied call has no
+receipt. The unsigned approval log shows when a window was opened.
 
 ## Example session
 
@@ -141,9 +183,9 @@ An agent working on a PR wants to post a review comment. Without approval:
 $ agent: gh pr review 42 --comment --body "LGTM"
   → PreToolUse hook runs
   → No ./.review-approved file, policy evaluates
-  → Cedar: forbid on context.command_pattern == "gh pr review"
+  → Cedar: forbid on context.input.command like "*gh *pr review*"
   → Exit 2: Claude Code blocks the tool call
-  → PostToolUse runs, signs a receipt with decision=deny
+  → PostToolUse does not run, so no receipt is written
 ```
 
 With approval:
@@ -154,13 +196,13 @@ $ agent: gh pr review 42 --comment --body "LGTM"
   → PreToolUse hook runs
   → ./.review-approved present, exit 0
   → Tool call proceeds
-  → PostToolUse signs a receipt (decision=allow, reason=human_approved)
+  → PostToolUse appends a signed receipt (decision=allow)
 $ rm ./.review-approved
 ```
 
-The receipt chain at `./review-receipts/` records both attempts: the
-initial deny and the subsequent allow after approval. An auditor reading
-the chain later can see exactly which actions were human-gated and when.
+The receipts file records only the allowed call. The denied attempt is
+visible in the Claude Code session, and the approval log records when the
+window was opened.
 
 ## Composing with protect-mcp
 
@@ -172,9 +214,9 @@ policy enforcement across all Claude Code tool calls, install
   `Write` to project root) for every tool call
 - `review-agent-governance` adds the review-surface gate on top
 
-Both hooks run, both produce receipts. Configure different receipt
-directories (`./receipts/` and `./review-receipts/`) to keep the chains
-separate if that helps your audit workflow.
+Both hooks run, and both sign a receipt for each tool call that ran. They
+write to different directories (`./receipts/` and `./review-receipts/`)
+with different keys, so verify each file with its own public key.
 
 ## Why Cedar, why receipts
 
@@ -183,12 +225,17 @@ and formally. Reviewers read the policy to understand exactly what is
 gated without reading code. Policies type-check with `cedar validate`.
 Changes to the policy are diffable.
 
-**Ed25519 receipts** (RFC 8032, JCS canonicalization per RFC 8785,
-hash-chained) provide tamper-evident evidence that does not depend on the
-operator. Any party with the public key can run
-`npx @veritasacta/verify ./review-receipts/*.json` and get an exit code
-that proves every receipt is authentic and the chain is intact. If any
-receipt was altered after signing, verification fails with exit 1.
+**Ed25519 receipts** (RFC 8032, JCS canonicalization per RFC 8785) provide
+tamper-evident evidence that does not depend on the operator. Any party with
+the public key can run the `--replay-chain` command above and get an exit
+code that shows whether every receipt is authentic. If any receipt was
+altered after signing, verification fails with exit 1. New receipts link to
+their predecessor via `payload.previousReceiptHash`. The verifier detects
+broken links between surviving receipts, including interior deletion or
+reordering. A truncated tail and deletion or reordering within the legacy
+portion of a mixed log can go undetected. Editing signed contents still fails
+signature verification. Keep an externally retained checkpoint or copy to
+check completeness.
 
 ## Standards
 
@@ -206,3 +253,24 @@ receipt was altered after signing, verification fails with exit 1.
 - [`@veritasacta/verify`](https://www.npmjs.com/package/@veritasacta/verify)
   — offline receipt verification CLI
 - [Cedar for AI agents](https://github.com/cedar-policy/cedar-for-agents)
+
+## Upgrading an existing installation
+
+Update the installed plugin, then restrict the existing signing key to its
+owner before the next session (use your configured key path if overridden):
+
+```bash
+chmod 600 ./review-governance.key
+```
+
+Keep the existing key and receipts; the setup command does not replace the key.
+New keys use `protect-mcp@0.32.4 init`, which no longer sends the older
+initializer's opt-out installation ping.
+
+## Disclosure
+
+Tom Farley maintains `protect-mcp` (MIT) and `@veritasacta/verify`
+(Apache-2.0) and runs ScopeBlind, which publishes both and sells separate
+paid services. These plugin instructions use the local `init`, `evaluate`,
+and `sign` commands and offline verifier, fetched from npm; they do not
+recommend or call those paid services. Cedar CLI validation is optional.

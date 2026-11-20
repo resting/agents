@@ -1,10 +1,19 @@
 # Agent Skills
 
-Agent Skills are modular packages that extend Claude's capabilities with specialized domain knowledge, following Anthropic's [Agent Skills Specification](https://github.com/anthropics/skills/blob/main/agent_skills_spec.md). This plugin ecosystem includes **181 local specialized skills** across 50 plugins, enabling progressive disclosure and efficient token usage.
+Agent Skills provide specialized guidance for AI coding agents using the shared [Agent Skills Specification](https://agentskills.io/specification). The repository includes 185 local skills across 52 plugins, with support for seven coding tools. See the [capability matrix](./harnesses.md) for discovery and installation differences.
+
+Install a skill on its own into a tool supported by the Agent Skills installers:
+
+```bash
+gh skill install wshobson/agents <skill>              # GitHub CLI 2.90+
+npx skills add wshobson/agents --skill <skill>        # vercel-labs/skills
+```
+
+Naming, pinning, and gotchas: [harnesses.md](./harnesses.md#skills-only-installers).
 
 ## Overview
 
-Skills provide Claude with deep expertise in specific domains without loading everything into context upfront. Each skill includes:
+Skills provide domain guidance that coding agents can load when relevant. Each skill includes:
 
 - **YAML Frontmatter**: Name and activation criteria
 - **Progressive Disclosure**: Metadata → Instructions → Resources
@@ -189,6 +198,12 @@ Skills provide Claude with deep expertise in specific domains without loading ev
 | -------------------- | ----------------------------------------------------------------------------------------------------------- |
 | **avoid-ai-writing** | Audit and rewrite prose that reads as machine-generated, with detect-only, rewrite, and edit-in-place modes   |
 
+### Superself (1 skill)
+
+| Skill         | Description                                                                                                                   |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **superself** | Drive the Superself `self` CLI: read `self context` at session start, attach work to a unit, report with evidence, close with proof |
+
 ### Data Engineering (4 skills)
 
 | Skill                           | Description                                                                 |
@@ -243,12 +258,13 @@ Skills provide Claude with deep expertise in specific domains without loading ev
 | **gdpr-data-handling**            | Implement GDPR-compliant data processing with consent management |
 | **employment-contract-templates** | Generate employment contracts with jurisdiction-specific clauses |
 
-### Incident Response (3 skills)
+### Incident Response (4 skills)
 
 | Skill                          | Description                                                           |
 | ------------------------------ | --------------------------------------------------------------------- |
 | **postmortem-writing**         | Write blameless postmortems with root cause analysis and action items |
 | **incident-runbook-templates** | Create runbooks for common incident scenarios with escalation paths   |
+| **connectivity-triage**        | Diagnose active macOS connectivity failures and localize the likely fault domain |
 | **on-call-handoff-patterns**   | Design on-call handoffs with context preservation and alert routing   |
 
 ### Quantitative Trading (2 skills)
@@ -318,11 +334,12 @@ Skills provide Claude with deep expertise in specific domains without loading ev
 | ----------------------------- | ----------------------------------------------------------------- |
 | **postgresql-table-design**   | Design and review PostgreSQL-specific schemas with proper modeling |
 
-### Documentation Standards (1 skill)
+### Documentation Standards (2 skills)
 
 | Skill    | Description                                                                                   |
 | -------- | --------------------------------------------------------------------------------------------- |
 | **hads** | HADS (Human-AI Document Standard) — semantic Markdown tagging for token-efficient AI reading |
+| **grounded-vault** | raw/wiki/archive knowledge store with per-claim source links and git fingerprints for zero-token drift checks |
 
 ### .NET Contribution (1 skill)
 
@@ -334,7 +351,7 @@ Skills provide Claude with deep expertise in specific domains without loading ev
 
 | Skill                       | Description                                                                                |
 | --------------------------- | ------------------------------------------------------------------------------------------ |
-| **evaluation-methodology**  | PluginEval quality methodology — dimensions, rubrics, statistical methods, scoring formulas |
+| **evaluation-methodology**  | PluginEval quality methodology, covering dimensions, rubrics, and scoring formulas         |
 
 ### Block No-Verify (1 skill)
 
@@ -353,6 +370,12 @@ Skills provide Claude with deep expertise in specific domains without loading ev
 | Skill                  | Description                                                                                                              |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | **social-publishing**  | Schedule and publish social media posts across 13 platforms via the SocialClaw API                                       |
+
+### Content Marketing (1 skill)
+
+| Skill                         | Description                                                                                          |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------- |
+| **social-evidence-research**  | Research public social discussion with source-level citations, sample limits, and recorded access gaps |
 
 ### LLM Fine-Tuning (10 skills)
 
@@ -391,7 +414,7 @@ Skills provide Claude with deep expertise in specific domains without loading ev
 
 ### Activation
 
-Skills are automatically activated when Claude detects matching patterns in your request:
+Claude Code can load installed skills when their descriptions match your request. The examples below use Claude Code. Discovery and invocation vary by tool, as described in the [capability matrix](./harnesses.md):
 
 ```
 User: "Set up Kubernetes deployment with Helm chart"
@@ -406,7 +429,7 @@ User: "Optimize Python async performance"
 
 ### Progressive Disclosure
 
-Skills use a three-tier architecture for token efficiency:
+The Claude Code examples use three levels of progressive disclosure:
 
 1. **Metadata** (Frontmatter): Name and activation criteria (always loaded)
 2. **Instructions**: Core guidance and patterns (loaded when activated)
@@ -431,7 +454,7 @@ fastapi-templates skill → Supplies production-ready templates
 
 ## Specification Compliance
 
-All 181 skills follow the [Agent Skills Specification](https://agentskills.io/specification):
+All 185 skills follow the [Agent Skills Specification](https://agentskills.io/specification):
 
 - ✓ Required `name` field (hyphen-case)
 - ✓ Required `description` field with "Use when" clause

@@ -1,11 +1,22 @@
 {
   "name": "plugin-eval",
-  "version": "0.1.1",
-  "description": "Three-layer quality evaluation framework for Claude Code plugins with Elo ranking",
+  "version": "0.1.5",
+  "description": "Static lint for Claude Code plugins and skills, with experimental LLM scoring for skills",
   "skills": "./skills/",
+  "author": {
+    "name": "Seth Hobson",
+    "email": "seth@major7apps.com",
+    "url": "https://github.com/wshobson"
+  },
+  "homepage": "https://github.com/wshobson/agents/tree/main/plugins/plugin-eval",
+  "repository": "https://github.com/wshobson/agents",
+  "license": "MIT",
+  "keywords": [
+    "evaluation-methodology"
+  ],
   "interface": {
     "displayName": "Plugin Eval",
-    "shortDescription": "Three-layer quality evaluation framework for Claude Code plugins with Elo ranking",
+    "shortDescription": "Static lint for Claude Code plugins and skills, with experimental LLM scoring for skills",
     "category": "Coding"
   }
 }

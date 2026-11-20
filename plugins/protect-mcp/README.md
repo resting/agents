@@ -4,19 +4,20 @@ Cedar policy enforcement + Ed25519 signed receipts for every Claude Code tool ca
 
 [![npm version](https://img.shields.io/npm/v/protect-mcp)](https://www.npmjs.com/package/protect-mcp)
 [![Downloads](https://img.shields.io/npm/dm/protect-mcp)](https://www.npmjs.com/package/protect-mcp)
-[![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue)](../../LICENSE)
 
 The first Claude Code plugin that enforces declarative authorization policies
 and produces cryptographically verifiable audit trails. Every tool call is
-evaluated against a Cedar policy, every decision is signed with Ed25519, and
-every receipt is independently verifiable offline by anyone.
+evaluated against a Cedar policy, every tool call that runs gets an
+Ed25519-signed receipt, and every receipt is verifiable offline by anyone
+with the public key.
 
 ## What You Get
 
 - **Cedar policy enforcement** — Block tool calls that violate your rules before they execute. Cedar is AWS's open authorization engine, formally verified.
-- **Ed25519 signed receipts** — Every allow/deny decision produces a tamper-evident receipt. RFC 8032 signatures with RFC 8785 JCS canonicalization.
-- **Hash-chained audit trail** — Receipts link to their predecessors. Insertions, deletions, and modifications are all detectable.
-- **Offline verification** — `npx @veritasacta/verify receipt.json` requires no network, no vendor lookup, no account. Works air-gapped.
+- **Ed25519 signed receipts**: every tool call that runs produces a tamper-evident receipt, signed with RFC 8032 Ed25519 over RFC 8785 JCS canonical bytes.
+- **Receipts file**: receipts are appended to `./receipts/receipts.jsonl`. Modified receipts fail signature verification; linked receipts also expose interior deletion or reordering. A truncated tail and changes to the ordering or membership of an unlinked legacy prefix can go undetected.
+- **Offline verification**: `npx @veritasacta/verify@0.11.1 --replay-chain` with the public key needs no vendor lookup or account. `npx` downloads the verifier on first use, so run `npm install --no-save @veritasacta/verify@0.11.1` in the project before you go offline.
 
 ## Quick Start
 
@@ -27,8 +28,14 @@ claude plugin install wshobson/agents/protect-mcp
 # 2. Create a Cedar policy file at ./protect.cedar
 #    (see skills/protect-mcp-setup/SKILL.md for examples)
 
-# 3. Add the hooks to .claude/settings.json
-#    (copy from hooks/hooks.json in this plugin)
+# 3. Create the signing key once (protect-mcp 0.32.4 sign does not create it).
+#    Installing the plugin already registers the hooks. An existing key is
+#    never replaced. To rotate it, move the key and receipts.jsonl to a secure archive first.
+if [ ! -e ./protect-mcp.key ]; then
+  d=$(mktemp -d) && npx protect-mcp@0.32.4 init --dir "$d" && mv "$d/keys/gateway.json" ./protect-mcp.key
+fi
+chmod 600 ./protect-mcp.key
+echo "/protect-mcp.key" >> .gitignore
 
 # 4. Run Claude Code normally — every tool call is now policy-evaluated
 #    and produces a signed receipt in ./receipts/
@@ -77,43 +84,66 @@ plugins/protect-mcp/
 ┌─────────────────────────────────────────────┐
 │  PostToolUse hook → Ed25519 signed receipt  │
 │                                             │
-│  Receipt fields:                            │
-│    - tool_name, input_hash, output_hash     │
-│    - decision (allow/deny)                  │
-│    - policy_id + policy_digest              │
-│    - parent_receipt_id (chain link)         │
-│    - public_key + signature                 │
+│  Receipt: payload + signature               │
+│    - payload.tool_name and decision         │
+│    - payload.request_id and issued_at       │
+│    - signature over canonical payload       │
+│    - signed public key and hash link to     │
+│      the previous receipt                   │
 │                                             │
-│  Written to ./receipts/<timestamp>.json     │
+│  Appended to ./receipts/receipts.jsonl      │
 └─────────────────────────────────────────────┘
 ```
 
 ## Example Cedar Policy
 
 ```cedar
-// Allow all read operations
+// Allow read-only tools. One rule can cover several tools: leave `resource`
+// open in the scope and compare it in `when`.
 permit (
     principal,
-    action in [Action::"Read", Action::"Glob", Action::"Grep"],
-    resource
-);
-
-// Writes only within the project directory
-permit (
-    principal,
-    action in [Action::"Write", Action::"Edit"],
+    action == Action::"MCP::Tool::call",
     resource
 ) when {
-    context.path_starts_with == "./"
+    resource == Tool::"Read" || resource == Tool::"Glob" || resource == Tool::"Grep"
 };
 
-// Never allow destructive shell commands
-forbid (
+// Writes and edits only inside the project. Claude Code passes absolute
+// paths, so match your project's path, not "./*". `like` matches the raw
+// string, so it is not a path containment check: the forbid rejects `..`.
+permit (
     principal,
-    action == Action::"Bash",
+    action == Action::"MCP::Tool::call",
     resource
 ) when {
-    context.command_pattern in ["rm -rf", "dd if=", "mkfs", "shred"]
+    (resource == Tool::"Write" || resource == Tool::"Edit") &&
+    context has input && context.input has file_path &&
+    context.input.file_path like "/path/to/project/*"
+};
+
+forbid (
+    principal,
+    action == Action::"MCP::Tool::call",
+    resource
+) when {
+    (resource == Tool::"Write" || resource == Tool::"Edit") &&
+    context has input && context.input has file_path &&
+    (context.input.file_path like "*/../*" || context.input.file_path like "*/..")
+};
+
+// Never allow destructive shell commands. Substring patterns also catch
+// `cd x && rm -rf y`, but matching shell commands as strings is best-effort:
+// a determined rewording can still get through.
+forbid (
+    principal,
+    action == Action::"MCP::Tool::call",
+    resource == Tool::"Bash"
+) when {
+    context has input && context.input has command &&
+    (context.input.command like "*rm -rf*" ||
+     context.input.command like "*dd if=*" ||
+     context.input.command like "*mkfs*" ||
+     context.input.command like "*shred*")
 };
 ```
 
@@ -122,21 +152,22 @@ project's threat model.
 
 ## Verification
 
-Every receipt can be verified by any party, offline, without trusting the
-operator:
+Every receipt can be verified by any party, offline, with the `publicKey`
+value from `./protect-mcp.key`:
 
 ```bash
-npx @veritasacta/verify receipts/2026-04-15T10-30-00Z.json
-# Exit 0 = valid
-# Exit 1 = tampered
-# Exit 2 = malformed
+PUB=$(node -p 'JSON.parse(require("fs").readFileSync("./protect-mcp.key")).publicKey')
+npx @veritasacta/verify@0.11.1 --replay-chain ./receipts/receipts.jsonl --key "$PUB"
+# Exit 0 = every receipt verified
+# Exit 1 = a receipt failed (tampered, wrong key, or malformed line)
+# Exit 2 = the file could not be read
 ```
 
-Or verify an entire chain:
-
-```bash
-npx @veritasacta/verify receipts/*.json
-```
+The verifier detects broken links between surviving receipts, including
+interior deletion or reordering. A truncated tail and deletion or reordering
+within the legacy portion of a mixed log can go undetected. Editing signed
+contents still fails signature verification. Keep an externally retained
+checkpoint or copy to check completeness.
 
 Use the `receipt-verifier` agent for help interpreting verification failures.
 
@@ -158,4 +189,25 @@ Use the `receipt-verifier` agent for help interpreting verification failures.
 
 ## License
 
-MIT. See [LICENSE](./LICENSE).
+MIT. See [LICENSE](../../LICENSE).
+
+## Upgrading an existing installation
+
+Update the installed plugin, then restrict the existing signing key to its
+owner before the next session (use your configured key path if overridden):
+
+```bash
+chmod 600 ./protect-mcp.key
+```
+
+Keep the existing key and receipts; the setup command does not replace the key.
+New keys use `protect-mcp@0.32.4 init`, which no longer sends the older
+initializer's opt-out installation ping.
+
+## Disclosure
+
+Tom Farley maintains `protect-mcp` (MIT) and `@veritasacta/verify`
+(Apache-2.0) and runs ScopeBlind, which publishes both and sells separate
+paid services. These plugin instructions use the local `init`, `evaluate`,
+and `sign` commands and offline verifier, fetched from npm; they do not
+recommend or call those paid services. Cedar CLI validation is optional.
