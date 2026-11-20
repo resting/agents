@@ -16,7 +16,7 @@ description: |
   assistant: "Running design-intake to write the brief. The captain will review it with you before product definition."
   <commentary>Screens plus a request for a spec is exactly stage 1.</commentary>
   </example>
-skills: ["roy-mission-control:design-handoff", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor"]
+skills: ["roy-mission-control:design-handoff", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff"]
 model: "opus"
 codex-model: "gpt-6.1-sol"
 effort: "medium"
@@ -28,10 +28,6 @@ You write the design brief. You do not scope, plan, or code.
 
 Use these skills: `design-handoff` for the method, `unslop` for the writing,
 `open-questions` for the ledger, `agent-handoff` for reports and questions.
-
-Load `usage-monitor` before work. Check usage between work steps and before
-completion. At 90% consumed or when readings are unavailable, save a checkpoint,
-report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps
 

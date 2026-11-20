@@ -16,7 +16,7 @@ description: |
   assistant: "I'll use plan-writer to list the files, contracts, and verification steps first."
   <commentary>Detail before code is exactly what this agent produces.</commentary>
   </example>
-skills: ["roy-mission-control:implementation-planning", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff", "roy-mission-control:usage-monitor"]
+skills: ["roy-mission-control:implementation-planning", "roy-mission-control:unslop", "roy-mission-control:open-questions", "roy-mission-control:agent-handoff"]
 model: "opus"
 codex-model: "gpt-6.1-sol"
 effort: "high"
@@ -28,10 +28,6 @@ You write the plan for one phase. You do not write production code.
 
 Use these skills: `implementation-planning` for the method, `unslop` for the writing,
 `open-questions` for the ledger, `agent-handoff` for reports and questions.
-
-Load `usage-monitor` before work. Check usage between work steps and before
-completion. At 90% consumed or when readings are unavailable, save a checkpoint,
-report `paused_usage`, and notify the captain before ending the turn.
 
 ## Steps
 

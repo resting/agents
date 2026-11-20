@@ -85,9 +85,7 @@ defines the folders, gates, and ownership.
 
 ## Hosts
 
-Inside Herdr, each specialist runs in its own pane below the captain, created by the
-bundled [split helper](skills/agent-handoff/scripts/herdr-split-down.py). Outside
-Herdr, the captain uses the host's delegation tool and relays questions itself.
+The captain uses the host's native delegation tool and relays specialist questions.
 Questions use the host's structured-question tool when one exists; see
 [the question policy](skills/agent-handoff/references/user-questions.md).
 
@@ -112,41 +110,13 @@ The builder follows a reviewed plan, verifies each step, and stops after repeate
 failures. Code review and tests still follow every build.
 
 This choice aims to reduce build usage. It does not establish equal quality or
-guaranteed savings. Compare usage for a completed phase, including review fixes and
-retries. If a build stalls, inspect the failed step and verification evidence before
+guaranteed savings. If a build stalls, inspect the failed step and verification evidence before
 choosing a stronger model for that step. An unclear plan needs a plan correction.
 Keep the existing failure pause; do not silently retry on a more expensive model.
 
 6.1 Sol must be available on the Codex host. If it is unavailable, report
 the limitation and ask for an available model choice. Do not silently substitute
 another model.
-
-## Usage pauses
-
-The captain and all eleven agents check account usage before work and between
-steps. At **90% consumed**, they save a checkpoint and pause. Missing or stale
-readings also pause work. The agent saves its handoff before notifying the captain.
-The captain records the pause, tells you what remains, and waits for your decision.
-The handoff includes the objective, saved changes, verification, and ordered remaining
-steps. Any suitable agent or model can resume it without the original conversation.
-The source model, runtime, and session are recorded only as provenance. After an
-explicit switch, the receiving host checks its own usage and resolves the same stage
-role through its own model roster. A low Codex account can hand work to Claude Code,
-and a low Claude Code account can hand work to Codex.
-
-`go` requests a fresh check and resumes the unfinished step only when usage is
-available and below 90%. A reset never resumes the mission by itself. The captain
-does not buy credits, consume resets, or switch accounts without your instruction.
-
-Codex uses the desktop account tool or the local CLI's account protocol. Claude
-Code agents run `/usage` through a disposable terminal and wait for its refresh.
-The reader checks the rendered page without interrupting a working agent. No
-status-line setup is needed. API billing without a percentage budget source pauses
-as unsupported. See [usage-monitor](skills/usage-monitor/SKILL.md) for the rule and
-[usage sources](skills/usage-monitor/references/sources.md) for setup and limits.
-
-Checks run between work steps. They cannot interrupt an ongoing model request or
-guarantee that the last 10% will cover a handoff. Agents save progress throughout work.
 
 ## Maintaining this plugin
 

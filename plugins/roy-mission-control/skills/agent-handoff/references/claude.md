@@ -16,33 +16,12 @@ Prefer `AskUserQuestion` for choices, open-ended context, and stage acceptance.
 Use its custom-answer input when the user needs their own words. Respect its
 current schema and limits. A default option is not an answer.
 
-## The bottom pane
+## Delegation
 
-Inside Herdr, follow [Herdr pane workflow](herdr.md). Split down and start the specialist
-with `--kind claude`, then the named Claude agent and roster options after `--`.
-Use `runtime: claude` and `transport: claude-pane`. Follow the shared pane direction,
-saved IDs, direct-conversation rules, and report-back sequence.
-
-Outside Herdr, use Claude's Task or Agent tool with `transport: claude-task`. Tell the
-user that questions will come through the captain. An in-Herdr launch failure requires
-inspection and an explicit choice before changing to a non-pane fallback.
-
-### Notifications and permissions
-
-Agents have Bash available to send their captain notification. Tool access and action
-permissions are separate. Use the project's existing permissions; do not widen them
-silently. If a required notification is denied, the saved inbox remains the fallback.
-Every user message to the captain triggers an inbox check.
-
-At mission setup in Herdr, explain and offer the existing project's optional
-`Bash(herdr:*)` allow rule if notifications need it. This rule allows Herdr commands;
-do not call it permission for only one message. Merge an accepted rule into existing
-settings without replacing them. Declining it keeps inbox-based recovery available.
-
-Auto mode availability depends on the installed Claude version, model, and settings.
-If a pane is quiet, inspect its status and any permission prompt before declaring a
-failure. Auto mode does not replace product questions or the captain's user gates.
-Do not switch to a permission-bypassing mode to make a handoff work.
+Use Claude's Task or Agent tool with `runtime: claude` and
+`transport: claude-task`. The captain relays specialist questions and resumes the
+same stage with the saved answers. Use the host's completion or wait mechanism.
+Keep the saved inbox report available if notification fails.
 
 ## The roster
 
@@ -60,8 +39,8 @@ Do not switch to a permission-bypassing mode to make a handoff work.
 | `10-unit-test-writer` | sonnet | medium |
 | `11-manual-test-writer` | sonnet | low |
 
-This table matches the agents' frontmatter. Pass `--model` and supported `--effort`
-from it when launching a pane, and say both in the brief.
+This table matches the agents' frontmatter. Apply model and effort through the
+host's supported launch options, and say both in the brief.
 
 `CLAUDE_CODE_SUBAGENT_MODEL` overrides this table for Task-tool dispatch. If it is
 set, say so once and stop quoting the table.
@@ -69,15 +48,5 @@ set, say so once and stop quoting the table.
 
 ## Specialist notification
 
-For `claude-pane`, follow the shared Herdr workflow's notification steps. Keep the
-interactive session open on `needs_user`. For `claude-task`, return the inbox report
-as the final response and print `RMC_END` as the last line. The captain relays questions
-and resumes the same stage with the saved answers.
-
-## Account usage
-
-Follow `usage-monitor` before stage work and between steps. Read its
-`references/sources.md` for this runtime. Pass the verified source identity in the
-brief. Save the checkpoint and `paused_usage` inbox before the normal notification.
-Keep a usage-paused session available, but do not continue without the captain
-relaying the user's decision and a fresh passing usage check.
+Return the inbox report as the final response and print `RMC_END` as the last line.
+The captain relays questions and resumes the same stage with the saved answers.
